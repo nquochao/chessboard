@@ -1,1 +1,2 @@
 Main Class oliviaproject.OliviaProjectChessBoard
+see docs/ChessBoard.pdf 
