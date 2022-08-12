@@ -7,4 +7,9 @@ import oliviaproject.hibernate.ChessBoardPreference;
 
 public class ChessBoardPreferenceSQL extends DefaultSQL<ChessBoardPreference> {
 
+	@Override
+	public Class getName() {
+		return getEntity(new ChessBoardPreference());
+	}
+
 }

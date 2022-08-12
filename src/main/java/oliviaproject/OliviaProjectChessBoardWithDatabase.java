@@ -1,6 +1,6 @@
 package oliviaproject;
 
-public class OliviaProject2 {
+public class OliviaProjectChessBoardWithDatabase {
 public static void main(String[] args) {
 	System.out.println("test");
 }

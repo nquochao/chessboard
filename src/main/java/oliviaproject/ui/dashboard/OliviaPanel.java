@@ -80,7 +80,7 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 
 	public void initialize() throws IOException {
 		ps.clear();
-		 if(Default.getUserName().getPreference()!=null)
+		 if(Default.getUserName()!=null && Default.getUserName().getPreference()!=null)
 		 {
 		 colorBlackTile = Default.findColor( Color.decode(Default.getUserName().getPreference().getColorTileBlack()), COLOR_TILE_BLACK); 
 		colorWhiteTile = Default.findColor( Color.decode(Default.getUserName().getPreference().getColorTileWhite()), COLOR_TILE_WHITE); 

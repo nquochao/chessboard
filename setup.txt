@@ -1,3 +1,7 @@
 Main Class oliviaproject.OliviaProjectChessBoard
 see docs/ChessBoard.pdf 
 or: https://github.com/nquochao/chessboard/blob/main/docs/ChessBoard.pdf
+
+WIP: oliviaproject.OliviaProjectChessBoardWithDatabase, this implies the settings to save on oracle database via hibernate.
+see also https://github.com/nquochao/onHibernate/blob/main/docs/OnHibernate.pdf
+This hibernate feature to be implemented on this project

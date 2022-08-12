@@ -66,7 +66,7 @@ public class LoginDialog extends JFrame implements ActionListener {
       u.setPassword(password);
       UserNameSQL mu = new UserNameSQL();
 		mu.init();
-      u=mu.getUser(userName,password);
+      u=mu.get(u);
       if(u!=null) {
     	  message.setText(" Hello " + userName + "");
     	  Default.setUserName(u);

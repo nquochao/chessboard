@@ -40,16 +40,16 @@ public class OliviaFrame extends JFrame{
 	JScrollPane scroll = new JScrollPane(pane);
 	scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 	this.add(scroll);
-	manager.init();
+	//manager.init();
 	DefaultConnection.getEventBus().subscribe(pane, new ChessEvent());
 	DefaultConnection.getEventBus().subscribe(pane, new ChessEchelleEvent());
 	DefaultConnection.getEventBus().subscribe(pane, new ChessColorDashBoardEvent());
 	DefaultConnection.getEventBus().subscribe(pane, new ChessColorPieceEvent());
 
-	DefaultConnection.getEventBus().subscribe(manager, new ChessEvent());
-	DefaultConnection.getEventBus().subscribe(manager, new ChessEchelleEvent());
-	DefaultConnection.getEventBus().subscribe(manager, new ChessColorDashBoardEvent());
-	DefaultConnection.getEventBus().subscribe(manager, new ChessColorPieceEvent());
+//	DefaultConnection.getEventBus().subscribe(manager, new ChessEvent());
+//	DefaultConnection.getEventBus().subscribe(manager, new ChessEchelleEvent());
+//	DefaultConnection.getEventBus().subscribe(manager, new ChessColorDashBoardEvent());
+//	DefaultConnection.getEventBus().subscribe(manager, new ChessColorPieceEvent());
 
 	cardPanel.add(scroll, "0");
 	pane.setAddCoordinates(true);
