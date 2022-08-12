@@ -27,8 +27,9 @@ import oliviaproject.event.ChessColorDashBoardEvent;
 import oliviaproject.event.ChessColorPieceEvent;
 import oliviaproject.event.ChessEchelleEvent;
 import oliviaproject.event.ChessEvent;
+import oliviaproject.event.Default;
 import oliviaproject.event.Event;
-import oliviaproject.event.EventListener;
+import oliviaproject.eventbus.EventListener;
 import oliviaproject.ui.dashboard.util.IChessboardPanel;
 import oliviaproject.ui.dashboard.util.NumberToLetter;
 import oliviaproject.ui.dashboard.util.Piece;
@@ -37,11 +38,13 @@ import oliviaproject.ui.dashboard.util.SelectorRectangle;
 import oliviaproject.ui.dashboard.util.Side;
 import oliviaproject.ui.position.Position;
 import oliviaproject.ui.position.Positions;
+import oliviaproject.ui.possiblemove.KingSide;
 import oliviaproject.ui.possiblemove.PositionCavalier;
 import oliviaproject.ui.possiblemove.PositionFou;
 import oliviaproject.ui.possiblemove.PositionReine;
 import oliviaproject.ui.possiblemove.PositionTour;
 import oliviaproject.ui.possiblemove.PositionUtil;
+import oliviaproject.ui.possiblemove.Revert;
 import oliviaproject.ui.promotion.ChessPiecePromotion;
 
 public class OliviaPanel extends JPanel implements IChessboardPanel, EventListener {
@@ -53,7 +56,7 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 	int ylength = TILE_Y;
 	int xinit = 0;
 	int yinit = 0;
-	Color colorBlackTile = COLOR_TILE_BLACK, colorWhiteTile = COLOR_TILE_WHITE;
+
 	Positions ps = new Positions();
 	Position lastPosition = new Position();
 	int numbercols = NUMBER_COLUMNS;
@@ -61,7 +64,9 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 	Map<String, Rectangle> quads = new HashMap<>();
 	private SelectorRectangle selected;
 	private SelectorRectangle clickedSelectedOrigin, clickedSelectedTarget;
-
+	Color colorBlackTile=COLOR_TILE_BLACK;
+	Color colorWhiteTile=COLOR_TILE_WHITE;
+	
 	Boolean addCoordinates = true;
 	private PlayMode playMode;
 
@@ -75,6 +80,11 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 
 	public void initialize() throws IOException {
 		ps.clear();
+		 if(Default.getUserName().getPreference()!=null)
+		 {
+		 colorBlackTile = Default.findColor( Color.decode(Default.getUserName().getPreference().getColorTileBlack()), COLOR_TILE_BLACK); 
+		colorWhiteTile = Default.findColor( Color.decode(Default.getUserName().getPreference().getColorTileWhite()), COLOR_TILE_WHITE); 
+		 }
 		for (int j = 0; j < numberrows; j++) {
 			try {
 				fillrow(j, Side.White);
@@ -134,28 +144,65 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 						clickedSelectedTarget.setCoordinate(key);
 						if (clickedSelectedOrigin != null) {
 
-							Position p = ps.get(clickedSelectedOrigin.getCoordinate());
-							Set<String> possiblepositions = p.findPossibleMove(ps, lastPosition);
+							Position pOrigin = ps.get(clickedSelectedOrigin.getCoordinate());
+							Set<String> possiblepositions = pOrigin.findPossibleMove(ps, lastPosition);
 
 							if (clickedSelectedTarget != null) {
 								Position pTarget = ps.get(clickedSelectedTarget.getCoordinate());
 //								if(pTarget.coordinate().equals(p.coordinate())){
 //									return;// this is not necessary but in case possiblepositions not well calculated
 //								}
+
 								if (possiblepositions != null && possiblepositions.contains(pTarget.coordinate())) {
 									;
-									PositionUtil.doRock(pTarget, p, ps);
-									PositionUtil.doEnPassant(pTarget, p, ps, lastPosition);
+									PositionUtil.doRock(pTarget, pOrigin, ps, Revert.DoRegular);
+									PositionUtil.doEnPassant(pTarget, pOrigin, ps, lastPosition, Revert.DoRegular);
 
-									ps.get(pTarget.coordinate()).setPiece(p.getPiece());
-									PositionUtil.updatePiece(pTarget, ps);
-									lastPosition.updatePosition(pTarget);
+									ps.get(pTarget.coordinate()).setPiece(pOrigin.getPiece());
+									PositionUtil.updatePiece(pTarget, ps, Revert.DoRegular);
+									lastPosition.updatePosition(pTarget, Revert.DoRegular);
 
 									// we check if it is a rock move
 
-									ps.get(p.coordinate()).setPiece(Piece.None);
-									PositionUtil.updatePiece(p, ps);
-									PositionUtil.doPromotion(pTarget, ps);
+									ps.get(pOrigin.coordinate()).setPiece(Piece.None);
+									PositionUtil.updatePiece(pOrigin, ps, Revert.DoRegular);
+									PositionUtil.doPromotion(pTarget, ps, Revert.DoRegular);
+									/**
+									 * is the move putting my King in chess?
+									 */
+									boolean isMyKingInChess=PositionUtil.checkMate(pTarget,lastPosition, ps, KingSide.MyKing);
+									
+									if(isMyKingInChess) {
+										/**
+										 * Compulsory : 
+										 *  we cannot accept the move and need to revert.
+										 */
+										;
+										
+										PositionUtil.doRock(pTarget, pOrigin, ps, Revert.DoRevert);
+										PositionUtil.doEnPassant(pTarget, pOrigin, ps, lastPosition,Revert.DoRevert);
+										// do the revert of this move: 
+										ps.get(pTarget.coordinate()).setPiece(pOrigin.getPiece());
+										PositionUtil.updatePiece(pTarget, ps,Revert.DoRevert);
+										lastPosition.updatePosition(pTarget, Revert.DoRevert);
+
+										// we check if it is a rock move
+
+										ps.get(pOrigin.coordinate()).setPiece(Piece.None);
+										PositionUtil.updatePiece(pOrigin, ps,Revert.DoRevert);
+										PositionUtil.doPromotion(pTarget, ps,Revert.DoRevert);
+									return;	
+									}
+									/**
+									 * is the move putting the opposite King in chess?
+									 */
+									boolean isOppositeKingInChess=PositionUtil.checkMate(pTarget, lastPosition, ps, KingSide.OppositeKing);
+									if(isOppositeKingInChess) {
+										/**
+										 * Optional notification
+										 * 
+										 */
+									}
 									if (playMode == PlayMode.game) {
 										updateNextPlayer(key);
 									}
@@ -409,8 +456,8 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 	}
 
 	private void manageChessColorPieceEvent(ChessColorPieceEvent event) {
-		Color colorBlack=event.getColor2();
-		Color colorWhite=event.getColor1();
+		Color colorWhite=event.getColorWhite();
+		Color colorBlack=event.getColorBlack();
 		OliviaPanel p=this;
 		for(String ref :ps.keySet()) {
 			Position mp=ps.get(ref);
@@ -430,8 +477,8 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 	}
 
 	private void manageChessColorDashBoardEvent(ChessColorDashBoardEvent event) {
-		this.colorBlackTile = event.getColor2();
-		this.colorWhiteTile = event.getColor1();
+		this.colorWhiteTile = event.getColorWhiteTile();
+		this.colorBlackTile = event.getColorBlackTile();
 		OliviaPanel p = this;
 
 		SwingUtilities.invokeLater(new Runnable() {

@@ -1,23 +1,21 @@
 package oliviaproject.hibernate;
 
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class ChessBoardPreference {
+public class ChessBoardPreference extends DefaultEntity implements IEntity {
 	String colorTileWhite;
 	String colorTileBlack;
 	String colorPieceWhite;
 	String colorPieceBlack;
 	int chesswidth;
-	@Id
-    @GeneratedValue
-	private int id;
-	@OneToOne
-	@JoinColumn(name = "userName")
+
+	@OneToOne(mappedBy="preference", cascade=CascadeType.ALL)	
 	private UserName userName;
 
 	public UserName getUserName() {

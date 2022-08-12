@@ -1,4 +1,6 @@
-package oliviaproject.event;
+package oliviaproject.eventbus;
+
+import oliviaproject.event.Event;
 
 public interface EventListener
 {

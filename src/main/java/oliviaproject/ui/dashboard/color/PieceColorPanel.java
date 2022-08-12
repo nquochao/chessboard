@@ -17,7 +17,7 @@ import oliviaproject.ui.dashboard.DashBoardMenu_Fr;
 
 public class PieceColorPanel extends JPanel {
 	JFrame myparent;
-	Color initialcolor1,initialcolor2;
+	Color initialcolorWhite,initialcolorBlack;
 	public void init(JFrame parent) {
 		myparent=parent;
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -31,8 +31,8 @@ public class PieceColorPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				 initialcolor1 = JColorChooser.showDialog(me,
-						"Select a color", initialcolor1);				
+				 initialcolorWhite = JColorChooser.showDialog(me,
+						"Select a color", initialcolorWhite);				
 			}});
 		this.add(bcolor2);
 		bcolor2.addActionListener(new AbstractAction() {
@@ -40,8 +40,8 @@ public class PieceColorPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				initialcolor2= JColorChooser.showDialog(me,
-						"Select a color", initialcolor2);				
+				initialcolorBlack= JColorChooser.showDialog(me,
+						"Select a color", initialcolorBlack);				
 			}});
 		OKButton.addActionListener(new AbstractAction() {
 
@@ -49,8 +49,8 @@ public class PieceColorPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ChessColorPieceEvent event=new ChessColorPieceEvent();
-				event.setColor1(initialcolor1);
-				event.setColor2(initialcolor2);
+				event.setColorWhite(initialcolorWhite);
+				event.setColorBlack(initialcolorBlack);
 				DefaultConnection.getEventBus().publish(event);
 				parent.setVisible(false);
 			}});

@@ -1,4 +1,4 @@
-package oliviaproject.hibernate;
+package oliviaproject.hibernate.manager;
 
 import java.util.Iterator;
 import java.util.List;
@@ -9,7 +9,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-public class ManageEmployee {
+import oliviaproject.hibernate.Employee;
+
+public class SaveEmployeeManager {
    private static SessionFactory factory; 
    public static void main(String[] args) {
       
@@ -25,7 +27,7 @@ public class ManageEmployee {
          throw new ExceptionInInitializerError(ex); 
       }
       
-      ManageEmployee ME = new ManageEmployee();
+      SaveEmployeeManager ME = new SaveEmployeeManager();
 
       /* Add few employee records in database */
       Integer empID1 = ME.addEmployee("Zara", "Ali", 1000);

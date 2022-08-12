@@ -38,7 +38,7 @@ import javax.swing.SwingUtilities;
 import oliviaproject.event.ChessEvent;
 import oliviaproject.event.DefaultConnection;
 import oliviaproject.event.Event;
-import oliviaproject.event.EventListener;
+import oliviaproject.eventbus.EventListener;
 import oliviaproject.ui.dashboard.util.IChessboardPanel;
 import oliviaproject.ui.dashboard.util.SelectorImageRectangle;
 import oliviaproject.ui.position.Position;

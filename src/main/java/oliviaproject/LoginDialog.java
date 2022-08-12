@@ -14,8 +14,12 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import oliviaproject.hibernate.ManageUser;
+import oliviaproject.event.ChessEvent;
+import oliviaproject.event.Default;
+import oliviaproject.event.DefaultConnection;
 import oliviaproject.hibernate.UserName;
+import oliviaproject.hibernate.manager.SaveUserNameManager;
+import oliviaproject.hibernate.sql.UserNameSQL;
 import oliviaproject.ui.dashboard.OliviaFrame;
 public class LoginDialog extends JFrame implements ActionListener {
    JPanel panel;
@@ -60,11 +64,13 @@ public class LoginDialog extends JFrame implements ActionListener {
       UserName u=new UserName();
       u.setUserName(userName);
       u.setPassword(password);
-      ManageUser mu = new ManageUser();
+      UserNameSQL mu = new UserNameSQL();
 		mu.init();
       u=mu.getUser(userName,password);
       if(u!=null) {
     	  message.setText(" Hello " + userName + "");
+    	  Default.setUserName(u);
+
     	  this.setVisible(false);
     	   SwingUtilities.invokeLater(new Runnable() {
 	            public void run() {

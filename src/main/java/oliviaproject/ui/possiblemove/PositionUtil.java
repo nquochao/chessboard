@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import oliviaproject.ui.dashboard.util.Piece;
+import oliviaproject.ui.dashboard.util.Side;
 import oliviaproject.ui.position.Position;
 import oliviaproject.ui.position.Positions;
 import oliviaproject.ui.promotion.PromotionPanel;
@@ -63,7 +64,8 @@ public class PositionUtil {
 			possiblePosition.setX(position.getX() + absolutePosition.getX());
 			possiblePosition.setY(absolutePosition.getY());
 			boolean isEmpty = checkIfPieceEmpty(possiblePosition, ps);
-			boolean enPassantAdversePosition = checkIfPieceAdverseEligibleForEnPassant(possiblePosition, position, ps, lastPositionMove);
+			boolean enPassantAdversePosition = checkIfPieceAdverseEligibleForEnPassant(possiblePosition, position, ps,
+					lastPositionMove);
 			if (isEmpty && enPassantAdversePosition) {
 				result.add(possiblePosition.coordinate());
 			}
@@ -91,10 +93,11 @@ public class PositionUtil {
 		if (lastPositionMove == null)
 			return false;
 		boolean isEligibleEnPassant = lastPosition.getY() == adversePosition.getPositionDepart().getY();
-		Position advPosition= findAdverseEnPassant(possiblePosition, myposition, ps);
-		boolean isEligibleEnPassantImmediate=false;
-		isEligibleEnPassantImmediate=advPosition.coordinate().equals(lastPositionMove.coordinate());
-		return checkIfPieceAdverse(adversePosition, myposition, ps) && isEligibleEnPassant&& isEligibleEnPassantImmediate;
+		Position advPosition = findAdverseEnPassant(possiblePosition, myposition, ps);
+		boolean isEligibleEnPassantImmediate = false;
+		isEligibleEnPassantImmediate = advPosition.coordinate().equals(lastPositionMove.coordinate());
+		return checkIfPieceAdverse(adversePosition, myposition, ps) && isEligibleEnPassant
+				&& isEligibleEnPassantImmediate;
 
 	}
 
@@ -110,7 +113,9 @@ public class PositionUtil {
 		}
 		return null;
 	}
-	public static PositionPion findAdverseEnPassantForAdvLastPosition(Position possiblePosition, Position myposition, Positions ps) {
+
+	public static PositionPion findAdverseEnPassantForAdvLastPosition(Position possiblePosition, Position myposition,
+			Positions ps) {
 		int offset = possiblePosition.getY() - myposition.getY();
 		Position adversePosition = new Position(possiblePosition.getX(), possiblePosition.getY() - offset);
 		if (ps.get(adversePosition.coordinate()) == null)
@@ -123,15 +128,15 @@ public class PositionUtil {
 		return null;
 	}
 
-	public static void updatePiece(Position pTarget, Positions ps) {
+	public static void updatePiece(Position pTarget, Positions ps, Revert dorevert) {
 		Position p = ps.get(pTarget.coordinate()).getPiece().getPossibleMove();
 		p.setPieceHasMoved(true);
 		p.setLastPosition(new Position(p.getX(), p.getY()));
-		p.updatePosition(pTarget);
+		p.updatePosition(pTarget, dorevert);
 
 	}
 
-	public static Boolean doRock(Position pTarget, Position p, Positions ps) {
+	public static Boolean doRock(Position pTarget, Position p, Positions ps, Revert doRevert) {
 		Map<String, Position> mypossibleMove = p.getPiece().getPossibleMove().getPossibleRock();
 		Boolean isPossibleRock = false;
 		String towerCoordinate = null;
@@ -155,10 +160,10 @@ public class PositionUtil {
 			Position targetTowerPosition = possibleRocks.get(p.coordinate());
 			targetTowerPosition = ps.get(targetTowerPosition.coordinate());
 			targetTowerPosition.setPiece(towerPosition.getPiece());
-			PositionUtil.updatePiece(targetTowerPosition, ps);
+			PositionUtil.updatePiece(targetTowerPosition, ps, doRevert);
 
 			towerPosition.setPiece(Piece.None);
-			PositionUtil.updatePiece(towerPosition, ps);
+			PositionUtil.updatePiece(towerPosition, ps, doRevert);
 
 		}
 		return isPossibleRock && hasNotMoved;
@@ -166,9 +171,10 @@ public class PositionUtil {
 	}
 
 	public static Boolean doEnPassant(Position possiblePosition, Position position, Positions ps,
-			Position lastPositionMove) {
+			Position lastPositionMove, Revert dorevert) {
 		boolean isEmpty = checkIfPieceEmpty(possiblePosition, ps);
-		boolean enPassantAdversePosition = checkIfPieceAdverseEligibleForEnPassant(possiblePosition, position, ps,lastPositionMove);
+		boolean enPassantAdversePosition = checkIfPieceAdverseEligibleForEnPassant(possiblePosition, position, ps,
+				lastPositionMove);
 		Boolean doEnPassant = isEmpty && enPassantAdversePosition;
 		if (isEmpty && enPassantAdversePosition) {
 			int offset = possiblePosition.getY() - position.getY();
@@ -176,7 +182,7 @@ public class PositionUtil {
 
 			Position advPosition = ps.get(adversePosition.coordinate());
 			advPosition.setPiece(Piece.None);
-			PositionUtil.updatePiece(advPosition, ps);
+			PositionUtil.updatePiece(advPosition, ps, dorevert);
 
 		}
 
@@ -184,11 +190,101 @@ public class PositionUtil {
 
 	}
 
-	public static void doPromotion(Position pTarget, Positions ps) {
-		boolean isPion=(pTarget.getPiece()==Piece.PionB||pTarget.getPiece()==Piece.PionW);
-		boolean isLastRow=pTarget.getY()==0||pTarget.getY()==7;
-		if(isPion && isLastRow) {
+	public static void doPromotion(Position pTarget, Positions ps, Revert doregular) {
+		boolean isPion = (pTarget.getPiece() == Piece.PionB || pTarget.getPiece() == Piece.PionW);
+		boolean isLastRow = pTarget.getY() == 0 || pTarget.getY() == 7;
+		if (isPion && isLastRow) {
 			PromotionPanel.showFrame(pTarget);
 		}
+	}
+
+	public static boolean checkMate(Position pTarget, Position lastPosition, Positions ps, KingSide kingSide) {
+		Position positionKing = null;
+		Side s =findSide(pTarget.getPiece().getSide(),kingSide);
+		
+		/**
+		 * Find position of the Kind of side s
+		 * 
+		 */
+		if (s != Side.None) {
+			positionKing = findKing(s, ps);
+		}else return false;
+
+		/**
+		 * Get all the possible moves of the opposite side of s
+		 * 
+		 */
+		Set<String> possiblePositions=new HashSet<>();
+		Side oppositeSide = Side.getOppositeSide(s);
+		for (String key : ps.keySet()) {
+
+			Position p = ps.get(key);
+			boolean isSide = oppositeSide == p.getPiece().getSide();
+			if (isSide) {
+				Set<String> possible = p.findPossibleMove(ps, lastPosition);
+				possiblePositions.addAll(possible);
+			}
+
+		}
+		/**
+		 * Verify that the {King of side s} is not in the {possible moves of opposite
+		 * side s}
+		 * 
+		 */
+		boolean isKingChess=possiblePositions.contains(positionKing.coordinate());
+		return isKingChess;
+	
+
+	}
+
+	private static Side findSide(Side side, KingSide kingSide) {
+		Side s = null;
+		switch(kingSide) {
+		case MyKing:{
+			s = side;
+			break;
+		}
+		case OppositeKing:{
+			switch( side) {
+			case White:{
+				s= Side.Black;
+				break;
+			}
+			case Black:{
+				s=Side.White;
+				break;
+			}
+			};
+			break;
+		}
+		}
+		return s;
+	}
+
+	private static Position findKing(Side s, Positions ps) {
+		Position positionKing = null;
+		switch (s) {
+		case White: {
+			positionKing = findPiece(Piece.RoiW, ps);
+			break;
+		}
+		case Black: {
+			positionKing = findPiece(Piece.RoiB, ps);
+			break;
+		}
+		}
+		return positionKing;
+	}
+
+	private static Position findPiece(Piece piece, Positions ps) {
+		for (String key : ps.keySet()) {
+			Position p = ps.get(key);
+			boolean isFound = p.getPiece() == piece;
+			if (isFound) {
+				return p;
+			}
+
+		}
+		return null;
 	}
 }

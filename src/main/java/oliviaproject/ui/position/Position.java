@@ -9,6 +9,7 @@ import oliviaproject.ui.dashboard.OliviaPanel;
 import oliviaproject.ui.dashboard.util.Piece;
 import oliviaproject.ui.possiblemove.PositionRockPossible;
 import oliviaproject.ui.possiblemove.PositionUtil;
+import oliviaproject.ui.possiblemove.Revert;
 
 /**
  * @author DesktopPC
@@ -288,7 +289,7 @@ public class Position {
 		return checkPieceBetween(result, ps, position, false);
 	}
 
-	public void updatePosition(Position position) {
+	public void updatePosition(Position position, Revert dorevert) {
 		this.setX(position.getX());
 		this.setY(position.getY());
 	}

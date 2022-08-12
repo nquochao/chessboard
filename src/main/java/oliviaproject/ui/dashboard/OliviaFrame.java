@@ -20,6 +20,7 @@ import oliviaproject.event.ChessColorPieceEvent;
 import oliviaproject.event.ChessEchelleEvent;
 import oliviaproject.event.ChessEvent;
 import oliviaproject.event.DefaultConnection;
+import oliviaproject.hibernate.manager.SaveUserNameManager;
 import oliviaproject.ui.dashboard.color.ActionPieceColorListener;
 import oliviaproject.ui.dashboard.scale.ActionScaleListener;
 import oliviaproject.ui.dashboard.util.PlayMode;
@@ -27,7 +28,7 @@ import oliviaproject.ui.demo.TextDemo;
 import oliviaproject.ui.piece.color.ActionDashBoardColorListener;
 
 public class OliviaFrame extends JFrame{
-	
+	SaveUserNameManager manager=new SaveUserNameManager();
 	private int currentCard=0;
 	public void init() throws InterruptedException, IOException {
 
@@ -39,11 +40,17 @@ public class OliviaFrame extends JFrame{
 	JScrollPane scroll = new JScrollPane(pane);
 	scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 	this.add(scroll);
-
+	manager.init();
 	DefaultConnection.getEventBus().subscribe(pane, new ChessEvent());
 	DefaultConnection.getEventBus().subscribe(pane, new ChessEchelleEvent());
 	DefaultConnection.getEventBus().subscribe(pane, new ChessColorDashBoardEvent());
 	DefaultConnection.getEventBus().subscribe(pane, new ChessColorPieceEvent());
+
+	DefaultConnection.getEventBus().subscribe(manager, new ChessEvent());
+	DefaultConnection.getEventBus().subscribe(manager, new ChessEchelleEvent());
+	DefaultConnection.getEventBus().subscribe(manager, new ChessColorDashBoardEvent());
+	DefaultConnection.getEventBus().subscribe(manager, new ChessColorPieceEvent());
+
 	cardPanel.add(scroll, "0");
 	pane.setAddCoordinates(true);
 	pane.setPlayMode(PlayMode.game);

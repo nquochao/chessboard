@@ -1,9 +1,11 @@
-package oliviaproject.event;
+package oliviaproject.eventbus;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import oliviaproject.event.Event;
 
 public class EventBus {
 	Map<String, Set<EventListener>> eventMap= new HashMap<>();

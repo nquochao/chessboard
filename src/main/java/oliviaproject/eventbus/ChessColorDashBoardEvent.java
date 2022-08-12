@@ -1,4 +1,4 @@
-package oliviaproject.event;
+package oliviaproject.eventbus;
 
 import java.awt.Color;
 
