@@ -1,23 +1,37 @@
-package oliviaproject.hibernate;
+package oliviaproject.hibernate.entities;
 
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class ChessBoardPreference extends DefaultEntity implements IEntity {
+public class ChessBoardPreference implements IEntity {
+	@Id
+    @GeneratedValue
+	Integer id;
+
+	@OneToOne	(mappedBy = "preference")
+	private UserName userName;
+/**
+ * here userName is the owner and links to ChessBoardPreference via field username.preference.
+ * mappedBy means ChessBoardPreference is not the owner but referred to in userName.preference
+ * 
+ */
 	String colorTileWhite;
 	String colorTileBlack;
 	String colorPieceWhite;
 	String colorPieceBlack;
 	int chesswidth;
 
-	@OneToOne(mappedBy="preference", cascade=CascadeType.ALL)	
-	private UserName userName;
+public Integer getId() {
+	return id;
+}
 
+public void setId(Integer id) {
+	this.id = id;
+}
 	public UserName getUserName() {
 		return userName;
 	}

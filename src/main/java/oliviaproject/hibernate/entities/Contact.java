@@ -1,4 +1,4 @@
-package oliviaproject.hibernate;
+package oliviaproject.hibernate.entities;
 import java.net.URL;
 
 import jakarta.persistence.Embeddable;

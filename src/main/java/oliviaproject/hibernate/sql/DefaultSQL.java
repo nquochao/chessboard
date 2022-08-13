@@ -13,7 +13,7 @@ import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import oliviaproject.hibernate.DefaultEntity;
+import oliviaproject.hibernate.entities.DefaultEntity;
 
 public abstract class DefaultSQL<T extends DefaultEntity> implements iSQL {
 	protected static final Logger log = LoggerFactory.getLogger(ChessBoardPreferenceSQL.class);

@@ -2,7 +2,7 @@ package oliviaproject.hibernate.sql;
 
 import org.springframework.stereotype.Component;
 
-import oliviaproject.hibernate.UserName;
+import oliviaproject.hibernate.entities.UserName;
 
 @Component
 public class UserNameSQL extends DefaultSQL<UserName> implements iSQL{

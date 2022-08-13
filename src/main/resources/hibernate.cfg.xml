@@ -27,12 +27,7 @@
          calypso
       </property>
       <property name="hibernate.hbm2ddl.auto">update</property>
- <mapping class="oliviaproject.hibernate.Author" />
- <mapping class="oliviaproject.hibernate.Employee" />
- <mapping class="oliviaproject.hibernate.Book" />
- <mapping class="oliviaproject.hibernate.Contact" />
- <mapping class="oliviaproject.hibernate.Name" />
- <mapping class="oliviaproject.hibernate.UserName" />
- <mapping class="oliviaproject.hibernate.ChessBoardPreference" />
+ <mapping class="oliviaproject.hibernate.entities.UserName" />
+ <mapping class="oliviaproject.hibernate.entities.ChessBoardPreference" />
    </session-factory>
 </hibernate-configuration>

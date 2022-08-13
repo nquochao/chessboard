@@ -6,7 +6,7 @@ import oliviaproject.event.ChessEchelleEvent;
 import oliviaproject.event.Default;
 import oliviaproject.event.Event;
 import oliviaproject.eventbus.EventListener;
-import oliviaproject.hibernate.ChessBoardPreference;
+import oliviaproject.hibernate.entities.ChessBoardPreference;
 import oliviaproject.hibernate.sql.UserNameSQL;
 
 public class SaveUserNameManager implements EventListener {

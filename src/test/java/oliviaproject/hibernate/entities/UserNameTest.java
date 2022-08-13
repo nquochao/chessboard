@@ -1,4 +1,4 @@
-package oliviaproject.hibernate.test;
+package oliviaproject.hibernate.entities;
 
 import java.util.Map;
 
@@ -11,12 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import junit.framework.TestCase;
-import oliviaproject.hibernate.ChessBoardPreference;
-import oliviaproject.hibernate.UserName;
+import oliviaproject.hibernate.entities.ChessBoardPreference;
+import oliviaproject.hibernate.entities.UserName;
 
-public class TestUnit extends TestCase {
+public class UserNameTest extends TestCase {
 	Map<Integer, UserName> users;
-	private static final Logger log = LoggerFactory.getLogger(TestUnit.class);
+	private static final Logger log = LoggerFactory.getLogger(UserNameTest.class);
 
 	private static SessionFactory factory;
 
@@ -40,12 +40,13 @@ public class TestUnit extends TestCase {
 	public static void testOneToOne() {
 		Session session = factory.openSession();
 		Transaction tx = null;
-
 		ChessBoardPreference preference = new ChessBoardPreference();
 		preference.setChesswidth(80);
 
 // Add new Employee object
 		UserName userName = new UserName();
+		userName.setUserName("olivia");
+		userName.setPassword("olivia");
 		userName.setEmail("demo-user@mail.com");
 
 // Save Account

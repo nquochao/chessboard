@@ -1,4 +1,4 @@
-package oliviaproject.hibernate;
+package oliviaproject.hibernate.entities;
 
 public interface IEntity {
 	public Integer getId();

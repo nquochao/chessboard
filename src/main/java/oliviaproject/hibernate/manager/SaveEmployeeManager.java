@@ -9,7 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-import oliviaproject.hibernate.Employee;
+import oliviaproject.hibernate.entities.Employee;
 
 public class SaveEmployeeManager {
    private static SessionFactory factory; 

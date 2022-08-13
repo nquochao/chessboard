@@ -2,7 +2,7 @@ package oliviaproject.eventbus;
 
 import java.awt.Color;
 
-import oliviaproject.hibernate.UserName;
+import oliviaproject.hibernate.entities.UserName;
 
 public class Default {
 static UserName userName;

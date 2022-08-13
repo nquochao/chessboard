@@ -4,8 +4,8 @@
 	import org.slf4j.Logger;
 	import org.slf4j.LoggerFactory;
 	 
-	public class TestLogger {
-	    private static final Logger log = LoggerFactory.getLogger(TestLogger.class);
+	public class LoggerTest {
+	    private static final Logger log = LoggerFactory.getLogger(LoggerTest.class);
 	 
 	    public static  void test() {
 	        log.info("info message");

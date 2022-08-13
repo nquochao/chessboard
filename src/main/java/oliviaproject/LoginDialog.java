@@ -17,7 +17,7 @@ import javax.swing.SwingUtilities;
 import oliviaproject.event.ChessEvent;
 import oliviaproject.event.Default;
 import oliviaproject.event.DefaultConnection;
-import oliviaproject.hibernate.UserName;
+import oliviaproject.hibernate.entities.UserName;
 import oliviaproject.hibernate.manager.SaveUserNameManager;
 import oliviaproject.hibernate.sql.UserNameSQL;
 import oliviaproject.ui.dashboard.OliviaFrame;

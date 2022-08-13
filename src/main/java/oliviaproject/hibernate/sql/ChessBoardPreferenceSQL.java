@@ -2,7 +2,7 @@ package oliviaproject.hibernate.sql;
 
 import org.springframework.stereotype.Repository;
 
-import oliviaproject.hibernate.ChessBoardPreference;
+import oliviaproject.hibernate.entities.ChessBoardPreference;
 @Repository
 
 public class ChessBoardPreferenceSQL extends DefaultSQL<ChessBoardPreference> {

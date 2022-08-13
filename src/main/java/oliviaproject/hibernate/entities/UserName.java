@@ -1,24 +1,32 @@
-package oliviaproject.hibernate;
+package oliviaproject.hibernate.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
 
 @Entity
-public class UserName  extends DefaultEntity implements IEntity{
+public class UserName implements IEntity  {
+	@Id
+    @GeneratedValue
+
+	Integer id;
+
 
 	@Column(unique = true)
 	private String userName;
 	private String email;
 	private String phone;
 
+	
+	private Boolean isConnected;
 	private String password;
-    @OneToOne (fetch = FetchType.LAZY, cascade = jakarta.persistence.CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+    @OneToOne
+    @JoinColumn(name="CHESSBOARD_PREFERENCE_ID")
+    //UserName.CHESSBOARD_PREFERENCE_ID column will contain the foreign key
     private ChessBoardPreference preference;
 
 	public ChessBoardPreference getPreference() {
@@ -28,9 +36,13 @@ public class UserName  extends DefaultEntity implements IEntity{
 	public void setPreference(ChessBoardPreference preference) {
 		this.preference = preference;
 	}
+	public Integer getId() {
+		return id;
+	}
 
-	private Boolean isConnected;
-
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public String getUserName() {
 		return userName;
 	}
