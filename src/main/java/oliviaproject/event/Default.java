@@ -15,8 +15,9 @@ public static void setUserName(UserName userName) {
 	Default.userName = userName;
 }
 
-public static Color findColor(Color color, Color defaultColor) {
-	return(color==null)?color:defaultColor;
+public static Color findColor(String color, Color defaultColor) {
+	return(color!=null)?Color.decode(color):defaultColor;
+	
 }
 
 }

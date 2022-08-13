@@ -82,8 +82,8 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 		ps.clear();
 		 if(Default.getUserName()!=null && Default.getUserName().getPreference()!=null)
 		 {
-		 colorBlackTile = Default.findColor( Color.decode(Default.getUserName().getPreference().getColorTileBlack()), COLOR_TILE_BLACK); 
-		colorWhiteTile = Default.findColor( Color.decode(Default.getUserName().getPreference().getColorTileWhite()), COLOR_TILE_WHITE); 
+		 colorBlackTile = Default.findColor( Default.getUserName().getPreference().getColorTileBlack(), COLOR_TILE_BLACK); 
+		colorWhiteTile = Default.findColor( Default.getUserName().getPreference().getColorTileWhite(), COLOR_TILE_WHITE); 
 		 }
 		for (int j = 0; j < numberrows; j++) {
 			try {
