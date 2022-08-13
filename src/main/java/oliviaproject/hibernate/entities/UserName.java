@@ -9,7 +9,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class UserName implements IEntity  {
+@org.hibernate.annotations.NamedQuery(name = "checkCredentials", 
+query = "from UserName where userName = :userName and password =:password")
+
+public class UserName extends AbstractEntity implements IEntity{
 	@Id
     @GeneratedValue
 

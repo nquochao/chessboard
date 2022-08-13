@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class ChessBoardPreference implements IEntity {
+public class ChessBoardPreference extends AbstractEntity implements IEntity{
 	@Id
     @GeneratedValue
 	Integer id;

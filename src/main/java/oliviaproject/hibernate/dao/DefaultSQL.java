@@ -1,4 +1,4 @@
-package oliviaproject.hibernate.sql;
+package oliviaproject.hibernate.dao;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,9 +13,9 @@ import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import oliviaproject.hibernate.entities.DefaultEntity;
+import oliviaproject.hibernate.entities.AbstractEntity;
 
-public abstract class DefaultSQL<T extends DefaultEntity> implements iSQL {
+public abstract class DefaultSQL<T extends AbstractEntity> implements iSQL {
 	protected static final Logger log = LoggerFactory.getLogger(ChessBoardPreferenceSQL.class);
 	protected Map<Integer, T> beans;
 

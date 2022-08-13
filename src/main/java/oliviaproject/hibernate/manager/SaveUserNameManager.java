@@ -6,8 +6,8 @@ import oliviaproject.event.ChessEchelleEvent;
 import oliviaproject.event.Default;
 import oliviaproject.event.Event;
 import oliviaproject.eventbus.EventListener;
+import oliviaproject.hibernate.dao.UserNameSQL;
 import oliviaproject.hibernate.entities.ChessBoardPreference;
-import oliviaproject.hibernate.sql.UserNameSQL;
 
 public class SaveUserNameManager implements EventListener {
 	UserNameSQL userSQL;

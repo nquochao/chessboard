@@ -1,4 +1,4 @@
-package oliviaproject.hibernate.sql;
+package oliviaproject.hibernate.dao;
 
 import org.springframework.stereotype.Repository;
 

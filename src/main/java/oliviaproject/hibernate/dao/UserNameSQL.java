@@ -1,4 +1,4 @@
-package oliviaproject.hibernate.sql;
+package oliviaproject.hibernate.dao;
 
 import org.springframework.stereotype.Component;
 
@@ -12,6 +12,13 @@ public class UserNameSQL extends DefaultSQL<UserName> implements iSQL{
 		// TODO Auto-generated method stub
 		return getEntity(new UserName());
 	}
-
+	@Override
+	public UserName get(UserName u) {
+	UserName result=null;
+		if(super.get(u)==null) {
+		
+	}
+	return result;
+	}
 
 }
