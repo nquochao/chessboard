@@ -50,7 +50,7 @@ public class Position {
 	/**
 	 * @author DesktopPC to verify whether the piece has already moved. this is
 	 *         needed for King Rock with Tower It will be updated in the
-	 *         {@link PieceColorPanel.mouseReleased}
+	 *         {@link SelectedTileColorPanel.mouseReleased}
 	 *
 	 */
 

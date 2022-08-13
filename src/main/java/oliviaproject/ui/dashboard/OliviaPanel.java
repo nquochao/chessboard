@@ -19,6 +19,7 @@ import javax.swing.SwingUtilities;
 
 import oliviaproject.event.ChessColorDashBoardEvent;
 import oliviaproject.event.ChessColorPieceEvent;
+import oliviaproject.event.ChessColorSelectEvent;
 import oliviaproject.event.ChessEchelleEvent;
 import oliviaproject.event.ChessEvent;
 import oliviaproject.event.Default;
@@ -62,6 +63,8 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 	private SelectorRectangle clickedSelectedOrigin, clickedSelectedTarget;
 	Color colorBlackTile = COLOR_TILE_BLACK;
 	Color colorWhiteTile = COLOR_TILE_WHITE;
+	Color colorSelected = COLOR_TILE_SELECTED;
+	Color colorTileClickSelected= COLOR_TILE_CLICK_SELECTED;
 
 	Boolean addCoordinates = true;
 	private PlayMode playMode;
@@ -96,12 +99,17 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 			Color colorWhitePiece= Default.findColor(Default.getUserName().getPreference().getColorPieceWhite(),
 					IPiece.COLOR_WHITE);
 			ChessColorPieceEvent event = new ChessColorPieceEvent();
+
 			event.setColorWhite(colorWhitePiece);
 			event.setColorBlack(colorBlackPiece);
 			DefaultConnection.getEventBus().publish(event);
 			ChessEchelleEvent eventZoom = new ChessEchelleEvent();
 			eventZoom.setZoom(Default.findZoom(Default.getUserName().getPreference().getChesswidth(),TILE_X));
 			DefaultConnection.getEventBus().publish(eventZoom);
+			colorSelected= Default.findColor(Default.getUserName().getPreference().getUserName().getPreference().getColorSelected(),
+					COLOR_TILE_SELECTED);
+			colorTileClickSelected= Default.findColor(Default.getUserName().getPreference().getColorPossible(),
+					COLOR_TILE_CLICK_SELECTED);
 
 		}
 		MouseAdapter ma = new MouseAdapter() {
@@ -308,7 +316,7 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 			}
 
 			if (selected != null) {
-				Color color = COLOR_TILE_SELECTED;
+				Color color = colorSelected;
 				g2d.setColor(color);
 
 				Position p = ps.get(selected.getCoordinate());
@@ -328,7 +336,7 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 							g2d.fill(cell);
 					}
 				}
-				color = COLOR_TILE_CLICK_SELECTED;
+				color = colorTileClickSelected;
 				g2d.setColor(color);
 				g2d.fill(selected.getRectangle());
 			}
@@ -454,8 +462,22 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 			manageChessEchelleEvent((ChessEchelleEvent) event);
 		} else if (event instanceof ChessEvent) {
 			manageChessEvent((ChessEvent) event);
+		}else if (event instanceof ChessColorSelectEvent) {
+			manageChessEvent((ChessColorSelectEvent) event);
 		}
 
+	}
+
+	private void manageChessEvent(ChessColorSelectEvent event) {
+		Color possibleColor = event.getColorPossible();
+		Color selectColor = event.getColorSelect();	
+		if(selectColor!=null) {
+			colorSelected=selectColor;
+		}
+		if(possibleColor!=null) {
+			colorTileClickSelected=possibleColor;
+		}
+		
 	}
 
 	private void manageChessColorPieceEvent(ChessColorPieceEvent event) {
@@ -465,11 +487,13 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 		for (String ref : ps.keySet()) {
 			Position mp = ps.get(ref);
 			Piece piece = mp.getPiece();
-			if (piece.getSide() == Side.White)
+			boolean modifyWhite=piece.getSide() == Side.White &&colorWhite!=null;
+			boolean modifyBlack=piece.getSide() == Side.Black&&colorBlack!=null;
+			if (modifyWhite)
 				piece.setColor(colorWhite);
-			if (piece.getSide() == Side.Black)
+			if (modifyBlack)
 				piece.setColor(colorBlack);
-			piece.reloadImg();
+			if(modifyWhite |modifyBlack)piece.reloadImg();
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 
@@ -482,8 +506,10 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 	}
 
 	private void manageChessColorDashBoardEvent(ChessColorDashBoardEvent event) {
-		this.colorWhiteTile = event.getColorWhiteTile();
-		this.colorBlackTile = event.getColorBlackTile();
+		boolean modifyWhite=event.getColorWhiteTile()!=null;
+		boolean modifyBlack=event.getColorBlackTile()!=null;
+		if (modifyWhite)this.colorWhiteTile = event.getColorWhiteTile();
+		if (modifyBlack)this.colorBlackTile = event.getColorBlackTile();
 		OliviaPanel p = this;
 
 		SwingUtilities.invokeLater(new Runnable() {

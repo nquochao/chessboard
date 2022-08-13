@@ -10,10 +10,19 @@ public interface DashBoardMenu_Fr {
 		String SCALE="Echelle";
 		String Dashboard="Dashboard";
 		String Pieces = "Pieces";
+		String SelectedTileColor = "Selection";
+
 		public interface Color{
 			String Color="Color";
 			String Color1="Color White";
 			String Color2="Color Black";
+			String OK = "OK";
+			
+		}
+		public interface Selected{
+			String Color="Color";
+			String Color1="Selected";
+			String Color2="Possible";
 			String OK = "OK";
 			
 		}

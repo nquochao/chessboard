@@ -24,6 +24,24 @@ public class ChessBoardPreference extends AbstractEntity implements IEntity{
 	String colorPieceWhite;
 	String colorPieceBlack;
 	int chesswidth;
+	String colorSelected;
+	String colorPossible;
+
+public String getColorSelected() {
+		return colorSelected;
+	}
+
+	public void setColorSelected(String colorSelected) {
+		this.colorSelected = colorSelected;
+	}
+
+	public String getColorPossible() {
+		return colorPossible;
+	}
+
+	public void setColorPossible(String colorPossible) {
+		this.colorPossible = colorPossible;
+	}
 
 public Integer getId() {
 	return id;

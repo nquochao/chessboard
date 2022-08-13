@@ -1,4 +1,4 @@
-package oliviaproject.ui.piece.color;
+package oliviaproject.ui.selection.tile.color;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -10,29 +10,28 @@ import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import oliviaproject.event.ChessColorDashBoardEvent;
-import oliviaproject.event.ChessColorPieceEvent;
+import oliviaproject.event.ChessColorSelectEvent;
 import oliviaproject.event.DefaultConnection;
 import oliviaproject.ui.dashboard.DashBoardMenu_Fr;
 
-public class DashBoardColorPanel extends JPanel {
+public class SelectedTileColorPanel extends JPanel {
 	JFrame myparent;
-	Color initialcolor1,initialcolor2;
+	Color colorPossible,colorSelect;
 	public void init(JFrame parent) {
 		myparent=parent;
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-		JButton bcolor1 = new JButton(DashBoardMenu_Fr.MENUBAR.Preferences.Color.Color1);
-		JButton bcolor2 = new JButton(DashBoardMenu_Fr.MENUBAR.Preferences.Color.Color2);
+		JButton bcolor1 = new JButton(DashBoardMenu_Fr.MENUBAR.Preferences.Selected.Color1);
+		JButton bcolor2 = new JButton(DashBoardMenu_Fr.MENUBAR.Preferences.Selected.Color2);
 		JButton OKButton= new JButton(DashBoardMenu_Fr.MENUBAR.Preferences.Color.OK);
-		DashBoardColorPanel me = this;;
+		SelectedTileColorPanel me = this;;
 		this.add(bcolor1);
 		bcolor1.addActionListener(new AbstractAction() {
 
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				 initialcolor1 = JColorChooser.showDialog(me,
-						"Select a color", initialcolor1);			
+				 colorPossible = JColorChooser.showDialog(me,
+						"Select a color", colorPossible);				
 				 publishEvent();
 			}});
 		this.add(bcolor2);
@@ -41,8 +40,8 @@ public class DashBoardColorPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				initialcolor2= JColorChooser.showDialog(me,
-						"Select a color", initialcolor2);	
+				colorSelect= JColorChooser.showDialog(me,
+						"Select a color", colorSelect);				
 				publishEvent();
 			}});
 		OKButton.addActionListener(new AbstractAction() {
@@ -57,9 +56,10 @@ public class DashBoardColorPanel extends JPanel {
 
 	}
 	void publishEvent() {
-		ChessColorDashBoardEvent event=new ChessColorDashBoardEvent();
-		event.setColorWhiteTile(initialcolor1);
-		event.setColorBlackTile(initialcolor2);
+		ChessColorSelectEvent event=new ChessColorSelectEvent();
+		event.setColorPossible(colorPossible);
+		
+		event.setColorSelect(colorSelect);
 		DefaultConnection.getEventBus().publish(event);
 	}
 }

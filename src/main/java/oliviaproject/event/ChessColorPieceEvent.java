@@ -5,6 +5,7 @@ import java.awt.Color;
 public class ChessColorPieceEvent implements Event {
 
 
+
 	public Color getColorWhite() {
 		return colorWhite;
 	}
@@ -22,7 +23,5 @@ public class ChessColorPieceEvent implements Event {
 	}
 
 	Color colorWhite,colorBlack;
-
-
 
 }

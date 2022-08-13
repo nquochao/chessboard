@@ -33,6 +33,7 @@ public class PieceColorPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				 initialcolorWhite = JColorChooser.showDialog(me,
 						"Select a color", initialcolorWhite);				
+				 publishEvent();
 			}});
 		this.add(bcolor2);
 		bcolor2.addActionListener(new AbstractAction() {
@@ -42,19 +43,23 @@ public class PieceColorPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				initialcolorBlack= JColorChooser.showDialog(me,
 						"Select a color", initialcolorBlack);				
+				publishEvent();
 			}});
 		OKButton.addActionListener(new AbstractAction() {
 
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ChessColorPieceEvent event=new ChessColorPieceEvent();
-				event.setColorWhite(initialcolorWhite);
-				event.setColorBlack(initialcolorBlack);
-				DefaultConnection.getEventBus().publish(event);
+				publishEvent();
 				parent.setVisible(false);
 			}});
 		this.add(OKButton);
 
+	}
+	void publishEvent() {
+		ChessColorPieceEvent event=new ChessColorPieceEvent();
+		event.setColorWhite(initialcolorWhite);
+		event.setColorBlack(initialcolorBlack);
+		DefaultConnection.getEventBus().publish(event);
 	}
 }

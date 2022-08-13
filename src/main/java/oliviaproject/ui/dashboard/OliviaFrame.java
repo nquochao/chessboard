@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import javax.annotation.PostConstruct;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import oliviaproject.event.ChessColorDashBoardEvent;
 import oliviaproject.event.ChessColorPieceEvent;
+import oliviaproject.event.ChessColorSelectEvent;
 import oliviaproject.event.ChessEchelleEvent;
 import oliviaproject.event.ChessEvent;
 import oliviaproject.event.DefaultConnection;
@@ -30,6 +30,7 @@ import oliviaproject.ui.dashboard.scale.ActionScaleListener;
 import oliviaproject.ui.dashboard.util.PlayMode;
 import oliviaproject.ui.demo.TextDemo;
 import oliviaproject.ui.piece.color.ActionDashBoardColorListener;
+import oliviaproject.ui.selection.tile.color.ActionSelectedTileColorListener;
 @Component
 public class OliviaFrame extends JFrame{
 	@Autowired
@@ -49,11 +50,13 @@ public class OliviaFrame extends JFrame{
 	DefaultConnection.getEventBus().subscribe(pane, new ChessEchelleEvent());
 	DefaultConnection.getEventBus().subscribe(pane, new ChessColorDashBoardEvent());
 	DefaultConnection.getEventBus().subscribe(pane, new ChessColorPieceEvent());
+	DefaultConnection.getEventBus().subscribe(pane, new ChessColorSelectEvent());
 
 	DefaultConnection.getEventBus().subscribe(saveManager, new ChessEvent());
 	DefaultConnection.getEventBus().subscribe(saveManager, new ChessEchelleEvent());
 	DefaultConnection.getEventBus().subscribe(saveManager, new ChessColorDashBoardEvent());
 	DefaultConnection.getEventBus().subscribe(saveManager, new ChessColorPieceEvent());
+	DefaultConnection.getEventBus().subscribe(saveManager, new ChessColorSelectEvent());
 
 	cardPanel.add(scroll, "0");
 	pane.setAddCoordinates(true);
@@ -106,14 +109,19 @@ public class OliviaFrame extends JFrame{
 		menuDashBoard.add(menuDashBoardColor);
 		Menu menuPiece= new Menu(DashBoardMenu_Fr.MENUBAR.Preferences.Pieces);
 		MenuItem menuPieceColor= new MenuItem(DashBoardMenu_Fr.MENUBAR.Preferences.Pieces);
+	
 		menuPiece.add(menuPieceColor);
+
+		MenuItem menuColorSelectionItem= new MenuItem(DashBoardMenu_Fr.MENUBAR.Preferences.SelectedTileColor);
 
 		menu.add(menuScale);
 		menu.add(menuDashBoardColor);
 		menu.add(menuPieceColor);
+		menu.add(menuColorSelectionItem);
 		menuScale.addActionListener(new ActionScaleListener());
 		menuDashBoardColor.addActionListener(new ActionDashBoardColorListener());
 		menuPieceColor.addActionListener(new ActionPieceColorListener());
+		menuColorSelectionItem.addActionListener(new ActionSelectedTileColorListener());
 		menuBar.add(menu);
 		return menuBar;
 	}
