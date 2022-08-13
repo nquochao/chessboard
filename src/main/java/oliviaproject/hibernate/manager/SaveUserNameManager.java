@@ -1,5 +1,8 @@
 package oliviaproject.hibernate.manager;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import oliviaproject.event.ChessColorDashBoardEvent;
 import oliviaproject.event.ChessColorPieceEvent;
 import oliviaproject.event.ChessEchelleEvent;
@@ -8,12 +11,12 @@ import oliviaproject.event.Event;
 import oliviaproject.eventbus.EventListener;
 import oliviaproject.hibernate.dao.UserNameSQL;
 import oliviaproject.hibernate.entities.ChessBoardPreference;
-
+@Component
 public class SaveUserNameManager implements EventListener {
+	@Autowired
 	UserNameSQL userSQL;
+	
 public void init() {
-	userSQL= new UserNameSQL();
-	userSQL.init();
 }
 	@Override
 	public void onMyEvent(Event event) {
@@ -35,7 +38,7 @@ public void init() {
 			Default.getUserName().getPreference().setChesswidth(myevent.getZoom());
 		}
 		userSQL.save(Default.getUserName());
-		
+	
 	}
 
 }

@@ -55,7 +55,7 @@ public abstract class DefaultSQL<T extends AbstractEntity> implements iSQL {
 			session = DefaultSQL.getFactory().openSession();
 			tx = session.beginTransaction();
 
-			session.persist(bean);
+			session.merge(bean);
 			tx.commit();
 			beans.put(bean.getId(), bean);
 		} catch (HibernateException e) {

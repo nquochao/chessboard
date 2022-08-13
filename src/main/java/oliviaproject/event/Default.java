@@ -20,4 +20,8 @@ public static Color findColor(String color, Color defaultColor) {
 	
 }
 
+public static Integer findZoom(Integer chesswidth, Integer defaultValue) {
+	return(chesswidth!=null)?chesswidth:defaultValue;
+}
+
 }

@@ -14,14 +14,18 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import oliviaproject.event.ChessEvent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import oliviaproject.event.Default;
-import oliviaproject.event.DefaultConnection;
 import oliviaproject.hibernate.dao.UserNameSQL;
 import oliviaproject.hibernate.entities.UserName;
-import oliviaproject.hibernate.manager.SaveUserNameManager;
 import oliviaproject.ui.dashboard.OliviaFrame;
+@Component
 public class LoginDialog extends JFrame implements ActionListener {
+	
+	@Autowired
+	OliviaFrame frame;
    JPanel panel;
    JLabel user_label, password_label, message;
    JTextField userName_text;
@@ -75,7 +79,7 @@ public class LoginDialog extends JFrame implements ActionListener {
     	   SwingUtilities.invokeLater(new Runnable() {
 	            public void run() {
 	                try {
-						new OliviaFrame().init();
+						frame.init();
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

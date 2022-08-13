@@ -1,5 +1,6 @@
 package oliviaproject.hibernate.entities;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -27,7 +28,7 @@ public class UserName extends AbstractEntity implements IEntity{
 	
 	private Boolean isConnected;
 	private String password;
-    @OneToOne
+    @OneToOne(cascade=CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name="CHESSBOARD_PREFERENCE_ID")
     //UserName.CHESSBOARD_PREFERENCE_ID column will contain the foreign key
     private ChessBoardPreference preference;

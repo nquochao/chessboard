@@ -10,7 +10,7 @@ import oliviaproject.event.Event;
 public class EventBus {
 	Map<String, Set<EventListener>> eventMap= new HashMap<>();
 	public void subscribe(EventListener id, Event event) {
-		Set<EventListener> subscribers=eventMap.get(event);
+		Set<EventListener> subscribers=eventMap.get(event.getClass().getName());
 		if(subscribers==null) {
 			subscribers=new HashSet<>();
 			eventMap.put(event.getClass().getName(), subscribers);

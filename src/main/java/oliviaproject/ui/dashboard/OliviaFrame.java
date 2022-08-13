@@ -9,11 +9,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import javax.annotation.PostConstruct;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import oliviaproject.event.ChessColorDashBoardEvent;
 import oliviaproject.event.ChessColorPieceEvent;
@@ -26,9 +30,10 @@ import oliviaproject.ui.dashboard.scale.ActionScaleListener;
 import oliviaproject.ui.dashboard.util.PlayMode;
 import oliviaproject.ui.demo.TextDemo;
 import oliviaproject.ui.piece.color.ActionDashBoardColorListener;
-
+@Component
 public class OliviaFrame extends JFrame{
-	SaveUserNameManager manager=new SaveUserNameManager();
+	@Autowired
+	SaveUserNameManager saveManager;
 	private int currentCard=0;
 	public void init() throws InterruptedException, IOException {
 
@@ -40,16 +45,15 @@ public class OliviaFrame extends JFrame{
 	JScrollPane scroll = new JScrollPane(pane);
 	scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 	this.add(scroll);
-	//manager.init();
 	DefaultConnection.getEventBus().subscribe(pane, new ChessEvent());
 	DefaultConnection.getEventBus().subscribe(pane, new ChessEchelleEvent());
 	DefaultConnection.getEventBus().subscribe(pane, new ChessColorDashBoardEvent());
 	DefaultConnection.getEventBus().subscribe(pane, new ChessColorPieceEvent());
 
-//	DefaultConnection.getEventBus().subscribe(manager, new ChessEvent());
-//	DefaultConnection.getEventBus().subscribe(manager, new ChessEchelleEvent());
-//	DefaultConnection.getEventBus().subscribe(manager, new ChessColorDashBoardEvent());
-//	DefaultConnection.getEventBus().subscribe(manager, new ChessColorPieceEvent());
+	DefaultConnection.getEventBus().subscribe(saveManager, new ChessEvent());
+	DefaultConnection.getEventBus().subscribe(saveManager, new ChessEchelleEvent());
+	DefaultConnection.getEventBus().subscribe(saveManager, new ChessColorDashBoardEvent());
+	DefaultConnection.getEventBus().subscribe(saveManager, new ChessColorPieceEvent());
 
 	cardPanel.add(scroll, "0");
 	pane.setAddCoordinates(true);
