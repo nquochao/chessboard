@@ -1,8 +1,5 @@
 package oliviaproject.ui.promotion;
 
-import static oliviaproject.ui.dashboard.util.DashBoardUtil.TILE_X;
-import static oliviaproject.ui.dashboard.util.DashBoardUtil.TILE_Y;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Container;
@@ -44,6 +41,10 @@ import oliviaproject.ui.dashboard.util.SelectorImageRectangle;
 import oliviaproject.ui.position.Position;
 
 public class PromotionPanel extends JPanel implements IChessboardPanel, EventListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Rectangle selected;
 	int xlength = TILE_X;
 	int ylength = TILE_Y;

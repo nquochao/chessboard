@@ -28,7 +28,6 @@ import oliviaproject.hibernate.manager.SaveUserNameManager;
 import oliviaproject.ui.dashboard.color.ActionPieceColorListener;
 import oliviaproject.ui.dashboard.scale.ActionScaleListener;
 import oliviaproject.ui.dashboard.util.PlayMode;
-import oliviaproject.ui.demo.TextDemo;
 import oliviaproject.ui.piece.color.ActionDashBoardColorListener;
 import oliviaproject.ui.selection.tile.color.ActionSelectedTileColorListener;
 @Component
@@ -65,8 +64,6 @@ public class OliviaFrame extends JFrame{
 	
 	
 	setMenuBar(createMenuBar());
-    JPanel testPanel=new TextDemo();
-	cardPanel.add(testPanel, "1");
 	// used to get content pane
 	getContentPane().add(cardPanel, BorderLayout.NORTH);
 	// Creating Object of "JPanel" class

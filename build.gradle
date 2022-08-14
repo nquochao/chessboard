@@ -1,12 +1,15 @@
-apply plugin: 'java'
-apply plugin: 'eclipse'
+plugins {
+    id 'distribution'
+    id 'java'
+    id 'eclipse'
+}
+repositories {
+    mavenCentral()
+}
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 version = '1.2.1'
 String projectname='OliviaProjectChessBoard'
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     implementation( files("C:\\thirdparty\\ojdbc8.jar", "C:\\thirdparty\\hibernate-commons-annotations-6.0.2.Final.jar"))
@@ -63,7 +66,23 @@ jar {
     attributes "Main-Class": "oliviaproject."+projectname
   }  
 
-
+}  
+String libDir='dependencies'
+task copyDependencies(type: Copy) {
+   from configurations.compileClasspath
+   into libDir
+}
+// see customization on plugin distribution https://docs.gradle.org/current/userguide/distribution_plugin.html
+// example 3
+distributions {
+ 
+    custom {
+  			distributionBaseName = projectname
+            contents {
+    		        from libDir
+    		        from jar.outputs.files
+ 		    }
+    }
 }
 
   
