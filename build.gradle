@@ -13,7 +13,8 @@ version = '1.2.1'
 String projectname='OnChessBoardLauncher'
 
 dependencies {
-    implementation( files("C:\\thirdparty\\ojdbc8.jar", "C:\\thirdparty\\hibernate-commons-annotations-6.0.2.Final.jar"))
+    
+    implementation( files("C:\\thirdparty\\ojdbc8.jar"))
 			  // https://mvnrepository.com/artifact/javax.mail/mail
 	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.1'
 implementation group:'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
