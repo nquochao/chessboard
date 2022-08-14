@@ -12,9 +12,6 @@ result: build\distribution\OnChessBoardLauncher-1.2.1.zip
 
 Installation : 
 gradle.bat clean jar copyDependencies customDistZip installCustomDist
-result: build\install\OnChessBoardLauncher
+cd build\install\OnChessBoardLauncher
+java -classpath .\* oliviaproject.io.OnChessBoardLauncher
 
-
-Launch (yet to be tested with the spring context)
-
-C:\Users\HaoNguyen\workspace\HAO\2021\onChessboard\build\install\OnChessBoardLauncher>java -classpath .\* oliviaproject.io.OnChessBoardLauncher

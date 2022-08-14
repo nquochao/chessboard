@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import oliviaproject.hibernate.entities.AbstractEntity;
 
 public abstract class DefaultSQL<T extends AbstractEntity> implements iSQL {
-	protected static final Logger log = LoggerFactory.getLogger(ChessBoardPreferenceSQL.class);
 	protected Map<Integer, T> beans;
 
 	public Map<Integer, T> getBeans() {
@@ -40,7 +39,6 @@ public abstract class DefaultSQL<T extends AbstractEntity> implements iSQL {
 				factory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
 			;
 		} catch (Throwable ex) {
-			log.error("Failed to create sessionFactory object." + ex);
 			throw new ExceptionInInitializerError(ex);
 		}
 		beans=new HashMap<>();
@@ -108,7 +106,6 @@ public abstract class DefaultSQL<T extends AbstractEntity> implements iSQL {
 				if (tx != null)
 					tx.rollback();
 				e.printStackTrace();
-				log.error(e.getCause().getMessage());
 			} finally {
 				session.close();
 			}
