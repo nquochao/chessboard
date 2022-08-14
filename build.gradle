@@ -6,8 +6,9 @@ plugins {
 repositories {
     mavenCentral()
 }
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
+//sourceCompatibility is used to select the right jdk when running gradle eclipse
+ sourceCompatibility = JavaVersion.VERSION_18
+    targetCompatibility = JavaVersion.VERSION_18
 version = '1.2.1'
 String projectname='OnChessBoardLauncher'
 
