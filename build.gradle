@@ -9,7 +9,7 @@ repositories {
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 version = '1.2.1'
-String projectname='OliviaProjectChessBoard'
+String projectname='OnChessBoardLauncher'
 
 dependencies {
     implementation( files("C:\\thirdparty\\ojdbc8.jar", "C:\\thirdparty\\hibernate-commons-annotations-6.0.2.Final.jar"))
@@ -63,7 +63,7 @@ implementation( 'org.hibernate:hibernate-core:6.1.2.Final')
 
 jar {
   manifest { 
-    attributes "Main-Class": "oliviaproject."+projectname
+    attributes "Main-Class": "oliviaproject.io."+projectname
   }  
 
 }  
@@ -81,6 +81,7 @@ distributions {
             contents {
     		        from libDir
     		        from jar.outputs.files
+    		        from 'src/main/resources'
  		    }
     }
 }
