@@ -1,4 +1,4 @@
-Main Class oliviaproject.OliviaProjectChessBoard
+Main Class oliviaproject.io.OnChessBoardLauncher
 see docs/ChessBoard.pdf 
 or: https://github.com/nquochao/chessboard/blob/main/docs/ChessBoard.pdf
 
@@ -7,5 +7,9 @@ see also https://github.com/nquochao/onHibernate/blob/main/docs/OnHibernate.pdf
 This hibernate feature to be implemented on this project
 
 
-Distribution with dependencies: gradle.bat copyDependencies customDistZip
-OliviaProjectChessBoard-1.2.1.zip
+Zip with dependencies: gradle.bat clean jar copyDependencies customDistZip
+result: build\distribution\OliviaProjectChessBoard-1.2.1.zip
+
+Installation : 
+gradle.bat clean jar copyDependencies customDistZip installCustomDist
+result: build\install\OliviaProjectChessBoard
