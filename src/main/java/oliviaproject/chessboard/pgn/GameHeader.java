@@ -58,4 +58,38 @@ public String getResult() {
 public void setResult(String result) {
 	this.result = result;
 }
+/**
+ * Sets attribute with givenName in given GameHeader to given attibute value.
+ *
+ * @param header    header of game in which we want to set attrName to attrValue
+ * @param attrName  name of attribute to set
+ * @param attrValue value of attribute which will be set
+ */
+public void setAttribute( String attrName, String attrValue) {
+	attrName = attrName.toLowerCase();
+	switch (attrName) {
+	case "event":
+		setEvent(attrValue);
+		break;
+	case "site":
+		setSite(attrValue);
+		break;
+	case "date":
+		setDate(attrValue);
+		break;
+	case "round":
+		setRound(attrValue);
+		break;
+	case "white":
+		setWhite(attrValue);
+		break;
+	case "black":
+		setBlack(attrValue);
+		break;
+	case "result":
+		setResult(attrValue);
+		break;
+	}
+}
+
 }

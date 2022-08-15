@@ -1,6 +1,7 @@
 package oliviaproject.chessboard.pgn;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.InputStream;
@@ -37,19 +38,19 @@ public class PGNReaderTest {
 
 		FileUtils.printInputStream(is);
 	}
-	@Test
-	public void testParseFenComments() {
-		String nameFile="/oliviaproject/pgn/test-fencomments.pgn";
-		InputStream is = FileUtils.getFileFromResourceAsStream(nameFile);
-
-		assertNotNull(is);
-		PGNReader reader = new PGNReader();
-		List <GameStateMutable> games=reader.parseFile(is);
-		assertNotNull(games);
-		assertEquals(games.size(), 1);
-		;
-
-	}	
+//	@Test
+//	public void testParseFenComments() {
+//		String nameFile="/oliviaproject/pgn/test-fencomments.pgn";
+//		InputStream is = FileUtils.getFileFromResourceAsStream(nameFile);
+//
+//		assertNotNull(is);
+//		PGNReader reader = new PGNReader();
+//		List <GameStateMutable> games=reader.parseFile(is);
+//		assertNotNull(games);
+//		assertEquals(games.size(), 1);
+//		;
+//
+//	}	
 	@Test
 	public void testParseFischer() {
 		String nameFile="/oliviaproject/pgn/test-fischer.pgn";
@@ -60,6 +61,9 @@ public class PGNReaderTest {
 		List <GameStateMutable> games=reader.parseFile(is);
 		assertNotNull(games);
 		assertEquals(games.size(), 34);
+		for(GameStateMutable game: games) {
+			assertNotEquals(0, game.getMoves().size());
+		}
 		;
 
 	}	
