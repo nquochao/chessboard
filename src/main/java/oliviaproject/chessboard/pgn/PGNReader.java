@@ -56,7 +56,6 @@ public class PGNReader {
 						//arseMoveText(moveText.toString());
 						moveText = new StringBuilder();
 						listOfGames.add(currentGame);
-						// a vytvor novou hru, jez zacnes parsovat
 						if (line.startsWith("[")) {
 							parsingTagpairs = true;
 							currentGame = new GameStateMutable();

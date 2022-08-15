@@ -50,4 +50,17 @@ public class PGNReaderTest {
 		;
 
 	}	
+	@Test
+	public void testParseFischer() {
+		String nameFile="/oliviaproject/pgn/test-fischer.pgn";
+		InputStream is = FileUtils.getFileFromResourceAsStream(nameFile);
+
+		assertNotNull(is);
+		PGNReader reader = new PGNReader();
+		List <GameStateMutable> games=reader.parseFile(is);
+		assertNotNull(games);
+		assertEquals(games.size(), 34);
+		;
+
+	}	
 }
