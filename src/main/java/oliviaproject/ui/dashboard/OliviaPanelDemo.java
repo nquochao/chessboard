@@ -11,12 +11,11 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import oliviaproject.eventbus.EventListener;
 import oliviaproject.ui.dashboard.util.IChessboardPanel;
 import oliviaproject.ui.selection.tile.color.demo.DemoColorUtil;
+import oliviaproject.ui.selection.tile.color.demo.KeyboardDemo;
 import oliviaproject.ui.selection.tile.color.demo.MoveObject;
 
 public class OliviaPanelDemo extends OliviaPanel implements IChessboardPanel, EventListener {

@@ -12,12 +12,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import oliviaproject.chessboard.pgn.convertor.Convertor;
+import oliviaproject.chessboard.pgn.convertor.PGNXToCoordinate;
+import oliviaproject.chessboard.pgn.convertor.PGNYToCoordinate;
 import oliviaproject.ui.dashboard.util.Piece;
-import oliviaproject.ui.position.Position;
-
 
 public class PGNReader {
-	 GameStateMutable currentGame = new GameStateMutable();
+	GameStateMutable currentGame = new GameStateMutable();
 	Boolean parsingTagpairs = true;
 	static final Logger log = LoggerFactory.getLogger(PGNReader.class);
 
@@ -38,23 +39,23 @@ public class PGNReader {
 			String line = null;
 
 			GameHeader currentGameHeader = currentGame.getGameHeader();
-			
+
 			StringBuilder moveText = new StringBuilder();
 
 			while ((line = inputReader.readLine()) != null) {
-				if (parsingTagpairs) { 
+				if (parsingTagpairs) {
 					if (line.startsWith("[")) {
 						String[] pole = line.split("\"");
 						currentGameHeader.setAttribute(pole[0].substring(1, pole[0].length() - 1), // attribute name
-								pole[1]); 
+								pole[1]);
 					} else {
-						parsingTagpairs = false; 
+						parsingTagpairs = false;
 					}
-				} else { 
+				} else {
 					if (!line.startsWith("[")) {
 						moveText.append(line);
-						moveText.append(" "); 
-					} else { 
+						moveText.append(" ");
+					} else {
 						parseMoveText(moveText.toString());
 						moveText = new StringBuilder();
 						listOfGames.add(currentGame);
@@ -63,14 +64,14 @@ public class PGNReader {
 							currentGame = new GameStateMutable();
 							currentGameHeader = currentGame.getGameHeader();
 							String[] pole = line.split("\"");
-							currentGameHeader.setAttribute( pole[0].substring(1, pole[0].length() - 1), // attribute
+							currentGameHeader.setAttribute(pole[0].substring(1, pole[0].length() - 1), // attribute
 																										// name
-									pole[1]); 
+									pole[1]);
 						}
 					}
 				}
 			}
-            parseMoveText(moveText.toString());
+			parseMoveText(moveText.toString());
 
 			listOfGames.add(currentGame);
 		} catch (FileNotFoundException ex) {
@@ -88,7 +89,6 @@ public class PGNReader {
 		}
 		return listOfGames;
 	}
-
 
 	/**
 	 * Removes redundant characters and symbols from given movetext. For example for
@@ -130,41 +130,67 @@ public class PGNReader {
 			return false;
 		}
 	}
-	
-	   /**
-     * Parse given movetext and set state-changing information of currentGame.
-     *
-     * @param moveText String containing concatenated lines of movetext
-     */
-    private void parseMoveText(String moveText) {
-           String[] sanMoves = removeBalastChars(moveText);
-     
-        boolean isWhiteToMove = true;
-        for (String sanMove : sanMoves) {
-            if (isSanMove(sanMove)) { 
-            	log.info(sanMove);
-            	   Move nextMove = san2Move(sanMove);
-					currentGame.getMoves().add(nextMove);
-                   //changeSideToMove();
-            }
-        }
-       }
-    /**
-     * This method converts SAN (Short Algebraic Notation) String representation
-     * of the move into MoveInfo Object.
-     */
-    private static Move san2Move(String sanMove) {
-        if (sanMove == null) {
-            throw new NullPointerException("sanMove can't be null!");
-        }
-        if (sanMove.length() < 2) {
-            throw new IllegalArgumentException("no legal sanMove can have"
-                    + " less than 2 characters!:"+sanMove);
-        }
 
-       Boolean whiteToMove=true;
-	Piece piece=Piece.determinePiece(sanMove, whiteToMove) ;
-        Position  to =null, from = null;
-        return new Move(piece, from, to);
-    }
+	/**
+	 * Parse given movetext and set state-changing information of currentGame.
+	 *
+	 * @param moveText String containing concatenated lines of movetext
+	 */
+	private void parseMoveText(String moveText) {
+		String[] sanMoves = removeBalastChars(moveText);
+
+		boolean isWhiteToMove = true;
+		for (String sanMove : sanMoves) {
+			if (isSanMove(sanMove)) {
+				log.info(sanMove);
+				Move nextMove = san2Move(sanMove);
+				currentGame.getMoves().add(nextMove);
+				// changeSideToMove();
+			}
+		}
+	}
+
+	/**
+	 * This method converts SAN (Short Algebraic Notation) String representation of
+	 * the move into MoveInfo Object.
+	 */
+	private static Move san2Move(String sanMove) {
+		if (sanMove == null) {
+			throw new NullPointerException("sanMove can't be null!");
+		}
+		if (sanMove.length() < 2) {
+			throw new IllegalArgumentException("no legal sanMove can have" + " less than 2 characters!:" + sanMove);
+		}
+
+		Boolean whiteToMove = true;
+		Piece piece = Piece.determinePiece(sanMove, whiteToMove);
+		String to = findPosition(sanMove);
+		String from = findPosition(sanMove);
+
+		return new Move(piece, from, to);
+	}
+
+	private static String findPosition(String sanMove) {
+		int i = 0;
+		char letter = sanMove.charAt(i);
+		if (Character.isUpperCase(letter)) {
+			i++;
+		}
+		letter = sanMove.charAt(i);
+		Convertor converter = new PGNXToCoordinate();
+		converter.init();
+		Integer column = converter.convert(letter + "");
+		if (column == null) {
+			log.error(sanMove);
+		}
+		i++;
+		converter = new PGNYToCoordinate();
+		converter.init();
+		letter = sanMove.charAt(i);
+		Integer line = converter.convert(letter + "");
+		if (line == null) {
+			log.error(sanMove);
+		}
+		return line + "-" + column;
+	}
 }

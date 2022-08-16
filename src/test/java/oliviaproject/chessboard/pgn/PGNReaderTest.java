@@ -65,6 +65,14 @@ public class PGNReaderTest {
 			assertNotEquals(0, game.getMoves().size());
 		}
 		;
+		for(GameStateMutable game: games) {
+			for (int i=0;i<game.getMoves().size();i++) {
+				Move m=game.getMoves().get(i);
+			log.info(m.getPiece().name());
+			log.info(m.getFrom());
+			log.info(m.getTo());
+			}
+		}
 
 	}	
 }

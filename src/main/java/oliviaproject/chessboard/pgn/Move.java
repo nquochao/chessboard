@@ -1,31 +1,32 @@
 package oliviaproject.chessboard.pgn;
 
 import oliviaproject.ui.dashboard.util.Piece;
-import oliviaproject.ui.position.Position;
 
 public class Move {
 	Piece piece;
-	Position from, to;
+	String from, to;
 	public Piece getPiece() {
 		return piece;
 	}
 	public void setPiece(Piece piece) {
 		this.piece = piece;
 	}
-	public Position getFrom() {
+	public String getFrom() {
 		return from;
 	}
-	public void setFrom(Position from) {
+	public void setFrom(String from) {
 		this.from = from;
 	}
-	public Position getTo() {
+	public String getTo() {
 		return to;
 	}
-	public void setTo(Position to) {
+	public void setTo(String to) {
 		this.to = to;
 	}
-	public Move(Piece piece, Position from, Position to) {
-		// TODO Auto-generated constructor stub
+	public Move(Piece piece, String from, String to) {
+		this.piece=piece;
+				this.from=from;
+		this.to=to;
 	}
 	
 	 private static void determineTo(String sanMove, Piece piece) {

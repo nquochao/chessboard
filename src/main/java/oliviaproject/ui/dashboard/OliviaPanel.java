@@ -85,6 +85,8 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 			Color.orange,Color.white, Color.red,
 			DemoColorUtil.createPastelRandomColor(),DemoColorUtil.createPastelRandomColor(),DemoColorUtil.createPastelRandomColor(),DemoColorUtil.createPastelRandomColor(),DemoColorUtil.createPastelRandomColor()
 	};
+	private Color colorPieceWhite=Color.WHITE;
+	private Color colorPieceBlack=Color.BLACK;
 	public void initialize() throws IOException {
 
 		ps.clear();
@@ -269,11 +271,11 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 
 			switch (playMode.getSideToPlay()) {
 			case Black: {
-				g2d.setColor(Color.BLACK);
+				g2d.setColor(colorPieceBlack);
 				break;
 			}
 			case White: {
-				g2d.setColor(Color.WHITE);
+				g2d.setColor(colorPieceWhite);
 				break;
 			}
 			}
@@ -509,8 +511,10 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 			boolean modifyWhite=piece.getSide() == Side.White &&colorWhite!=null;
 			boolean modifyBlack=piece.getSide() == Side.Black&&colorBlack!=null;
 			if (modifyWhite)
+				this.colorPieceWhite=colorWhite;
 				piece.setColor(colorWhite);
 			if (modifyBlack)
+				this.colorPieceBlack=colorBlack;
 				piece.setColor(colorBlack);
 			if(modifyWhite |modifyBlack)piece.reloadImg();
 		}
