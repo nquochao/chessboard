@@ -162,7 +162,8 @@ public class PGNReader {
                     + " less than 2 characters!:"+sanMove);
         }
 
-       Piece piece=null ;
+       Boolean whiteToMove=true;
+	Piece piece=Piece.determinePiece(sanMove, whiteToMove) ;
         Position  to =null, from = null;
         return new Move(piece, from, to);
     }

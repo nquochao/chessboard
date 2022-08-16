@@ -78,7 +78,7 @@ public class TestPositionInitializerPions implements IPositionsInitializer {
 		case PionB: {
 			switch (p.getX()) {
 			case 0: {
-				p.setPiece(Piece.TourBLongRock);
+				p.setPiece(Piece.TourB);
 				break;
 			}
 			case 1: {
@@ -98,7 +98,7 @@ public class TestPositionInitializerPions implements IPositionsInitializer {
 				break;
 			}
 			case 7: {
-				p.setPiece(Piece.TourBLittleRock);
+				p.setPiece(Piece.TourB);
 				break;
 			}
 			case 6: {
@@ -118,7 +118,7 @@ public class TestPositionInitializerPions implements IPositionsInitializer {
 		case PionW: {
 			switch (p.getX()) {
 			case 0: {
-				p.setPiece(Piece.TourWLongRock);
+				p.setPiece(Piece.TourW);
 				break;
 			}
 			case 1: {
@@ -138,7 +138,7 @@ public class TestPositionInitializerPions implements IPositionsInitializer {
 				break;
 			}
 			case 7: {
-				p.setPiece(Piece.TourWLittleRock);
+				p.setPiece(Piece.TourW);
 				break;
 			}
 			case 6: {

@@ -10,9 +10,13 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -43,6 +47,7 @@ import oliviaproject.ui.possiblemove.PositionTour;
 import oliviaproject.ui.possiblemove.PositionUtil;
 import oliviaproject.ui.possiblemove.Revert;
 import oliviaproject.ui.promotion.ChessPiecePromotion;
+import oliviaproject.ui.selection.tile.color.demo.DemoColorUtil;
 
 public class OliviaPanel extends JPanel implements IChessboardPanel, EventListener {
 	/**
@@ -53,7 +58,6 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 	int ylength = TILE_Y;
 	int xinit = 0;
 	int yinit = 0;
-
 	Positions ps = new Positions();
 	Position lastPosition = new Position();
 	int numbercols = NUMBER_COLUMNS;
@@ -77,7 +81,12 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 		this.addCoordinates = addCoordinates;
 	}
 
+	Color[]colors=new Color[] {
+			Color.orange,Color.white, Color.red,
+			DemoColorUtil.createPastelRandomColor(),DemoColorUtil.createPastelRandomColor(),DemoColorUtil.createPastelRandomColor(),DemoColorUtil.createPastelRandomColor(),DemoColorUtil.createPastelRandomColor()
+	};
 	public void initialize() throws IOException {
+
 		ps.clear();
 
 		for (int j = 0; j < numberrows; j++) {
@@ -294,18 +303,7 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g); // ALWAYS call this method first!
 		Graphics2D g2d = (Graphics2D) g;
-//	    int w = getSize().width;
-//	    int h = getSize().height;
-//	    int zoomFactor=2;
-//	    int prevZoomFactor=1;
-//	    boolean zoomer=true;
-//	    if (zoomer) {
-//	        AffineTransform at = new AffineTransform();
-//	        at.scale(zoomFactor, 1);
-//	        prevZoomFactor = zoomFactor;
-//	        g2d.transform(at);
-//	        zoomer = false;
-//	    }
+
 
 		for (int j = 0; j < numberrows; j++) {
 			try {
@@ -344,9 +342,30 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 		}
 		if (addCoordinates)
 			fillrowTitle(numberrows, g2d);
-
+		customPaint(g2d);
 		g2d.dispose();
 	}
+	protected void customPaint(Graphics2D g2d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void initializeSequencerRepaint() {
+		ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+		
+		executorService.scheduleAtFixedRate(
+				new Runnable() {
+
+					@Override
+					public void run() {
+						repaint();
+					}},                                    
+                0 ,                                       
+                Duration.ofMillis( 10).toMillis(),    
+                TimeUnit.MILLISECONDS ) ;
+
+	}
+	
 
 	private void fillrow(int rownumber, Side side) throws IOException {
 
@@ -506,10 +525,10 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 	}
 
 	private void manageChessColorDashBoardEvent(ChessColorDashBoardEvent event) {
-		boolean modifyWhite=event.getColorWhiteTile()!=null;
-		boolean modifyBlack=event.getColorBlackTile()!=null;
-		if (modifyWhite)this.colorWhiteTile = event.getColorWhiteTile();
-		if (modifyBlack)this.colorBlackTile = event.getColorBlackTile();
+		boolean modifyWhite=event.getColorWhite()!=null;
+		boolean modifyBlack=event.getColorBlack()!=null;
+		if (modifyWhite)this.colorWhiteTile = event.getColorWhite();
+		if (modifyBlack)this.colorBlackTile = event.getColorBlack();
 		OliviaPanel p = this;
 
 		SwingUtilities.invokeLater(new Runnable() {
@@ -568,9 +587,9 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 		}
 		case tour: {
 			if (promotion.getPiece().getSide() == Side.White)
-				promotion.setPiece(Piece.TourWLittleRock);
+				promotion.setPiece(Piece.TourW);
 			if (promotion.getPiece().getSide() == Side.Black)
-				promotion.setPiece(Piece.TourBLittleRock);
+				promotion.setPiece(Piece.TourB);
 			promotion.getPiece().setPossibleMove(new PositionTour());
 			promotion.getPiece().getPossibleMove().init(promotion);
 			promotion.getPiece().getPossibleMove().setPieceHasMoved(true);
@@ -601,4 +620,5 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 		}
 		}
 	}
+	
 }

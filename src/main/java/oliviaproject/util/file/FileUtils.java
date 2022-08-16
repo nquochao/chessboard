@@ -9,8 +9,6 @@ import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import oliviaproject.chessboard.pgn.PGNReaderTest;
-import oliviaproject.hibernate.entities.UserNameTest;
 
 public class FileUtils {
 	static final Logger log = LoggerFactory.getLogger(FileUtils.class);

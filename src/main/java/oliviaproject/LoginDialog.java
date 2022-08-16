@@ -57,7 +57,8 @@ public class LoginDialog extends JFrame implements ActionListener {
       setTitle("Please Login Here !");
       setSize(450,350);
       setVisible(true);
-   }
+      userName_text.setText("olivia");
+      password_text.setText("olivia");   }
    public static void main(String[] args) {
       new LoginDialog();
    }

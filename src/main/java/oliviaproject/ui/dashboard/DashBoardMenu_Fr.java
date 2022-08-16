@@ -11,6 +11,7 @@ public interface DashBoardMenu_Fr {
 		String Dashboard="Dashboard";
 		String Pieces = "Pieces";
 		String SelectedTileColor = "Selection";
+		String DemoColor = "Demo";
 
 		public interface Color{
 			String Color="Color";

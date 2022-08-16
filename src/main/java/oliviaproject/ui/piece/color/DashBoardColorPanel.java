@@ -58,8 +58,8 @@ public class DashBoardColorPanel extends JPanel {
 	}
 	void publishEvent() {
 		ChessColorDashBoardEvent event=new ChessColorDashBoardEvent();
-		event.setColorWhiteTile(initialcolor1);
-		event.setColorBlackTile(initialcolor2);
+		event.setColorWhite(initialcolor1);
+		event.setColorBlack(initialcolor2);
 		DefaultConnection.getEventBus().publish(event);
 	}
 }

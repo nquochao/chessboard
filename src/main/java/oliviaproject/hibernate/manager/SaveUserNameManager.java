@@ -24,8 +24,8 @@ public void init() {
 		if (event instanceof ChessColorDashBoardEvent) {
 			ChessColorDashBoardEvent myevent = (ChessColorDashBoardEvent) event;
 			if(Default.getUserName().getPreference()==null)Default.getUserName().setPreference(new ChessBoardPreference());
-			if(myevent.getColorWhiteTile()!=null)Default.getUserName().getPreference().setColorTileWhite(String.valueOf(myevent.getColorWhiteTile().getRGB()));
-			if(myevent.getColorBlackTile()!=null)Default.getUserName().getPreference().setColorTileBlack(String.valueOf(myevent.getColorBlackTile().getRGB()));
+			if(myevent.getColorWhite()!=null)Default.getUserName().getPreference().setColorTileWhite(String.valueOf(myevent.getColorWhite().getRGB()));
+			if(myevent.getColorBlack()!=null)Default.getUserName().getPreference().setColorTileBlack(String.valueOf(myevent.getColorBlack().getRGB()));
 			
 		}else if (event instanceof ChessColorPieceEvent) { 
 			ChessColorPieceEvent myevent = (ChessColorPieceEvent) event;
