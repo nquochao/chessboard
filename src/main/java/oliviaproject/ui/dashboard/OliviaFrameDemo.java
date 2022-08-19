@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import oliviaproject.ui.selection.tile.color.demo.DemoMenuItem;
 
-@Component
+
 public class OliviaFrameDemo extends OliviaFrame {
 public OliviaFrameDemo() {
 	this.pane=new OliviaPanelDemo();

@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import oliviaproject.event.ChessColorDashBoardEvent;
 import oliviaproject.event.ChessColorPieceEvent;
@@ -30,7 +31,7 @@ import oliviaproject.ui.dashboard.util.PlayMode;
 import oliviaproject.ui.piece.color.ActionDashBoardColorListener;
 import oliviaproject.ui.selection.tile.color.ActionSelectedTileColorListener;
 import oliviaproject.ui.selection.tile.color.demo.DemoMenuItems;
-
+@Component
 public class OliviaFrame extends JFrame {
 	@Autowired
 	SaveUserNameManager saveManager;
