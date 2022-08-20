@@ -45,7 +45,7 @@ protected void paintComponent(Graphics g) {
 }
 private void moveObject(Graphics2D g2d, MoveObject moveObject) {
     FontRenderContext frc = g2d.getFontRenderContext();
-
+    if(moveObject==null)return;
     Font font = moveObject.getFont();
        GlyphVector gv = font.createGlyphVector( frc, moveObject.getLabel());
         Rectangle2D box = gv.getVisualBounds();

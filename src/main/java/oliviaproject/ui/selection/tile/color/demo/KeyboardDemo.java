@@ -142,7 +142,7 @@ Action anAction= new AbstractAction() {
                 TimeUnit.MILLISECONDS ) ;
 
 	}
-	private int getRandomNumber(int min, int max) {
+	protected int getRandomNumber(int min, int max) {
 		return (int) ((Math.random() * (max - min)) + min);
 	}
 

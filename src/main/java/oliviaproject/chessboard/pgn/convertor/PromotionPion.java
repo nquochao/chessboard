@@ -1,13 +1,9 @@
-package oliviaproject.chessboard.pgn.convertor.promotion;
+package oliviaproject.chessboard.pgn.convertor;
 
-import oliviaproject.chessboard.pgn.convertor.capture.CaptureType;
 import oliviaproject.ui.dashboard.util.Piece;
 
-public class PromotionPion {
-	String value, nextValue;
+public class PromotionPion extends AbstractConvertor  implements IConvertor{
 	Piece piece;
-	Boolean whiteToMove;
-	PromotionPionType promotionPionType;
 
 	public void load(String value, Boolean whiteToMove) {
 		this.value = value;
@@ -15,22 +11,22 @@ public class PromotionPion {
 		this.whiteToMove=whiteToMove;
 	}
 
-	PromotionPionType find(String value) {
+	Trigger find(String value) {
 		char c = value.charAt(0);
 
 		switch (c) {
 		case '=': {
-			return PromotionPionType.yes;
+			return Trigger.yes;
 		}
 		default:{
-			return PromotionPionType.no;
+			return Trigger.no;
 		}
 		}
 	}
 
 	String valueAfter() {
 		String result;
-		switch (promotionPionType) {
+		switch (trigger) {
 		case yes: {
 			result = value.substring(2);
 			this.piece=Piece.determinePiece(value, whiteToMove);

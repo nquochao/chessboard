@@ -1,4 +1,4 @@
-package oliviaproject.chessboard.pgn.convertor.prerequis;
+package oliviaproject.chessboard.pgn.convertor;
 
 /**
  * @author HaoNguyen Si la première lettre est de a à h et la seconde un x ou
@@ -14,35 +14,37 @@ package oliviaproject.chessboard.pgn.convertor.prerequis;
  *         première et la seconde lettre du mot. Sinon, il n'y a pas de
  *         prérequis (donc pas d'ambiguité)
  */
-public class RecherchePrerequis {
+public class RecherchePrerequis extends AbstractConvertor implements IConvertor {
 
 	Prerequis prerequis;
-	String value, nextValue;
+
+
+	@Override
+	public void load(String value, Boolean whiteToMove) {
+		load(value);
+
+	}
 
 	public void load(String value) {
-		prerequis = find(value);
+		trigger = find(value);
 		this.value = value;
 		nextValue = valueAfter();
 	}
 
-	Prerequis find(String value) {
+	Trigger find(String value) {
 		String[] values = value.split("x");
 		String v = values[0];
 		switch (v.length()) {
 		case 0: {
-			return Prerequis.none;
+			return Trigger.no;
 		}
-		case 1: {
-			if (Character.isDigit(v.charAt(0)))
-				return Prerequis.line;
-			else
-				return Prerequis.column;
+		case 1:
+
+		case 2:
+			return Trigger.yes;
+
 		}
-		case 2: {
-			return Prerequis.both;
-		}
-		}
-		return Prerequis.none;
+		return Trigger.no;
 	}
 
 	String valueAfter() {
@@ -58,4 +60,12 @@ public class RecherchePrerequis {
 		}
 		return result;
 	}
+
+	Prerequis findPrerequis(String v) {
+		if (Character.isDigit(v.charAt(0)))
+			return Prerequis.line;
+		else
+			return Prerequis.column;
+	}
+
 }

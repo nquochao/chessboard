@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import oliviaproject.chessboard.pgn.convertor.Convertor;
+import oliviaproject.chessboard.pgn.convertor.Convertors;
+import oliviaproject.chessboard.pgn.convertor.IConvertor;
 import oliviaproject.chessboard.pgn.convertor.PGNXToCoordinate;
 import oliviaproject.chessboard.pgn.convertor.PGNYToCoordinate;
 import oliviaproject.ui.dashboard.util.Piece;
@@ -168,6 +170,18 @@ public class PGNReader {
 		String from = findPosition(sanMove);
 
 		return new Move(piece, from, to);
+	}
+
+	static Convertors convertors = new Convertors();
+
+	/**
+	 * @param sanMove
+	 * @return
+	 */
+	private static IConvertor findPosition2(String sanMove) {
+		IConvertor convertor = convertors.workPrerequis(sanMove, true);
+		convertor.load(sanMove, true);
+		return convertor;
 	}
 
 	private static String findPosition(String sanMove) {

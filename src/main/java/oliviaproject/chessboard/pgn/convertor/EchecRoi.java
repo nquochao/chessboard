@@ -1,38 +1,34 @@
 
-package oliviaproject.chessboard.pgn.convertor.echecroi;
+package oliviaproject.chessboard.pgn.convertor;
 
-import oliviaproject.chessboard.pgn.convertor.capture.CaptureType;
 import oliviaproject.ui.dashboard.util.Piece;
 
-public class EchecRoi {
+public class EchecRoi extends AbstractConvertor implements IConvertor{
 
-	EchecRoiType captureType;
-	String value, nextValue;
 	Piece piece;
-	Boolean whiteToMove;
 
 	public void load(String value, Boolean whiteToMove) {
-		captureType = find(value);
+		trigger = find(value);
 		this.value = value;
 		nextValue = valueAfter();
 	}
 
-	EchecRoiType find(String value) {
+	Trigger find(String value) {
 		char c = value.charAt(0);
 
 		switch (c) {
 		case '+': {
-			return EchecRoiType.yes;
+			return Trigger.yes;
 		}
 		default:{
-			return EchecRoiType.no;
+			return Trigger.no;
 		}
 		}
 	}
 
 	String valueAfter() {
 		String result;
-		switch (captureType) {
+		switch (trigger) {
 		case yes: {
 			result = value.substring(1);
 
@@ -44,4 +40,6 @@ public class EchecRoi {
 		}
 		return result;
 	}
+
+
 }

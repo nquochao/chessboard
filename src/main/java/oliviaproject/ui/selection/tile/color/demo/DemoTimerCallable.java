@@ -10,7 +10,7 @@ public class DemoTimerCallable implements Runnable {
 	  demoMenuItems = AppContext.getApplicationContext().getBean(DemoMenuItems.class);
 		upgradeDuration();
 	}
-	Long interval= 100L;
+	Long interval;
 	public void upgradeDuration() {
 		for(String  key: demoMenuItems.keySet()) {
 			DemoMenuItem item =demoMenuItems.get(key);

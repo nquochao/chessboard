@@ -31,12 +31,13 @@ import oliviaproject.ui.dashboard.util.PlayMode;
 import oliviaproject.ui.piece.color.ActionDashBoardColorListener;
 import oliviaproject.ui.selection.tile.color.ActionSelectedTileColorListener;
 import oliviaproject.ui.selection.tile.color.demo.DemoMenuItems;
-@Component
+
 public class OliviaFrame extends JFrame {
 	@Autowired
 	SaveUserNameManager saveManager;
 	private int currentCard = 0;
 	OliviaPanel pane = new OliviaPanel();
+	Long duration=300L;
 
 	public void init() throws InterruptedException, IOException {
 
@@ -108,7 +109,7 @@ public class OliviaFrame extends JFrame {
 
 		MenuItem menuColorSelectionItem = new MenuItem(DashBoardMenu_Fr.MENUBAR.Preferences.SelectedTileColor);
 
-		createDemoMenu(menu, 300L);
+		createDemoMenu(menu, duration);
 
 		menu.add(menuScale);
 		menu.add(menuDashBoardColor);
