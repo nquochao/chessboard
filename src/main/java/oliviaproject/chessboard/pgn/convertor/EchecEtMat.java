@@ -3,7 +3,7 @@ package oliviaproject.chessboard.pgn.convertor;
 
 import oliviaproject.ui.dashboard.util.Piece;
 
-public class EchecRoi extends AbstractConvertor implements IConvertor{
+public class EchecEtMat extends AbstractConvertor implements IConvertor{
 
 	Piece piece;
 
@@ -17,7 +17,7 @@ public class EchecRoi extends AbstractConvertor implements IConvertor{
 		char c = value.charAt(0);
 
 		switch (c) {
-		case 'O': {
+		case '+': {
 			return Trigger.yes;
 		}
 		default:{

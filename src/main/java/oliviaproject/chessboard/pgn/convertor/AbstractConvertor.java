@@ -4,6 +4,8 @@ public class AbstractConvertor implements IConvertor {
 
 	protected Trigger trigger;
 	protected String value, nextValue;
+	
+	
 	public String getValue() {
 		return value;
 	}

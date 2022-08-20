@@ -1,6 +1,7 @@
 package oliviaproject.chessboard.pgn.convertor;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 public class Convertors extends HashSet<IConvertor> {
 	public Convertors() {
@@ -10,13 +11,16 @@ public class Convertors extends HashSet<IConvertor> {
 		this.add(new RecherchePrerequis());
 		this.add(new PromotionPion());
 		this.add(new Figures());
+		this.add(new Standard());
+		this.add(new EchecEtMat());
 
 	}
 
 	public IConvertor workPrerequis(String value, Boolean whiteToMove) {
+		Iterator<IConvertor> ic=iterator();
 		IConvertor result = null;
-		for (int i = 0; i < this.size(); i++) {
-			IConvertor c = this.iterator().next();
+		while(ic.hasNext()) {
+			IConvertor c = ic.next();
 			c.load(value, whiteToMove);
 			if (c.getTrigger()==Trigger.yes) {
 				result=c;

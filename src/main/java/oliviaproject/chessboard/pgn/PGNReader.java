@@ -178,13 +178,23 @@ public class PGNReader {
 	 * @param sanMove
 	 * @return
 	 */
-	private static IConvertor findPosition2(String sanMove) {
+	private static IConvertor findConvertor(String sanMove) {
+		if(sanMove.equals("Nf3")){
+			log.error("There is a missing convertor: "+sanMove);
+
+		}
 		IConvertor convertor = convertors.workPrerequis(sanMove, true);
+		if(convertor==null) {
+			log.error("There is a missing convertor: "+sanMove);
+		}
+		else {
 		convertor.load(sanMove, true);
+		}
 		return convertor;
 	}
 
 	private static String findPosition(String sanMove) {
+		IConvertor convertor=findConvertor(sanMove);
 		int i = 0;
 		char letter = sanMove.charAt(i);
 		if (Character.isUpperCase(letter)) {

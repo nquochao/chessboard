@@ -1,13 +1,11 @@
-
 package oliviaproject.chessboard.pgn.convertor;
 
-import oliviaproject.ui.dashboard.util.Piece;
+public class Standard extends AbstractConvertor implements IConvertor {
 
-public class EchecRoi extends AbstractConvertor implements IConvertor{
+	
 
-	Piece piece;
-
-	public void load(String value, Boolean whiteToMove) {
+	@Override
+	public void load(String value, Boolean whiteToMoveConvertors) {
 		trigger = find(value);
 		this.value = value;
 		nextValue = valueAfter();
@@ -15,15 +13,9 @@ public class EchecRoi extends AbstractConvertor implements IConvertor{
 
 	Trigger find(String value) {
 		char c = value.charAt(0);
-
-		switch (c) {
-		case 'O': {
-			return Trigger.yes;
-		}
-		default:{
-			return Trigger.no;
-		}
-		}
+		Boolean b=Character.isLowerCase(c) &&value.length() == 2 
+				&&!value.contains("x")&&!value.contains("o");
+		return b? Trigger.yes:Trigger.no;
 	}
 
 	String valueAfter() {
@@ -31,7 +23,6 @@ public class EchecRoi extends AbstractConvertor implements IConvertor{
 		switch (trigger) {
 		case yes: {
 			result = value.substring(1);
-
 			break;
 		}
 		default: {
@@ -40,6 +31,5 @@ public class EchecRoi extends AbstractConvertor implements IConvertor{
 		}
 		return result;
 	}
-
 
 }
