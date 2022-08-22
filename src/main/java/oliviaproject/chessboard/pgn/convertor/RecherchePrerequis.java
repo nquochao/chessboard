@@ -17,7 +17,10 @@ package oliviaproject.chessboard.pgn.convertor;
 public class RecherchePrerequis extends AbstractConvertor implements IConvertor {
 
 	Prerequis prerequis;
+public RecherchePrerequis() {
+	convertorType=ConvertorType.RecherchePrerequis;
 
+}
 
 	@Override
 	public void load(String value, Boolean whiteToMove) {
@@ -39,8 +42,9 @@ public class RecherchePrerequis extends AbstractConvertor implements IConvertor 
 			return Trigger.no;
 		}
 		case 1:
-
+			
 		case 2:
+			
 			return Trigger.yes;
 
 		}

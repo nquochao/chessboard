@@ -3,12 +3,15 @@ package oliviaproject.chessboard.pgn.convertor;
 public class Capture extends AbstractConvertor implements IConvertor {
 
 	
-
+public Capture() {
+	convertorType=ConvertorType.Capture;
+}
 	@Override
 	public void load(String value, Boolean whiteToMoveConvertors) {
 		trigger = find(value);
 		this.value = value;
 		nextValue = valueAfter();
+	
 	}
 
 	Trigger find(String value) {
@@ -37,5 +40,7 @@ public class Capture extends AbstractConvertor implements IConvertor {
 		}
 		return result;
 	}
+
+
 
 }

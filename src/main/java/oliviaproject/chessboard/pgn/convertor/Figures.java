@@ -2,7 +2,9 @@ package oliviaproject.chessboard.pgn.convertor;
 
 public class Figures extends AbstractConvertor implements IConvertor {
 
-	
+	public Figures() {
+		convertorType=ConvertorType.Figures;
+	}
 
 	@Override
 	public void load(String value, Boolean whiteToMoveConvertors) {

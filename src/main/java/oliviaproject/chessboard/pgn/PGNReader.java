@@ -195,26 +195,37 @@ public class PGNReader {
 
 	private static String findPosition(String sanMove) {
 		IConvertor convertor=findConvertor(sanMove);
-		int i = 0;
-		char letter = sanMove.charAt(i);
-		if (Character.isUpperCase(letter)) {
-			i++;
+		Boolean whiteToMove=true;
+		String result = new String();
+		switch(convertor.getConvertorType()) {
+		case Figures:{
+			findPosition(convertor.getNextValue());
+			break;
 		}
-		letter = sanMove.charAt(i);
-		Convertor converter = new PGNXToCoordinate();
-		converter.init();
-		Integer column = converter.convert(letter + "");
-		if (column == null) {
-			log.error(sanMove);
+		case Standard:{
+			result=convertor.getNextValue();
+			break;
 		}
-		i++;
-		converter = new PGNYToCoordinate();
-		converter.init();
-		letter = sanMove.charAt(i);
-		Integer line = converter.convert(letter + "");
-		if (line == null) {
-			log.error(sanMove);
+		case RecherchePrerequis:{
+			result=convertor.getNextValue();
+
+			break;
 		}
-		return line + "-" + column;
+		case EchecRoi:{
+			result=convertor.getNextValue();
+
+			break;
+		}
+		case EchecEtMat:{
+			result=convertor.getNextValue();
+			break;
+		}
+		case Capture:{
+			result=convertor.getNextValue();
+			break;
+		}
+		}
+		
+		return result;
 	}
 }

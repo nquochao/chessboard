@@ -1,11 +1,23 @@
 package oliviaproject.chessboard.pgn.convertor;
 
-public class AbstractConvertor implements IConvertor {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public abstract class AbstractConvertor implements IConvertor {
+	protected static final Logger log = LoggerFactory.getLogger(AbstractConvertor.class);
 
 	protected Trigger trigger;
 	protected String value, nextValue;
+	ConvertorType convertorType;
 	
-	
+	public ConvertorType getConvertorType() {
+		return convertorType;
+	}
+
+	public void setConvertorType(ConvertorType convertorType) {
+		this.convertorType = convertorType;
+	}
+
 	public String getValue() {
 		return value;
 	}
@@ -41,9 +53,20 @@ public class AbstractConvertor implements IConvertor {
 	}
 
 	@Override
-	public void load(String value, Boolean whiteToMove) {
-		// TODO Auto-generated method stub
-		
-	};
+	public abstract void load(String value, Boolean whiteToMove);
+	String valueAfter() {
+		String result;
+		switch (trigger) {
+		case yes: {
+			result = convertorType.name();
+
+			break;
+		}
+		default: {
+			result = value;
+		}
+		}
+		return result;
+	}
 
 }

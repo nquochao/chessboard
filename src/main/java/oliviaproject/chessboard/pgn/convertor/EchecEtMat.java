@@ -4,7 +4,11 @@ package oliviaproject.chessboard.pgn.convertor;
 import oliviaproject.ui.dashboard.util.Piece;
 
 public class EchecEtMat extends AbstractConvertor implements IConvertor{
+	
+	public EchecEtMat() {
+	convertorType=ConvertorType.EchecEtMat;
 
+}
 	Piece piece;
 
 	public void load(String value, Boolean whiteToMove) {
@@ -26,20 +30,6 @@ public class EchecEtMat extends AbstractConvertor implements IConvertor{
 		}
 	}
 
-	String valueAfter() {
-		String result;
-		switch (trigger) {
-		case yes: {
-			result = value.substring(1);
-
-			break;
-		}
-		default: {
-			result = value;
-		}
-		}
-		return result;
-	}
 
 
 }

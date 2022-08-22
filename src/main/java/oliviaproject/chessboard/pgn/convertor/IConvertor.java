@@ -8,5 +8,6 @@ public interface IConvertor {
 	public String getNextValue() ;
 	public String getValue() ;
 	public Boolean getWhiteToMove();
+	public ConvertorType getConvertorType();
 
 }

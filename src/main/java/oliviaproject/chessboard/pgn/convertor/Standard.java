@@ -1,8 +1,15 @@
 package oliviaproject.chessboard.pgn.convertor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import oliviaproject.chessboard.pgn.PGNReader;
+
 public class Standard extends AbstractConvertor implements IConvertor {
 
-	
+	public Standard() {
+		convertorType=ConvertorType.Standard;
+	}
 
 	@Override
 	public void load(String value, Boolean whiteToMoveConvertors) {
@@ -22,7 +29,7 @@ public class Standard extends AbstractConvertor implements IConvertor {
 		String result;
 		switch (trigger) {
 		case yes: {
-			result = value.substring(1);
+			result=findCoordinate(value);
 			break;
 		}
 		default: {
@@ -31,5 +38,25 @@ public class Standard extends AbstractConvertor implements IConvertor {
 		}
 		return result;
 	}
+	public String findCoordinate(String sanMove){
+	int i = 0;
+
+	char letter = sanMove.charAt(i);
+	Convertor converter = new PGNXToCoordinate();
+	converter.init();
+	Integer column = converter.convert(letter + "");
+	if (column == null) {
+		log.error(sanMove);
+	}
+	i++;
+	converter = new PGNYToCoordinate();
+	converter.init();
+	letter = sanMove.charAt(i);
+	Integer line = converter.convert(letter + "");
+	if (line == null) {
+		log.error(sanMove);
+	}
+	return line + "-" + column;
+}
 
 }
