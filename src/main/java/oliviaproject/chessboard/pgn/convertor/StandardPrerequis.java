@@ -39,6 +39,8 @@ public class StandardPrerequis extends AbstractConvertor implements IConvertor {
 		switch (trigger) {
 		case yes: {
 			result = value.substring(0,1);;
+			result = fromCoordinate.findCoordinate(result);
+
 			break;
 		}
 		default: {

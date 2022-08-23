@@ -75,7 +75,7 @@ public PriseRecherchePrerequis() {
 		switch (trigger) {
 		case yes: {
 			
-			result = value.substring(0,value.indexOf(PRISE));;
+			result = fromCoordinate.findCoordinate(value.substring(0,value.indexOf(PRISE)));;
 			break;
 		}
 		default: {

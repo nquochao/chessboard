@@ -87,7 +87,7 @@ public class PGNReaderTest {
 		String r=PGNReader.findPosition(sanMove, new Convertors());
 		assertEquals("3-4", r);
 		r= c.getBeforeValue();
-		assertEquals("d", r);
+		assertEquals("3", r);
 		
 	}
 	@Test
@@ -98,7 +98,7 @@ public class PGNReaderTest {
 		String r=PGNReader.findPosition(sanMove, new Convertors());
 		assertEquals("3-4", r);
 		r= c.getBeforeValue();
-		assertEquals("d3", r);
+		assertEquals("2-3", r);
 		
 	}
 	@Test
@@ -109,7 +109,7 @@ public class PGNReaderTest {
 		String r=PGNReader.findPosition(sanMove, new Convertors());
 		assertEquals("3-4", r);
 		r= c.getBeforeValue();
-		assertEquals("3", r);
+		assertEquals("2", r);
 		
 	}
 	@Test
@@ -120,7 +120,7 @@ public class PGNReaderTest {
 		String r=PGNReader.findPosition(sanMove, new Convertors());
 		assertEquals("3-4", r);
 		r= c.getBeforeValue();
-		assertEquals("d", r);
+		assertEquals("3", r);
 		
 	}	
 	@Test
@@ -146,7 +146,7 @@ public class PGNReaderTest {
 		String r=PGNReader.findPosition(sanMove, new Convertors());
 		assertEquals("0-0", r);
 		r= c.getBeforeValue();
-		assertEquals("0-0", r);
+		assertEquals("", r);
 	}	
 
 }
