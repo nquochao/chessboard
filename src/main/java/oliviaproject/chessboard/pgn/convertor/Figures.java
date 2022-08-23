@@ -11,7 +11,7 @@ public class Figures extends AbstractConvertor implements IConvertor {
 	protected Trigger find(String value) {
 		char c = value.charAt(0);
 		Character.isUpperCase(c);
-		return Character.isUpperCase(c)? Trigger.yes:Trigger.no;
+		return isFigure(c)? Trigger.yes:Trigger.no;
 	}
 
 	String valueAfter() {

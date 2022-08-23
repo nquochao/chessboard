@@ -5,7 +5,22 @@ import org.slf4j.LoggerFactory;
 
 public abstract class AbstractConvertor implements IConvertor {
 	protected static final Logger log = LoggerFactory.getLogger(AbstractConvertor.class);
-
+	char[] possibleChars=new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+	char[] possibleDigits=new char[]{'1', '2', '3', '4', '5', '6', '7', '8'};
+	char[] figures=new char[] {
+			'B'//Fou
+			,
+			'K'//King
+			,
+			'O'//King pour roc
+			,
+			'N'//Fou
+			,
+			'Q'//dame, 'R'
+			,
+			'R'// Tour
+	
+	};
 	protected Trigger trigger;
 	protected String value, nextValue;
 	ConvertorType convertorType;
@@ -75,6 +90,31 @@ public abstract class AbstractConvertor implements IConvertor {
 		}
 		}
 		return result;
+	}
+
+	protected boolean isDigit(char c0) {
+		for(int c: possibleDigits) {
+			if(c==c0) {
+				return true;
+			}
+		}
+		return false;	}
+
+	protected boolean isFigure(char c0) {
+		for(char c: figures) {
+			if(c==c0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	protected boolean isAH(char c0) {
+		for(char c: possibleChars) {
+			if(c==c0) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -15,8 +15,6 @@ package oliviaproject.chessboard.pgn.convertor;
  *         prérequis (donc pas d'ambiguité)
  */
 public class PriseRecherchePrerequis extends AbstractConvertor implements IConvertor {
-	char[] possibleChars=new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
-	char[] possibleDigits=new char[]{'1', '2', '3', '4', '5', '6', '7', '8'};
 
 	Prerequis prerequis;
 public PriseRecherchePrerequis() {
@@ -51,24 +49,6 @@ public PriseRecherchePrerequis() {
 			trigger=Trigger.no;
 		}
 			return trigger;
-	}
-
-	private boolean isDigit(char c0) {
-		for(int c: possibleDigits) {
-			if(c==c0) {
-				return true;
-			}
-		}
-		return false;	}
-
-
-	private boolean isAH(char c0) {
-		for(char c: possibleChars) {
-			if(c==c0) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 

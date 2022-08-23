@@ -197,7 +197,7 @@ public class PGNReader {
 		String result = new String();
 		switch(convertor.getConvertorType()) {
 		case Figures:{
-			findPosition(convertor.getNextValue());
+			//findPosition(convertor.getNextValue());
 			break;
 		}
 		case Standard:{
