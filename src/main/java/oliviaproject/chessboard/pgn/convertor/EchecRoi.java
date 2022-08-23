@@ -10,17 +10,15 @@ public EchecRoi() {
 }
 	Piece piece;
 
-	public void load(String value, Boolean whiteToMove) {
-		trigger = find(value);
-		this.value = value;
-		nextValue = valueAfter();
-	}
 
-	Trigger find(String value) {
+	protected Trigger find(String value) {
 		char c = value.charAt(0);
-
+		//++	Indique un échec et mat selon le règlement de la FIDE.
+		//Certains auteurs l'utilisent cependant pour marquer un échec double.
 		switch (c) {
-		case 'O': {
+
+		case '+': {
+			//echec et mat
 			return Trigger.yes;
 		}
 		default:{

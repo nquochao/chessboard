@@ -6,14 +6,9 @@ public class Figures extends AbstractConvertor implements IConvertor {
 		convertorType=ConvertorType.Figures;
 	}
 
-	@Override
-	public void load(String value, Boolean whiteToMoveConvertors) {
-		trigger = find(value);
-		this.value = value;
-		nextValue = valueAfter();
-	}
 
-	Trigger find(String value) {
+
+	protected Trigger find(String value) {
 		char c = value.charAt(0);
 		Character.isUpperCase(c);
 		return Character.isUpperCase(c)? Trigger.yes:Trigger.no;

@@ -7,12 +7,16 @@ public class Convertors extends HashSet<IConvertor> {
 	public Convertors() {
 		super();
 		this.add(new Capture());
-		this.add(new EchecRoi());
-		this.add(new RecherchePrerequis());
+		this.add(new PriseRecherchePrerequis());
+		this.add(new Prise());
 		this.add(new PromotionPion());
 		this.add(new Figures());
 		this.add(new Standard());
+		this.add(new StandardPrerequis());
 		this.add(new EchecEtMat());
+		this.add(new EchecRoi());
+		this.add(new RocBig());
+		this.add(new RocSmall());
 
 	}
 

@@ -53,7 +53,15 @@ public abstract class AbstractConvertor implements IConvertor {
 	}
 
 	@Override
-	public abstract void load(String value, Boolean whiteToMove);
+	public void load(String value, Boolean whiteToMove) {
+		this.value = value;
+		trigger = find(value);
+		nextValue = valueAfter();
+
+		this.whiteToMove=whiteToMove;
+		
+	}	protected abstract Trigger find(String value2);
+
 	String valueAfter() {
 		String result;
 		switch (trigger) {

@@ -1,16 +1,16 @@
 package oliviaproject.chessboard.pgn.convertor;
 
-public class Standard extends AbstractConvertor implements IConvertor {
+public class StandardPrerequis extends AbstractConvertor implements IConvertor {
 
-	public Standard() {
-		convertorType=ConvertorType.Standard;
+	public StandardPrerequis() {
+		convertorType=ConvertorType.StandardPrerequis;
 	}
 
 
 
 	protected Trigger find(String value) {
-		char c = value.charAt(0);
-		Boolean b=Character.isLowerCase(c) &&value.length() == 2 
+		char c0 = value.charAt(0);
+		Boolean b=Character.isLowerCase(c0) &&value.length() > 2 
 				&&!value.contains("x")&&!value.contains("o");
 		return b? Trigger.yes:Trigger.no;
 	}

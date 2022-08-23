@@ -1,5 +1,5 @@
 package oliviaproject.chessboard.pgn.convertor;
 
 public enum ConvertorType {
-Standard, EchecEtMat, EchecRoi, Figures, RecherchePrerequis, PromotionPion, Capture;
+Standard, StandardPrerequis, EchecEtMat, EchecRoi, Figures, Prise, PriseRecherchePrerequis, PromotionPion, Capture, EchecReine, GrandRoc, PetitRoc ;
 }

@@ -3,10 +3,9 @@ package oliviaproject.chessboard.pgn.convertor;
 
 import oliviaproject.ui.dashboard.util.Piece;
 
-public class EchecEtMat extends AbstractConvertor implements IConvertor{
-	
-	public EchecEtMat() {
-	convertorType=ConvertorType.EchecEtMat;
+public class RocBig extends AbstractConvertor implements IConvertor{
+public RocBig() {
+	convertorType=ConvertorType.GrandRoc;
 
 }
 	Piece piece;
@@ -15,12 +14,8 @@ public class EchecEtMat extends AbstractConvertor implements IConvertor{
 	protected Trigger find(String value) {
 		char c = value.charAt(0);
 
-		switch (c) {
-		case '+': {
-			if(value.equals("++")) return Trigger.yes;
-		}
-		case '#':{
-			//echec au roi
+		switch (value) {
+		case "O-O-O": {
 			return Trigger.yes;
 		}
 		default:{
@@ -28,6 +23,7 @@ public class EchecEtMat extends AbstractConvertor implements IConvertor{
 		}
 		}
 	}
+
 
 
 

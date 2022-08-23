@@ -12,11 +12,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import oliviaproject.chessboard.pgn.convertor.Convertor;
 import oliviaproject.chessboard.pgn.convertor.Convertors;
 import oliviaproject.chessboard.pgn.convertor.IConvertor;
-import oliviaproject.chessboard.pgn.convertor.PGNXToCoordinate;
-import oliviaproject.chessboard.pgn.convertor.PGNYToCoordinate;
 import oliviaproject.ui.dashboard.util.Piece;
 
 public class PGNReader {
@@ -166,6 +163,7 @@ public class PGNReader {
 
 		Boolean whiteToMove = true;
 		Piece piece = Piece.determinePiece(sanMove, whiteToMove);
+		log.info(sanMove);
 		String to = findPosition(sanMove);
 		String from = findPosition(sanMove);
 
@@ -206,7 +204,7 @@ public class PGNReader {
 			result=convertor.getNextValue();
 			break;
 		}
-		case RecherchePrerequis:{
+		case PriseRecherchePrerequis:{
 			result=convertor.getNextValue();
 
 			break;
@@ -221,6 +219,10 @@ public class PGNReader {
 			break;
 		}
 		case Capture:{
+			result=convertor.getNextValue();
+			break;
+		}
+		case PromotionPion:{
 			result=convertor.getNextValue();
 			break;
 		}

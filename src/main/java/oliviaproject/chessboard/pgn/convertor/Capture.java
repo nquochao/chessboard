@@ -6,15 +6,9 @@ public class Capture extends AbstractConvertor implements IConvertor {
 public Capture() {
 	convertorType=ConvertorType.Capture;
 }
-	@Override
-	public void load(String value, Boolean whiteToMoveConvertors) {
-		trigger = find(value);
-		this.value = value;
-		nextValue = valueAfter();
-	
-	}
 
-	Trigger find(String value) {
+
+	protected Trigger find(String value) {
 		char c = value.charAt(0);
 
 		switch (c) {
@@ -27,6 +21,9 @@ public Capture() {
 		}
 	}
 
+	/**
+	 * returns the position of th eaten figure
+	 */
 	String valueAfter() {
 		String result;
 		switch (trigger) {

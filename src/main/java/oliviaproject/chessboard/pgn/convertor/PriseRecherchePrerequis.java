@@ -14,52 +14,73 @@ package oliviaproject.chessboard.pgn.convertor;
  *         première et la seconde lettre du mot. Sinon, il n'y a pas de
  *         prérequis (donc pas d'ambiguité)
  */
-public class RecherchePrerequis extends AbstractConvertor implements IConvertor {
+public class PriseRecherchePrerequis extends AbstractConvertor implements IConvertor {
+	char[] possibleChars=new char[]{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+	char[] possibleDigits=new char[]{'1', '2', '3', '4', '5', '6', '7', '8'};
 
 	Prerequis prerequis;
-public RecherchePrerequis() {
-	convertorType=ConvertorType.RecherchePrerequis;
+public PriseRecherchePrerequis() {
+	convertorType=ConvertorType.PriseRecherchePrerequis;
 
 }
 
-	@Override
-	public void load(String value, Boolean whiteToMove) {
-		load(value);
 
-	}
+	protected Trigger find(String value) {
+		if(value.length()<=2 || !value.contains("x"))return Trigger.no;
+		char c0= value.charAt(0);
+		char c1= value.charAt(1);
+		char c2= value.charAt(2);
+		boolean b0=isAH(c0);
+		boolean b00=isDigit(c0);
+		boolean b01=isDigit(c1);
+		Trigger trigger;
+		boolean b1=c1=='x';
+		boolean b2=c2=='x';
 
-	public void load(String value) {
-		trigger = find(value);
-		this.value = value;
-		nextValue = valueAfter();
-	}
-
-	Trigger find(String value) {
-		String[] values = value.split("x");
-		String v = values[0];
-		switch (v.length()) {
-		case 0: {
-			return Trigger.no;
-		}
-		case 1:
+		if(b0&b1) {
+			trigger=Trigger.yes;
+			prerequis=Prerequis.line;
 			
-		case 2:
-			
-			return Trigger.yes;
-
+		}else if(b00 & b1){
+			trigger=Trigger.yes;
+			prerequis=Prerequis.column;
+		}else if(b0 & b01 & b2){
+			trigger=Trigger.yes;
+			prerequis=Prerequis.both;
+		}else {
+			trigger=Trigger.no;
 		}
-		return Trigger.no;
+			return trigger;
 	}
+
+	private boolean isDigit(char c0) {
+		for(int c: possibleDigits) {
+			if(c==c0) {
+				return true;
+			}
+		}
+		return false;	}
+
+
+	private boolean isAH(char c0) {
+		for(char c: possibleChars) {
+			if(c==c0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 
 	String valueAfter() {
 		String result;
-		switch (prerequis) {
-		case none: {
+		switch (trigger) {
+		case no: {
 			result = value;
 			break;
 		}
 		default: {
-			result = value.split("x")[1];
+			result = value;
 		}
 		}
 		return result;
