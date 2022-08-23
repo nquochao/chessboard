@@ -2,7 +2,9 @@ package oliviaproject.event;
 
 import java.awt.Color;
 
-public class ChessColorDashBoardEvent implements Event {
+import oliviaproject.ui.dashboard.IEventManager;
+
+public class ChessColorDashBoardEvent extends AbstractEvent implements Event {
 	public Color getColorWhite() {
 		return colorWhite;
 	}
@@ -20,6 +22,11 @@ public class ChessColorDashBoardEvent implements Event {
 	}
 
 	Color colorWhite,colorBlack;
+
+	@Override
+	public void accept(IEventManager eventManager) {
+		eventManager.visit(this);
+	}
 
 
 

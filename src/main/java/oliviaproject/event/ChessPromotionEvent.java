@@ -1,9 +1,10 @@
 package oliviaproject.event;
 
+import oliviaproject.ui.dashboard.IEventManager;
 import oliviaproject.ui.position.Position;
 import oliviaproject.ui.promotion.ChessPiecePromotion;
 
-public class ChessEvent implements Event {
+public class ChessPromotionEvent implements Event {
 	ChessPiecePromotion promotion;
 	Position position;
 	public Position getPosition() {
@@ -18,6 +19,9 @@ public class ChessEvent implements Event {
 	public void setPromotion(ChessPiecePromotion promotion) {
 		this.promotion = promotion;
 	}
-
+	@Override
+	public void accept(IEventManager eventManager) {
+		eventManager.visit(this);
+	}
 
 }

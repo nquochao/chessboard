@@ -16,13 +16,14 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import oliviaproject.event.ChessColorDashBoardEvent;
 import oliviaproject.event.ChessColorPieceEvent;
 import oliviaproject.event.ChessColorSelectEvent;
 import oliviaproject.event.ChessEchelleEvent;
-import oliviaproject.event.ChessEvent;
+import oliviaproject.event.ChessMoveEvent;
+import oliviaproject.event.ChessMoveEvent;
+import oliviaproject.event.ChessPromotionEvent;
 import oliviaproject.event.DefaultConnection;
 import oliviaproject.hibernate.manager.SaveUserNameManager;
 import oliviaproject.ui.dashboard.color.ActionPieceColorListener;
@@ -48,13 +49,14 @@ public class OliviaFrame extends JFrame {
 		JScrollPane scroll = new JScrollPane(pane);
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		this.add(scroll);
-		DefaultConnection.getEventBus().subscribe(pane, new ChessEvent());
+		DefaultConnection.getEventBus().subscribe(pane, new ChessPromotionEvent());
 		DefaultConnection.getEventBus().subscribe(pane, new ChessEchelleEvent());
 		DefaultConnection.getEventBus().subscribe(pane, new ChessColorDashBoardEvent());
 		DefaultConnection.getEventBus().subscribe(pane, new ChessColorPieceEvent());
 		DefaultConnection.getEventBus().subscribe(pane, new ChessColorSelectEvent());
+		DefaultConnection.getEventBus().subscribe(pane, new ChessMoveEvent());
 
-		DefaultConnection.getEventBus().subscribe(saveManager, new ChessEvent());
+		DefaultConnection.getEventBus().subscribe(saveManager, new ChessPromotionEvent());
 		DefaultConnection.getEventBus().subscribe(saveManager, new ChessEchelleEvent());
 		DefaultConnection.getEventBus().subscribe(saveManager, new ChessColorDashBoardEvent());
 		DefaultConnection.getEventBus().subscribe(saveManager, new ChessColorPieceEvent());

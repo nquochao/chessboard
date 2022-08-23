@@ -1,6 +1,5 @@
 package oliviaproject.ui.dashboard;
 
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -21,11 +20,13 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import oliviaproject.chessboard.pgn.Move;
 import oliviaproject.event.ChessColorDashBoardEvent;
 import oliviaproject.event.ChessColorPieceEvent;
 import oliviaproject.event.ChessColorSelectEvent;
 import oliviaproject.event.ChessEchelleEvent;
-import oliviaproject.event.ChessEvent;
+import oliviaproject.event.ChessMoveEvent;
+import oliviaproject.event.ChessPromotionEvent;
 import oliviaproject.event.Default;
 import oliviaproject.event.DefaultConnection;
 import oliviaproject.event.Event;
@@ -39,13 +40,10 @@ import oliviaproject.ui.dashboard.util.SelectorRectangle;
 import oliviaproject.ui.dashboard.util.Side;
 import oliviaproject.ui.position.Position;
 import oliviaproject.ui.position.Positions;
-import oliviaproject.ui.possiblemove.KingSide;
 import oliviaproject.ui.possiblemove.PositionCavalier;
 import oliviaproject.ui.possiblemove.PositionFou;
 import oliviaproject.ui.possiblemove.PositionReine;
 import oliviaproject.ui.possiblemove.PositionTour;
-import oliviaproject.ui.possiblemove.PositionUtil;
-import oliviaproject.ui.possiblemove.Revert;
 import oliviaproject.ui.promotion.ChessPiecePromotion;
 import oliviaproject.ui.selection.tile.color.demo.DemoColorUtil;
 
@@ -68,11 +66,10 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 	Color colorBlackTile = COLOR_TILE_BLACK;
 	Color colorWhiteTile = COLOR_TILE_WHITE;
 	Color colorSelected = COLOR_TILE_SELECTED;
-	Color colorTileClickSelected= COLOR_TILE_CLICK_SELECTED;
-
+	Color colorTileClickSelected = COLOR_TILE_CLICK_SELECTED;
 	Boolean addCoordinates = true;
 	private PlayMode playMode;
-
+	IEventManager eventManager;
 	public Boolean getAddCoordinates() {
 		return addCoordinates;
 	}
@@ -81,15 +78,16 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 		this.addCoordinates = addCoordinates;
 	}
 
-	Color[]colors=new Color[] {
-			Color.orange,Color.white, Color.red,
-			DemoColorUtil.createPastelRandomColor(),DemoColorUtil.createPastelRandomColor(),DemoColorUtil.createPastelRandomColor(),DemoColorUtil.createPastelRandomColor(),DemoColorUtil.createPastelRandomColor()
-	};
-	private Color colorPieceWhite=Color.WHITE;
-	private Color colorPieceBlack=Color.BLACK;
+	Color[] colors = new Color[] { Color.orange, Color.white, Color.red, DemoColorUtil.createPastelRandomColor(),
+			DemoColorUtil.createPastelRandomColor(), DemoColorUtil.createPastelRandomColor(),
+			DemoColorUtil.createPastelRandomColor(), DemoColorUtil.createPastelRandomColor() };
+	Color colorPieceWhite = Color.WHITE;
+    Color colorPieceBlack = Color.BLACK;
+
 	public void initialize() throws IOException {
 
 		ps.clear();
+		eventManager=new OliviaPanelEventManager(this);
 
 		for (int j = 0; j < numberrows; j++) {
 			try {
@@ -107,7 +105,7 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 					COLOR_TILE_WHITE);
 			Color colorBlackPiece = Default.findColor(Default.getUserName().getPreference().getColorPieceBlack(),
 					IPiece.COLOR_BLACK);
-			Color colorWhitePiece= Default.findColor(Default.getUserName().getPreference().getColorPieceWhite(),
+			Color colorWhitePiece = Default.findColor(Default.getUserName().getPreference().getColorPieceWhite(),
 					IPiece.COLOR_WHITE);
 			ChessColorPieceEvent event = new ChessColorPieceEvent();
 
@@ -115,11 +113,12 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 			event.setColorBlack(colorBlackPiece);
 			DefaultConnection.getEventBus().publish(event);
 			ChessEchelleEvent eventZoom = new ChessEchelleEvent();
-			eventZoom.setZoom(Default.findZoom(Default.getUserName().getPreference().getChesswidth(),TILE_X));
+			eventZoom.setZoom(Default.findZoom(Default.getUserName().getPreference().getChesswidth(), TILE_X));
 			DefaultConnection.getEventBus().publish(eventZoom);
-			colorSelected= Default.findColor(Default.getUserName().getPreference().getUserName().getPreference().getColorSelected(),
+			colorSelected = Default.findColor(
+					Default.getUserName().getPreference().getUserName().getPreference().getColorSelected(),
 					COLOR_TILE_SELECTED);
-			colorTileClickSelected= Default.findColor(Default.getUserName().getPreference().getColorPossible(),
+			colorTileClickSelected = Default.findColor(Default.getUserName().getPreference().getColorPossible(),
 					COLOR_TILE_CLICK_SELECTED);
 
 		}
@@ -147,19 +146,6 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 				}
 			}
 
-			private void updateNextPlayer(String key) {
-				Position selectedPosition = ps.get(key);
-
-				if (selectedPosition != null && selectedPosition.getPiece() != Piece.None) {
-					int nextvalue = (playMode.getSideToPlay().ordinal() + 1) % Side.values().length;
-					Side s = Side.values()[nextvalue];
-					if (s == Side.None)
-						nextvalue = (nextvalue + 1) % Side.values().length;
-					s = Side.values()[nextvalue];
-					playMode.setSideToPlay(s);
-				}
-			}
-
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				super.mouseReleased(e);
@@ -176,66 +162,10 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 							Set<String> possiblepositions = pOrigin.findPossibleMove(ps, lastPosition);
 
 							if (clickedSelectedTarget != null) {
-								Position pTarget = ps.get(clickedSelectedTarget.getCoordinate());
-//								if(pTarget.coordinate().equals(p.coordinate())){
-//									return;// this is not necessary but in case possiblepositions not well calculated
-//								}
-
-								if (possiblepositions != null && possiblepositions.contains(pTarget.coordinate())) {
-									;
-									PositionUtil.doRock(pTarget, pOrigin, ps, Revert.DoRegular);
-									PositionUtil.doEnPassant(pTarget, pOrigin, ps, lastPosition, Revert.DoRegular);
-
-									ps.get(pTarget.coordinate()).setPiece(pOrigin.getPiece());
-									PositionUtil.updatePiece(pTarget, ps, Revert.DoRegular);
-									lastPosition.updatePosition(pTarget, Revert.DoRegular);
-
-									// we check if it is a rock move
-
-									ps.get(pOrigin.coordinate()).setPiece(Piece.None);
-									PositionUtil.updatePiece(pOrigin, ps, Revert.DoRegular);
-									PositionUtil.doPromotion(pTarget, ps, Revert.DoRegular);
-									/**
-									 * is the move putting my King in chess?
-									 */
-									boolean isMyKingInChess = PositionUtil.checkMate(pTarget, lastPosition, ps,
-											KingSide.MyKing);
-
-									if (isMyKingInChess) {
-										/**
-										 * Compulsory : we cannot accept the move and need to revert.
-										 */
-										;
-
-										PositionUtil.doRock(pTarget, pOrigin, ps, Revert.DoRevert);
-										PositionUtil.doEnPassant(pTarget, pOrigin, ps, lastPosition, Revert.DoRevert);
-										// do the revert of this move:
-										ps.get(pTarget.coordinate()).setPiece(pOrigin.getPiece());
-										PositionUtil.updatePiece(pTarget, ps, Revert.DoRevert);
-										lastPosition.updatePosition(pTarget, Revert.DoRevert);
-
-										// we check if it is a rock move
-
-										ps.get(pOrigin.coordinate()).setPiece(Piece.None);
-										PositionUtil.updatePiece(pOrigin, ps, Revert.DoRevert);
-										PositionUtil.doPromotion(pTarget, ps, Revert.DoRevert);
-										return;
-									}
-									/**
-									 * is the move putting the opposite King in chess?
-									 */
-									boolean isOppositeKingInChess = PositionUtil.checkMate(pTarget, lastPosition, ps,
-											KingSide.OppositeKing);
-									if (isOppositeKingInChess) {
-										/**
-										 * Optional notification
-										 * 
-										 */
-									}
-									if (playMode == PlayMode.game) {
-										updateNextPlayer(key);
-									}
-								}
+								MoveAction moveAction = new MoveAction();
+								moveAction.move(key, possiblepositions, ps, pOrigin, lastPosition);
+								moveAction.updateNextPlayer(playMode, key, ps);
+								repaint();
 
 							}
 						}
@@ -306,7 +236,6 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 		super.paintComponent(g); // ALWAYS call this method first!
 		Graphics2D g2d = (Graphics2D) g;
 
-
 		for (int j = 0; j < numberrows; j++) {
 			try {
 				fillrow(j, g2d);
@@ -347,27 +276,24 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 		customPaint(g2d);
 		g2d.dispose();
 	}
+
 	protected void customPaint(Graphics2D g2d) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void initializeSequencerRepaint() {
 		ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-		
-		executorService.scheduleAtFixedRate(
-				new Runnable() {
 
-					@Override
-					public void run() {
-						repaint();
-					}},                                    
-                0 ,                                       
-                Duration.ofMillis( 10).toMillis(),    
-                TimeUnit.MILLISECONDS ) ;
+		executorService.scheduleAtFixedRate(new Runnable() {
+
+			@Override
+			public void run() {
+				repaint();
+			}
+		}, 0, Duration.ofMillis(10).toMillis(), TimeUnit.MILLISECONDS);
 
 	}
-	
 
 	private void fillrow(int rownumber, Side side) throws IOException {
 
@@ -473,156 +399,8 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 
 	@Override
 	public void onMyEvent(Event event) {
-		if (event instanceof ChessColorDashBoardEvent) {
-			manageChessColorDashBoardEvent((ChessColorDashBoardEvent) event);
-
-		} else if (event instanceof ChessColorPieceEvent) {
-			manageChessColorPieceEvent((ChessColorPieceEvent) event);
-
-		} else if (event instanceof ChessEchelleEvent) {
-			manageChessEchelleEvent((ChessEchelleEvent) event);
-		} else if (event instanceof ChessEvent) {
-			manageChessEvent((ChessEvent) event);
-		}else if (event instanceof ChessColorSelectEvent) {
-			manageChessEvent((ChessColorSelectEvent) event);
-		}
+		event.accept(eventManager);
 
 	}
 
-	private void manageChessEvent(ChessColorSelectEvent event) {
-		Color possibleColor = event.getColorPossible();
-		Color selectColor = event.getColorSelect();	
-		if(selectColor!=null) {
-			colorSelected=selectColor;
-		}
-		if(possibleColor!=null) {
-			colorTileClickSelected=possibleColor;
-		}
-		
-	}
-
-	private void manageChessColorPieceEvent(ChessColorPieceEvent event) {
-		Color colorWhite = event.getColorWhite();
-		Color colorBlack = event.getColorBlack();
-		OliviaPanel p = this;
-		for (String ref : ps.keySet()) {
-			Position mp = ps.get(ref);
-			Piece piece = mp.getPiece();
-			boolean modifyWhite=piece.getSide() == Side.White &&colorWhite!=null;
-			boolean modifyBlack=piece.getSide() == Side.Black&&colorBlack!=null;
-			if (modifyWhite)
-				this.colorPieceWhite=colorWhite;
-				piece.setColor(colorWhite);
-			if (modifyBlack)
-				this.colorPieceBlack=colorBlack;
-				piece.setColor(colorBlack);
-			if(modifyWhite |modifyBlack)piece.reloadImg();
-		}
-		SwingUtilities.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				p.repaint();
-			}
-		});
-
-	}
-
-	private void manageChessColorDashBoardEvent(ChessColorDashBoardEvent event) {
-		boolean modifyWhite=event.getColorWhite()!=null;
-		boolean modifyBlack=event.getColorBlack()!=null;
-		if (modifyWhite)this.colorWhiteTile = event.getColorWhite();
-		if (modifyBlack)this.colorBlackTile = event.getColorBlack();
-		OliviaPanel p = this;
-
-		SwingUtilities.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				p.repaint();
-			}
-		});
-	}
-
-	private void manageChessEchelleEvent(ChessEchelleEvent event) {
-		int zoom = event.getZoom();
-		xlength = zoom;
-		ylength = zoom;
-		OliviaPanel p = this;
-		SwingUtilities.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				p.repaint();
-				for (int j = 0; j < numberrows; j++) {
-
-					int y = yinit + j * ylength;
-					for (int i = 0; i < numbercols; i++) {
-						int x = xinit + i * xlength;
-						if (addCoordinates) {
-
-							x += xlength;
-
-						}
-						quads.put(i + "," + j, new Rectangle(x, y, xlength, ylength));
-					}
-				}
-			}
-		});
-
-	}
-
-	private void manageChessEvent(ChessEvent chessEvent) {
-
-		ChessPiecePromotion chosen = chessEvent.getPromotion();
-		Position promotion = chessEvent.getPosition();
-		promotion = ps.get(promotion.coordinate());
-		switch (chosen) {
-		case reine: {
-			if (promotion.getPiece().getSide() == Side.White)
-				promotion.setPiece(Piece.DameW);
-			if (promotion.getPiece().getSide() == Side.Black)
-				promotion.setPiece(Piece.DameB);
-			promotion.getPiece().setPossibleMove(new PositionReine());
-			promotion.getPiece().getPossibleMove().init(promotion);
-			promotion.getPiece().getPossibleMove().setPieceHasMoved(true);
-
-			break;
-		}
-		case tour: {
-			if (promotion.getPiece().getSide() == Side.White)
-				promotion.setPiece(Piece.TourW);
-			if (promotion.getPiece().getSide() == Side.Black)
-				promotion.setPiece(Piece.TourB);
-			promotion.getPiece().setPossibleMove(new PositionTour());
-			promotion.getPiece().getPossibleMove().init(promotion);
-			promotion.getPiece().getPossibleMove().setPieceHasMoved(true);
-			break;
-		}
-		case fou: {
-			if (promotion.getPiece().getSide() == Side.White)
-				promotion.setPiece(Piece.FouW);
-			if (promotion.getPiece().getSide() == Side.Black)
-				promotion.setPiece(Piece.FouB);
-			promotion.getPiece().setPossibleMove(new PositionFou());
-			promotion.getPiece().getPossibleMove().init(promotion);
-			promotion.getPiece().getPossibleMove().setPieceHasMoved(true);
-
-			break;
-		}
-
-		case cavalier: {
-			if (promotion.getPiece().getSide() == Side.White)
-				promotion.setPiece(Piece.CavalierW);
-			if (promotion.getPiece().getSide() == Side.Black)
-				promotion.setPiece(Piece.CavalierB);
-			promotion.getPiece().setPossibleMove(new PositionCavalier());
-			promotion.getPiece().getPossibleMove().init(promotion);
-			promotion.getPiece().getPossibleMove().setPieceHasMoved(true);
-
-			break;
-		}
-		}
-	}
-	
 }

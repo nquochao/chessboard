@@ -254,6 +254,10 @@ public class PositionUtil {
 				s=Side.White;
 				break;
 			}
+			default:{
+				s=Side.None;
+				break;
+			}
 			};
 			break;
 		}

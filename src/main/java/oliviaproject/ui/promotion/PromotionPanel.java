@@ -32,7 +32,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import oliviaproject.event.ChessEvent;
+import oliviaproject.event.ChessPromotionEvent;
 import oliviaproject.event.DefaultConnection;
 import oliviaproject.event.Event;
 import oliviaproject.eventbus.EventListener;
@@ -92,7 +92,7 @@ public class PromotionPanel extends JPanel implements IChessboardPanel, EventLis
 						if (cell.getRectangle().contains(e.getPoint())) {
 							selected = cell.getRectangle();
 							// we send the event with the reference selected
-							ChessEvent event = new ChessEvent();
+							ChessPromotionEvent event = new ChessPromotionEvent();
 							event.setPromotion(key);
 							event.setPosition(new Position(targetPosition.getX(),targetPosition.getY()));
 							DefaultConnection.getEventBus().publish(event);

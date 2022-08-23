@@ -2,6 +2,8 @@ package oliviaproject.event;
 
 import java.awt.Color;
 
+import oliviaproject.ui.dashboard.IEventManager;
+
 public class ChessColorPieceEvent implements Event {
 
 
@@ -23,5 +25,8 @@ public class ChessColorPieceEvent implements Event {
 	}
 
 	Color colorWhite,colorBlack;
-
+	@Override
+	public void accept(IEventManager eventManager) {
+		eventManager.visit(this);
+	}
 }
