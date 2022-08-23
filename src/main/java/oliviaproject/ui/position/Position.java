@@ -5,11 +5,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import oliviaproject.ui.dashboard.OliviaPanel;
 import oliviaproject.ui.dashboard.util.Piece;
 import oliviaproject.ui.possiblemove.PositionRockPossible;
 import oliviaproject.ui.possiblemove.PositionUtil;
 import oliviaproject.ui.possiblemove.Revert;
+import oliviaproject.ui.selection.tile.color.SelectedTileColorPanel;
 
 /**
  * @author DesktopPC
@@ -18,7 +18,8 @@ import oliviaproject.ui.possiblemove.Revert;
 public class Position {
 
 	int x, y;
-	public static String separator = ",";
+	public static String SEPARATOR = ",";
+	public static int ALL_VALUES= 123;
 	Piece piece;
 	protected Set<Position> possibleMovesEating = new HashSet<>();
 	protected Set<Position> possibleMovesEatingEnPassant = new HashSet<>();
@@ -131,7 +132,7 @@ public class Position {
 	}
 
 	public String coordinate() {
-		return x + separator + y;
+		return x + SEPARATOR + y;
 	}
 
 	public Set<String> findPossibleMove(Positions ps, Position lastPositionMove) {
@@ -299,4 +300,35 @@ public class Position {
 		this.setY(position.getY());
 	}
 
+	public static Positions getPossibleValues(String moveFrom, Positions ps)
+	{
+		Positions result=new Positions();
+		String coordinate[]=moveFrom.split(SEPARATOR);
+		String sx=coordinate[0];
+		Set<Integer> xvalues=coordonnes(sx);
+		String sy=coordinate[1];
+		Set<Integer> yvalues=coordonnes(sy);
+		for(Integer x: xvalues) {
+			for(Integer y: yvalues) {
+				Position p= new Position();
+				p.setX(x);
+				p.setY(y);
+				String c=p.coordinate();
+				result.put(c, ps.get(c));
+			}
+		}
+		return result;
+	}
+	public static Set<Integer>coordonnes(String value){
+		Set<Integer>result=new HashSet<>();
+		int v=Integer.valueOf(value);
+		if(ALL_VALUES==v) {
+			for(int i=0;i<8;i++) {
+				result.add(i);
+			}
+		}else {
+			result.add(v);
+		}
+		return result;
+	}
 }

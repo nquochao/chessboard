@@ -1,5 +1,6 @@
 package oliviaproject.ui.dashboard;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import oliviaproject.chessboard.pgn.Move;
@@ -106,12 +107,37 @@ public Position calculatePossibleOriginPositions(Move move, Positions ps) {
 	/**
 	 *  2nd check which moves are possible to go to moveTo
 	 */
-	String moveTo= move.getTo();
+	Set<Position> result2=new HashSet<>();
+	for(String key: result.keySet()) {
+		Position p=result.get(key);
+		Position lastPosition=null; 
+		/**
+		 * lastPositioin is only used for enPassant. I added the case whe lastPosition is null to return nothing when doing enpassant
+		 * this is to simplify the pgn reader (assumption taken).
+		 * 
+		 */
+		String moveTo= move.getTo();
+		Set<String> possiblepositions = p.findPossibleMove(ps, lastPosition);
+		for(String coordinate : possiblepositions) {
+			if(coordinate.equals(moveTo)) {
+				result2.add(p);
+			}
+		}
+	}
+	String moveFrom= move.getFrom();
+	Set<Position> result3=new HashSet<>();
+	for(Position p: result2) {
+		Positions positions=Position.getPossibleValues(moveFrom, ps);
+		for(String c: positions.keySet()) {
+				if(p.coordinate().equals(c)){
+					result3.add(p);
+				}
+		}
+	}
 	/**
 	 *  3rd check which moves are possible to come from moveFrom
 	 */
 
-	String moveFrom= move.getFrom();
 // there should be one only...
 	return result.get(0);
 }

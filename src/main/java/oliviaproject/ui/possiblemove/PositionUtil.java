@@ -56,6 +56,7 @@ public class PositionUtil {
 	public static Set<String> findPossibleMoveEatingEnPassant(Set<Position> possibleMovesEatingEnPassant,
 			Position position, Positions ps, Position lastPositionMove) {
 		Set<String> result = new HashSet<>();
+		if(lastPositionMove==null)return result;
 		Position possiblePosition = new Position();
 		if (possibleMovesEatingEnPassant.size() == 0) {
 			return result;

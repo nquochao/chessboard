@@ -223,7 +223,7 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 			// Draw image inside square
 			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 
-			Position p = ps.get(i + Position.separator + rownumber);
+			Position p = ps.get(i + Position.SEPARATOR + rownumber);
 			g2d.setColor(Color.BLACK);
 			g2d.drawString(numberToLetter.get(i), x + (xlength) / 2, y + (ylength) / 2);
 
@@ -343,7 +343,7 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 			// Draw image inside square
 			g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 
-			Position p = ps.get(i + Position.separator + rownumber);
+			Position p = ps.get(i + Position.SEPARATOR + rownumber);
 			g2d.drawImage(p.getPiece().getImg(), x, y, xlength, ylength, null);
 
 		}
