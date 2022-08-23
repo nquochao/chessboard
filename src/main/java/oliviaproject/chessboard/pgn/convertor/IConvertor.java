@@ -6,6 +6,7 @@ public interface IConvertor {
 
 	Trigger getTrigger();
 	public String getNextValue() ;
+	public String getBeforeValue();
 	public String getValue() ;
 	public Boolean getWhiteToMove();
 	public ConvertorType getConvertorType();

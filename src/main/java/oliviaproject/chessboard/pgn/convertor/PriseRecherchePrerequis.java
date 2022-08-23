@@ -28,7 +28,7 @@ public PriseRecherchePrerequis() {
 	protected Trigger find(String value) {
 		value=removeComments(value);
 
-		if(value.length()<=2 || !value.contains("x"))return Trigger.no;
+		if(value.length()<=2 || !isPrise(value))return Trigger.no;
 		char c0= value.charAt(0);
 		char c1= value.charAt(1);
 		char c2= value.charAt(2);
@@ -60,7 +60,7 @@ public PriseRecherchePrerequis() {
 		String result;
 		switch (trigger) {
 		case yes: {
-			result = value.substring(value.indexOf(PRISE));;
+			result = value.substring(value.indexOf(PRISE)+1);;
 			result=PGNReader.findPosition(result, new Convertors());
 			break;
 		}
@@ -74,8 +74,8 @@ public PriseRecherchePrerequis() {
 		String result;
 		switch (trigger) {
 		case yes: {
-			result = value.substring(value.indexOf(PRISE));;
-			result=PGNReader.findPosition(result, new Convertors());
+			
+			result = value.substring(0,value.indexOf(PRISE));;
 			break;
 		}
 		default: {

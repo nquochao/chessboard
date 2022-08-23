@@ -179,70 +179,78 @@ public class PGNReader {
 	static IConvertor findConvertor(String sanMove, Convertors convertors) {
 
 		IConvertor convertor = convertors.workPrerequis(sanMove, true);
-		if(convertor==null) {
-			log.error("There is a missing convertor: "+sanMove);
-		}
-		else {
-		convertor.load(sanMove, true);
+		if (convertor == null) {
+			log.error("There is a missing convertor: " + sanMove);
+		} else {
+			convertor.load(sanMove, true);
 		}
 		return convertor;
 	}
 
-	public static String findPosition(String sanMove, Convertors convertors) {
-		IConvertor convertor=findConvertor(sanMove, convertors);
-		Boolean whiteToMove=true;
+	public static String findPositionFrom(String sanMove, Convertors convertors) {
+		IConvertor convertor = findConvertor(sanMove, convertors);
+		Boolean whiteToMove = true;
 		String result = new String();
-		switch(convertor.getConvertorType()) {
-		case Figures:{
-			result=convertor.getNextValue();
-			break;
-		}
-		case Standard:{
-			result=convertor.getNextValue();
-			break;
-		}
-		case StandardPrerequis:{
-			result=convertor.getNextValue();
-			break;
-		}
-		case Prise:{
+		result = convertor.getBeforeValue();
 
-			result=convertor.getNextValue();
-			
+		return result;
+	}
+
+	public static String findPosition(String sanMove, Convertors convertors) {
+		IConvertor convertor = findConvertor(sanMove, convertors);
+		Boolean whiteToMove = true;
+		String result = new String();
+		switch (convertor.getConvertorType()) {
+		case Figures: {
+			result = convertor.getNextValue();
 			break;
 		}
-		case PriseRecherchePrerequis:{
-			result=convertor.getNextValue();
+		case Standard: {
+			result = convertor.getNextValue();
+			break;
+		}
+		case StandardPrerequis: {
+			result = convertor.getNextValue();
+			break;
+		}
+		case Prise: {
+
+			result = convertor.getNextValue();
 
 			break;
 		}
-		case EchecRoi:{
-			result=convertor.getNextValue();
+		case PriseRecherchePrerequis: {
+			result = convertor.getNextValue();
 
 			break;
 		}
-		case EchecEtMat:{
-			result=convertor.getNextValue();
+		case EchecRoi: {
+			result = convertor.getNextValue();
+
 			break;
 		}
-		case GrandRoc:{
-			result=convertor.getNextValue();
+		case EchecEtMat: {
+			result = convertor.getNextValue();
 			break;
 		}
-		case PetitRoc:{
-			result=convertor.getNextValue();
-			break;
-		}		
-		case Capture:{
-			result=convertor.getNextValue();
+		case GrandRoc: {
+			result = convertor.getNextValue();
 			break;
 		}
-		case PromotionPion:{
-			result=convertor.getNextValue();
+		case PetitRoc: {
+			result = convertor.getNextValue();
+			break;
+		}
+		case Capture: {
+			result = convertor.getNextValue();
+			break;
+		}
+		case PromotionPion: {
+			result = convertor.getNextValue();
 			break;
 		}
 		}
-		
+
 		return result;
 	}
 

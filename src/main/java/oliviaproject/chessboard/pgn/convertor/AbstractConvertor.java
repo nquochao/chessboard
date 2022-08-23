@@ -168,7 +168,9 @@ o-o-o	Grand roque
 	protected boolean isPrise(char c) {
 		return (c == PRISE);
 	}
-
+	protected boolean isPrise(String s) {
+		return (s.contains("x"));
+	}
 	protected boolean isDigit(char c0) {
 		for (int c : possibleDigits) {
 			if (c == c0) {

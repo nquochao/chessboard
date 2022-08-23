@@ -15,7 +15,7 @@ public class StandardPrerequis extends AbstractConvertor implements IConvertor {
 		log.info(value);
 		char c0 = value.charAt(0);
 		Boolean b=isAH(c0)|isDigit(c0) &&value.length() > 2 
-				&&!isPrise(c0);
+				&&!isPrise(value);
 		return b? Trigger.yes:Trigger.no;
 	}
 
@@ -38,7 +38,7 @@ public class StandardPrerequis extends AbstractConvertor implements IConvertor {
 		String result;
 		switch (trigger) {
 		case yes: {
-			result=fromCoordinate.findCoordinate(value);
+			result = value.substring(0,1);;
 			break;
 		}
 		default: {
