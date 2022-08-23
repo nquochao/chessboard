@@ -164,8 +164,8 @@ public class PGNReader {
 		Boolean whiteToMove = true;
 		Piece piece = Piece.determinePiece(sanMove, whiteToMove);
 		log.info(sanMove);
-		String to = findPosition(sanMove);
-		String from = findPosition(sanMove);
+		String to = findPosition(sanMove, convertors);
+		String from = findPosition(sanMove, convertors);
 
 		return new Move(piece, from, to);
 	}
@@ -176,11 +176,8 @@ public class PGNReader {
 	 * @param sanMove
 	 * @return
 	 */
-	private static IConvertor findConvertor(String sanMove) {
-		if(sanMove.equals("Nf3")){
-			log.error("There is a missing convertor: "+sanMove);
+	static IConvertor findConvertor(String sanMove, Convertors convertors) {
 
-		}
 		IConvertor convertor = convertors.workPrerequis(sanMove, true);
 		if(convertor==null) {
 			log.error("There is a missing convertor: "+sanMove);
@@ -191,17 +188,27 @@ public class PGNReader {
 		return convertor;
 	}
 
-	private static String findPosition(String sanMove) {
-		IConvertor convertor=findConvertor(sanMove);
+	public static String findPosition(String sanMove, Convertors convertors) {
+		IConvertor convertor=findConvertor(sanMove, convertors);
 		Boolean whiteToMove=true;
 		String result = new String();
 		switch(convertor.getConvertorType()) {
 		case Figures:{
-			//findPosition(convertor.getNextValue());
+			result=convertor.getNextValue();
 			break;
 		}
 		case Standard:{
 			result=convertor.getNextValue();
+			break;
+		}
+		case StandardPrerequis:{
+			result=convertor.getNextValue();
+			break;
+		}
+		case Prise:{
+
+			result=convertor.getNextValue();
+			
 			break;
 		}
 		case PriseRecherchePrerequis:{
@@ -218,6 +225,14 @@ public class PGNReader {
 			result=convertor.getNextValue();
 			break;
 		}
+		case GrandRoc:{
+			result=convertor.getNextValue();
+			break;
+		}
+		case PetitRoc:{
+			result=convertor.getNextValue();
+			break;
+		}		
 		case Capture:{
 			result=convertor.getNextValue();
 			break;
@@ -230,4 +245,5 @@ public class PGNReader {
 		
 		return result;
 	}
+
 }

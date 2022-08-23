@@ -1,5 +1,7 @@
 package oliviaproject.chessboard.pgn.convertor;
 
+import oliviaproject.chessboard.pgn.PGNReader;
+
 public class Figures extends AbstractConvertor implements IConvertor {
 
 	public Figures() {
@@ -9,6 +11,8 @@ public class Figures extends AbstractConvertor implements IConvertor {
 
 
 	protected Trigger find(String value) {
+		value=removeComments(value);
+
 		char c = value.charAt(0);
 		Character.isUpperCase(c);
 		return isFigure(c)? Trigger.yes:Trigger.no;
@@ -19,6 +23,7 @@ public class Figures extends AbstractConvertor implements IConvertor {
 		switch (trigger) {
 		case yes: {
 			result = value.substring(1);
+			result=PGNReader.findPosition(result, new Convertors());
 			break;
 		}
 		default: {

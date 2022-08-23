@@ -10,6 +10,8 @@ this.convertorType=ConvertorType.PromotionPion;
 
 
 	protected Trigger find(String value) {
+		value=removeComments(value);
+
 		char c = value.charAt(0);
 
 		switch (c) {
@@ -23,6 +25,22 @@ this.convertorType=ConvertorType.PromotionPion;
 	}
 
 	String valueAfter() {
+		String result;
+		switch (trigger) {
+		case yes: {
+			result = value.substring(2);
+			this.piece=Piece.determinePiece(value, whiteToMove);
+
+			break;
+		}
+		default: {
+			result = value;
+		}
+		}
+		return result;
+	}
+
+	protected String valueBefore() {
 		String result;
 		switch (trigger) {
 		case yes: {

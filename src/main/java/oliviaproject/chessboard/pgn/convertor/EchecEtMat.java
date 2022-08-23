@@ -13,6 +13,8 @@ public class EchecEtMat extends AbstractConvertor implements IConvertor{
 
 
 	protected Trigger find(String value) {
+		value=removeComments(value);
+
 		char c = value.charAt(0);
 
 		switch (c) {

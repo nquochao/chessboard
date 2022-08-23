@@ -139,7 +139,7 @@ public enum Piece implements IPiece {
 			piece = (isWhiteToMove ? TourW : TourB);
 			break;
 		default:
-			throw new IllegalStateException("I have sanMove, which does NOT" + " start with [abcdefghBKNOQR]!");
+			throw new IllegalStateException("I have sanMove, which does NOT" + " start with [abcdefghBKNOQR]!:"+ sanMove);
 		}
 		return piece;
 	}

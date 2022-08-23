@@ -12,6 +12,8 @@ public EchecRoi() {
 
 
 	protected Trigger find(String value) {
+		value=removeComments(value);
+
 		char c = value.charAt(0);
 		//++	Indique un échec et mat selon le règlement de la FIDE.
 		//Certains auteurs l'utilisent cependant pour marquer un échec double.

@@ -26,6 +26,8 @@ public Prise() {
 
 
 	protected Trigger find(String value) {
+		value=removeComments(value);
+
 		if(value.length()<=2 || !value.contains("x"))return Trigger.no;
 		char c0= value.charAt(0);
 		char c1= value.charAt(1);
@@ -44,8 +46,8 @@ public Prise() {
 	String valueAfter() {
 		String result;
 		switch (trigger) {
-		case no: {
-			result = value;
+		case yes: {
+			result = toCoordinate.findCoordinate(value.substring(1));
 			break;
 		}
 		default: {
@@ -54,7 +56,19 @@ public Prise() {
 		}
 		return result;
 	}
-
+	protected String valueBefore() {
+		String result;
+		switch (trigger) {
+		case yes: {
+			result = fromCoordinate.findCoordinate(value.substring(1));
+			break;
+		}
+		default: {
+			result = value;
+		}
+		}
+		return result;
+	}
 	Prerequis findPrerequis(String v) {
 		if (Character.isDigit(v.charAt(0)))
 			return Prerequis.line;

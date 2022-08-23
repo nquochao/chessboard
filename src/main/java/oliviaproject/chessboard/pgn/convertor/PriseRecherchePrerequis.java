@@ -1,5 +1,7 @@
 package oliviaproject.chessboard.pgn.convertor;
 
+import oliviaproject.chessboard.pgn.PGNReader;
+
 /**
  * @author HaoNguyen Si la première lettre est de a à h et la seconde un x ou
  *         une lettre de a à h Prérequis : la pièce doit être dans la colonne
@@ -24,6 +26,8 @@ public PriseRecherchePrerequis() {
 
 
 	protected Trigger find(String value) {
+		value=removeComments(value);
+
 		if(value.length()<=2 || !value.contains("x"))return Trigger.no;
 		char c0= value.charAt(0);
 		char c1= value.charAt(1);
@@ -32,8 +36,8 @@ public PriseRecherchePrerequis() {
 		boolean b00=isDigit(c0);
 		boolean b01=isDigit(c1);
 		Trigger trigger;
-		boolean b1=c1=='x';
-		boolean b2=c2=='x';
+		boolean b1=c1==PRISE;
+		boolean b2=c2==PRISE;
 
 		if(b0&b1) {
 			trigger=Trigger.yes;
@@ -55,8 +59,9 @@ public PriseRecherchePrerequis() {
 	String valueAfter() {
 		String result;
 		switch (trigger) {
-		case no: {
-			result = value;
+		case yes: {
+			result = value.substring(value.indexOf(PRISE));;
+			result=PGNReader.findPosition(result, new Convertors());
 			break;
 		}
 		default: {
@@ -65,7 +70,20 @@ public PriseRecherchePrerequis() {
 		}
 		return result;
 	}
-
+	protected String valueBefore() {
+		String result;
+		switch (trigger) {
+		case yes: {
+			result = value.substring(value.indexOf(PRISE));;
+			result=PGNReader.findPosition(result, new Convertors());
+			break;
+		}
+		default: {
+			result = value;
+		}
+		}
+		return result;
+	}
 	Prerequis findPrerequis(String v) {
 		if (Character.isDigit(v.charAt(0)))
 			return Prerequis.line;

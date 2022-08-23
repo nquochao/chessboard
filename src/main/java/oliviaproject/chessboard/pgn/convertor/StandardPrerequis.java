@@ -1,5 +1,7 @@
 package oliviaproject.chessboard.pgn.convertor;
 
+import oliviaproject.chessboard.pgn.PGNReader;
+
 public class StandardPrerequis extends AbstractConvertor implements IConvertor {
 
 	public StandardPrerequis() {
@@ -9,9 +11,11 @@ public class StandardPrerequis extends AbstractConvertor implements IConvertor {
 
 
 	protected Trigger find(String value) {
+		value=removeComments(value);
+		log.info(value);
 		char c0 = value.charAt(0);
-		Boolean b=Character.isLowerCase(c0) &&value.length() > 2 
-				&&!value.contains("x")&&!value.contains("o");
+		Boolean b=isAH(c0)|isDigit(c0) &&value.length() > 2 
+				&&!isPrise(c0);
 		return b? Trigger.yes:Trigger.no;
 	}
 
@@ -19,7 +23,9 @@ public class StandardPrerequis extends AbstractConvertor implements IConvertor {
 		String result;
 		switch (trigger) {
 		case yes: {
-			result=findCoordinate(value);
+			
+			result=value.substring(1);
+			result=PGNReader.findPosition(result, new Convertors());
 			break;
 		}
 		default: {
@@ -28,25 +34,18 @@ public class StandardPrerequis extends AbstractConvertor implements IConvertor {
 		}
 		return result;
 	}
-	public String findCoordinate(String sanMove){
-	int i = 0;
-
-	char letter = sanMove.charAt(i);
-	Convertor converter = new PGNXToCoordinate();
-	converter.init();
-	Integer column = converter.convert(letter + "");
-	if (column == null) {
-		log.error(sanMove);
+	protected String valueBefore() {
+		String result;
+		switch (trigger) {
+		case yes: {
+			result=fromCoordinate.findCoordinate(value);
+			break;
+		}
+		default: {
+			result = value;
+		}
+		}
+		return result;
 	}
-	i++;
-	converter = new PGNYToCoordinate();
-	converter.init();
-	letter = sanMove.charAt(i);
-	Integer line = converter.convert(letter + "");
-	if (line == null) {
-		log.error(sanMove);
-	}
-	return line + "-" + column;
-}
 
 }

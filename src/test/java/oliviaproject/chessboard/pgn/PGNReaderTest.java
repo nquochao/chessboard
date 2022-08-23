@@ -11,6 +11,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import oliviaproject.chessboard.pgn.convertor.Convertors;
+import oliviaproject.chessboard.pgn.convertor.IConvertor;
 import oliviaproject.util.file.FileUtils;
 
 public class PGNReaderTest {
@@ -71,8 +73,25 @@ public class PGNReaderTest {
 			log.info(m.getPiece().name());
 			log.info(m.getFrom());
 			log.info(m.getTo());
+			log.info("done!");
 			}
 		}
 
 	}	
+	@Test
+	public void testde4() {
+		IConvertor c =PGNReader.findConvertor("de4", new Convertors());
+		assertNotNull(c);
+	}	
+	@Test
+	public void teste4() {
+		IConvertor c =PGNReader.findConvertor("e4", new Convertors());
+		assertNotNull(c);
+	}	
+	@Test
+	public void testa1Q() {
+		IConvertor c =PGNReader.findConvertor("a1=Q", new Convertors());
+		assertNotNull(c);
+	}	
+
 }
