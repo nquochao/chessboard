@@ -95,10 +95,25 @@ public Boolean move(String coordinate, Set<String> possiblepositions,Positions p
  * @return
  */
 public Position calculatePossibleOriginPositions(Move move, Positions ps) {
-	Position result=new Position();
-	// first check move.getPiece()+ getWhiteToPlay
-	
-	return result;
+	Positions result=new Positions();
+	/**
+	 *  first check move.getPiece()+ getWhiteToPlay
+	 */
+	Piece piece= move.getPiece();
+	Side s=PositionUtil.convert(move.getWhiteToPlay());
+	result=PositionUtil.findPositions(piece, ps);
+	result=PositionUtil.findPositions(s, result);
+	/**
+	 *  2nd check which moves are possible to go to moveTo
+	 */
+	String moveTo= move.getTo();
+	/**
+	 *  3rd check which moves are possible to come from moveFrom
+	 */
+
+	String moveFrom= move.getFrom();
+// there should be one only...
+	return result.get(0);
 }
 
 }

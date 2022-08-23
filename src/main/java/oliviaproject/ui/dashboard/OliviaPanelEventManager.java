@@ -22,22 +22,24 @@ import oliviaproject.ui.possiblemove.PositionReine;
 import oliviaproject.ui.possiblemove.PositionTour;
 import oliviaproject.ui.promotion.ChessPiecePromotion;
 
-public class OliviaPanelEventManager implements IEventManager{
+public class OliviaPanelEventManager implements IEventManager {
 	OliviaPanel panel;
 
 	public OliviaPanelEventManager(OliviaPanel oliviaPanel) {
-		this.panel=oliviaPanel;
+		this.panel = oliviaPanel;
 	}
 
 	/**
 	 * @param event
 	 */
 	public void visit(ChessMoveEvent event) {
-		MoveAction moveAction=new MoveAction();
-		Move move=event.getMove();
-		String coordinate=move.getTo();
-		// we do not know pOrigin : Position pOrigin = ps.get(clickedSelectedOrigin.getCoordinate());
-		Position pOrigin=moveAction.calculatePossibleOriginPositions(move, panel.ps);
+		MoveAction moveAction = new MoveAction();
+		Move move = event.getMove();
+		String coordinate = move.getTo();
+		// we do not know pOrigin : Position pOrigin =
+		// ps.get(clickedSelectedOrigin.getCoordinate());
+		Position pOrigin = moveAction.calculatePossibleOriginPositions(move, panel.ps);
+
 		Set<String> possiblepositions = pOrigin.findPossibleMove(panel.ps, panel.lastPosition);
 		moveAction.move(coordinate, possiblepositions, panel.ps, panel.lastPosition, panel.lastPosition);
 	}
@@ -63,12 +65,14 @@ public class OliviaPanelEventManager implements IEventManager{
 			Piece piece = mp.getPiece();
 			boolean modifyWhite = piece.getSide() == Side.White && colorWhite != null;
 			boolean modifyBlack = piece.getSide() == Side.Black && colorBlack != null;
-			if (modifyWhite)
+			if (modifyWhite) {
 				this.panel.colorPieceWhite = colorWhite;
-			piece.setColor(colorWhite);
-			if (modifyBlack)
+				piece.setColor(colorWhite);
+			}
+			if (modifyBlack) {
 				this.panel.colorPieceBlack = colorBlack;
-			piece.setColor(colorBlack);
+				piece.setColor(colorBlack);
+			}
 			if (modifyWhite | modifyBlack)
 				piece.reloadImg();
 		}
@@ -178,8 +182,5 @@ public class OliviaPanelEventManager implements IEventManager{
 		}
 		}
 	}
-
-
-
 
 }

@@ -280,8 +280,15 @@ public class PositionUtil {
 		return positionKing;
 	}
 
+	/**
+	 * we take the first found. This would work with RoiW or RoiB
+	 * @param piece
+	 * @param ps
+	 * @return
+	 */
 	private static Position findPiece(Piece piece, Positions ps) {
-		for (String key : ps.keySet()) {
+		Positions result= findPositions(piece, ps);
+		for (String key : result.keySet()) {
 			Position p = ps.get(key);
 			boolean isFound = p.getPiece() == piece;
 			if (isFound) {
@@ -290,5 +297,39 @@ public class PositionUtil {
 
 		}
 		return null;
+	}
+	/**
+	 * @param piece
+	 * @param ps
+	 * @return
+	 */
+	public static Positions findPositions(Piece piece, Positions ps) {
+		Positions result=new Positions();
+		for (String key : ps.keySet()) {
+			Position p = ps.get(key);
+			boolean isFound = p.getPiece() == piece;
+			if(isFound)result.put(p.coordinate(),p);
+
+		}
+		return result;
+	}
+	/**
+	 * @param piece
+	 * @param ps
+	 * @return
+	 */
+	public static Positions findPositions(Side side, Positions ps) {
+		Positions result=new Positions();
+		for (String key : ps.keySet()) {
+			Position p = ps.get(key);
+			boolean isFound = p.getPiece().getSide() == side;
+			if(isFound)result.put(p.coordinate(),p);
+
+		}
+		return result;
+	}
+	public static Side convert(Boolean whiteToPlay) {
+		if(whiteToPlay)return Side.White;
+		else return Side.Black;
 	}
 }
