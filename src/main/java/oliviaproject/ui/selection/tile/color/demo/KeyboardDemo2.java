@@ -2,12 +2,24 @@ package oliviaproject.ui.selection.tile.color.demo;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+
+import oliviaproject.chessboard.pgn.GameStateMutable;
+import oliviaproject.chessboard.pgn.Move;
+import oliviaproject.chessboard.pgn.PGNReader;
+import oliviaproject.event.ChessMoveEvent;
+import oliviaproject.event.DefaultConnection;
+import oliviaproject.util.file.FileUtils;
 
 public class KeyboardDemo2 extends KeyboardDemo {
 
@@ -31,7 +43,7 @@ public class KeyboardDemo2 extends KeyboardDemo {
 				line.append(mot);
 			else {
 				lines.add(line.toString());
-				
+
 				line = new StringBuilder();
 				line.append(mot);
 			}
@@ -39,13 +51,60 @@ public class KeyboardDemo2 extends KeyboardDemo {
 		}
 		lines.add(line.toString());
 		for (int i = 0; i < lines.size(); i++) {
-			String l=lines.get(i);
-			result.put(l, new MoveObject(x, y, getRandomNumber(0, 20), getRandomNumber(0, 20), l,
-					colors[colorint], colors, 0, panel.getWidth(), 0, panel.getHeight(), font));
-			y= y+100;
+			String l = lines.get(i);
+			result.put(l, new MoveObject(x, y, getRandomNumber(0, 20), getRandomNumber(0, 20), l, colors[colorint],
+					colors, 0, panel.getWidth(), 0, panel.getHeight(), font));
+			y = y + 100;
 		}
 
 		this.movedObjects = result;
 		return result;
+	}
+
+	@Override
+	public void initializeKeyboard() {
+		super.initializeKeyboard();
+		final String enterKey = "VK_ENTER";
+
+		KeyStroke enter = KeyStroke.getKeyStroke("pressed ENTER");
+		panel.getInputMap().put(enter, enterKey);
+		Action enterAction = new AbstractAction() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				try {
+
+					testParseFischer();
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		};
+		;
+
+		panel.getActionMap().put(enterKey, enterAction);
+		reInitializeKeyboard();
+
+	}
+
+	List<GameStateMutable> games;
+	GameStateMutable game;
+	int moveNumber;
+	public void testParseFischer() {
+		if (games == null || game == null) {
+			String nameFile = "/oliviaproject/pgn/test-fischer.pgn";
+			InputStream is = FileUtils.getFileFromResourceAsStream(nameFile);
+
+			PGNReader reader = new PGNReader();
+			games = reader.parseFile(is);
+			game = games.get(0);
+		}
+		if (moveNumber<game.getMoves().size()){
+			Move m=game.getMoves().get(moveNumber);
+			ChessMoveEvent event = m.defineEvent();
+			DefaultConnection.getEventBus().publish(event);
+			moveNumber++;
+		}
 	}
 }

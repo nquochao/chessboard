@@ -36,7 +36,6 @@ public enum Piece implements IPiece {
 	None(Side.None, new PositionNone(), "", COLOR_BLACK, COLOR_BLACK_OUTLINE);
 
 	private BufferedImage img;
-
 	public void setImg(BufferedImage img) {
 		this.img = img;
 	}

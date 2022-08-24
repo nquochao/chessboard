@@ -138,12 +138,12 @@ o-o-o	Grand roque
 		String result;
 		switch (trigger) {
 		case yes: {
-			result = convertorType.name();
+			result = "";
 
 			break;
 		}
 		default: {
-			result = value;
+			result = "";
 		}
 		}
 		return result;

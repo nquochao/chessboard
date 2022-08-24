@@ -11,7 +11,7 @@ public class PGNYToCoordinate extends Convertor{
 	public void init() {
 		for (int i=0;i<columns.length; i++) {
 			String s=columns[i];
-			this.put(s, Integer.valueOf(s)-1);
+			this.put(s, 8-Integer.valueOf(s));
 		}
 	}
 public Integer convert(String key) {

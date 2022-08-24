@@ -6,6 +6,9 @@ import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import oliviaproject.chessboard.pgn.Move;
 import oliviaproject.event.ChessColorDashBoardEvent;
 import oliviaproject.event.ChessColorPieceEvent;
@@ -24,6 +27,8 @@ import oliviaproject.ui.promotion.ChessPiecePromotion;
 
 public class OliviaPanelEventManager implements IEventManager {
 	OliviaPanel panel;
+	static final Logger log = LoggerFactory.getLogger(MoveAction.class);
+
 
 	public OliviaPanelEventManager(OliviaPanel oliviaPanel) {
 		this.panel = oliviaPanel;
@@ -35,13 +40,14 @@ public class OliviaPanelEventManager implements IEventManager {
 	public void visit(ChessMoveEvent event) {
 		MoveAction moveAction = new MoveAction();
 		Move move = event.getMove();
-		String coordinate = move.getTo();
 		// we do not know pOrigin : Position pOrigin =
 		// ps.get(clickedSelectedOrigin.getCoordinate());
 		Position pOrigin = moveAction.calculatePossibleOriginPositions(move, panel.ps);
-
+		
+		String coordinate = move.getTo();
 		Set<String> possiblepositions = pOrigin.findPossibleMove(panel.ps, panel.lastPosition);
-		moveAction.move(coordinate, possiblepositions, panel.ps, panel.lastPosition, panel.lastPosition);
+		moveAction.move(coordinate, possiblepositions, panel.ps, pOrigin, panel.lastPosition);
+		log.info(move.toString() +" has been treated");
 	}
 
 	public void visit(ChessColorSelectEvent event) {

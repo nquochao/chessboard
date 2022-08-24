@@ -23,7 +23,7 @@ public class Figures extends AbstractConvertor implements IConvertor {
 		switch (trigger) {
 		case yes: {
 			result = value.substring(1);
-			result=PGNReader.findPosition(result, new Convertors());
+			result=PGNReader.findPositionTo(result, new Convertors(), whiteToMove);
 			break;
 		}
 		default: {

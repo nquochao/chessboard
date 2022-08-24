@@ -12,14 +12,7 @@ public class PositionTour extends PositionRockPossible {
 		super(x, y);
 		// TODO Auto-generated constructor stub
 	}
-	/**
-	 *This is not implemented as it was for the Pion to allow +2 move at initiation
-	 */
-	@Override
-	public Position getPositionDepart() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 
 	@Override
@@ -42,10 +35,24 @@ public class PositionTour extends PositionRockPossible {
 	 * the coordinate y will be the King y position done in
 	 * {@link getPossibleRock(Positions ps, Position position)}
 	 */
-	Position kingPosition=new Position(4, this.getY());
+	Position kingPosition=new Position(4, p.getY());
 	// 3 is grand rock
 	//5 is little rock
-	Position targetPosition= new Position(getX()==0?3:5, this.getY());
+	Position targetPosition= new Position(p.getX()==0?3:5, this.getY());
 	possibleRock.put(kingPosition.coordinate(), targetPosition);
 }
+	
+	/**
+	 *This is not implemented as it was for the Pion to allow +2 move at initiation
+	 */
+	/**
+	 * x is the ordonate y at startup
+	 * y is the offset to add to getY as possible move
+	 */
+
+	@Override
+	public Position getPositionDepart() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

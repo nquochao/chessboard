@@ -43,7 +43,9 @@ public class PositionsInitializer implements IPositionsInitializer {
 		for (String position : positions.keySet()) {
 
 			Position p = positions.get(position);
-
+			if(p.getPiece()==Piece.TourW &&p.getY()==7) {
+				//System.out.println(p.coordinate());
+			}
 			p.getPiece().getPossibleMove().init(p);
 
 		}

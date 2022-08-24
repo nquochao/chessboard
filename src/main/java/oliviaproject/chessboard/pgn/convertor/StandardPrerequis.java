@@ -25,7 +25,7 @@ public class StandardPrerequis extends AbstractConvertor implements IConvertor {
 		case yes: {
 			
 			result=value.substring(1);
-			result=PGNReader.findPosition(result, new Convertors());
+			result=PGNReader.findPositionTo(result, new Convertors(), whiteToMove);
 			break;
 		}
 		default: {
@@ -44,7 +44,7 @@ public class StandardPrerequis extends AbstractConvertor implements IConvertor {
 			break;
 		}
 		default: {
-			result = value;
+			result = "";
 		}
 		}
 		return result;

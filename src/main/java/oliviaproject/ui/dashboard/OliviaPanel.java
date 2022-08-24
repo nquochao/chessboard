@@ -164,7 +164,7 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 							if (clickedSelectedTarget != null) {
 								MoveAction moveAction = new MoveAction();
 								moveAction.move(key, possiblepositions, ps, pOrigin, lastPosition);
-								moveAction.updateNextPlayer(playMode, key, ps);
+								playMode=moveAction.updateNextPlayer(playMode, key, ps);
 								repaint();
 
 							}

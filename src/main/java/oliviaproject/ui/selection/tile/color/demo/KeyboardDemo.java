@@ -49,7 +49,7 @@ public class KeyboardDemo {
 		return line;
 	}
 
-	private void reInitializeKeyboard() {
+	protected void reInitializeKeyboard() {
 		panel.getInputMap().put(KeyStroke.getKeyStroke("SPACE"),
                 "pressed");
 panel.getInputMap().put(KeyStroke.getKeyStroke("released SPACE"),
@@ -162,4 +162,6 @@ Action anAction= new AbstractAction() {
 		this.movedObjects=result;
 		return result;
 	}
+	
+	
 }

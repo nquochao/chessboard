@@ -38,6 +38,7 @@ public class PGNReader {
 			String line = null;
 
 			GameHeader currentGameHeader = currentGame.getGameHeader();
+			Boolean whiteToMove=true;
 
 			StringBuilder moveText = new StringBuilder();
 
@@ -55,7 +56,9 @@ public class PGNReader {
 						moveText.append(line);
 						moveText.append(" ");
 					} else {
+						whiteToMove=true;
 						parseMoveText(moveText.toString());
+						whiteToMove=!whiteToMove;
 						moveText = new StringBuilder();
 						listOfGames.add(currentGame);
 						if (line.startsWith("[")) {
@@ -71,7 +74,7 @@ public class PGNReader {
 				}
 			}
 			parseMoveText(moveText.toString());
-
+			whiteToMove=!whiteToMove;
 			listOfGames.add(currentGame);
 		} catch (FileNotFoundException ex) {
 			ex.printStackTrace();
@@ -137,14 +140,15 @@ public class PGNReader {
 	 */
 	private void parseMoveText(String moveText) {
 		String[] sanMoves = removeBalastChars(moveText);
-
-		boolean isWhiteToMove = true;
+		Boolean whiteToMove=true;
 		for (String sanMove : sanMoves) {
 			if (isSanMove(sanMove)) {
 				log.info(sanMove);
-				Move nextMove = san2Move(sanMove);
+				Move nextMove = san2Move(sanMove, whiteToMove);
+				nextMove.setWhiteToPlay(whiteToMove);
 				currentGame.getMoves().add(nextMove);
 				// changeSideToMove();
+				whiteToMove=!whiteToMove;
 			}
 		}
 	}
@@ -153,7 +157,7 @@ public class PGNReader {
 	 * This method converts SAN (Short Algebraic Notation) String representation of
 	 * the move into MoveInfo Object.
 	 */
-	private static Move san2Move(String sanMove) {
+	private static Move san2Move(String sanMove, Boolean whiteToMove) {
 		if (sanMove == null) {
 			throw new NullPointerException("sanMove can't be null!");
 		}
@@ -161,13 +165,13 @@ public class PGNReader {
 			throw new IllegalArgumentException("no legal sanMove can have" + " less than 2 characters!:" + sanMove);
 		}
 
-		Boolean whiteToMove = true;
 		Piece piece = Piece.determinePiece(sanMove, whiteToMove);
 		log.info(sanMove);
-		String to = findPosition(sanMove, convertors);
-		String from = findPosition(sanMove, convertors);
+		String to = findPositionTo(sanMove, convertors, whiteToMove);
+		String from = findPositionFrom(sanMove, convertors, whiteToMove);
+		//IConvertor convertor = findConvertor(sanMove, convertors);
 
-		return new Move(piece, from, to);
+		return new Move(piece, from, to, null);
 	}
 
 	static Convertors convertors = new Convertors();
@@ -176,80 +180,29 @@ public class PGNReader {
 	 * @param sanMove
 	 * @return
 	 */
-	static IConvertor findConvertor(String sanMove, Convertors convertors) {
+	static IConvertor findConvertor(String sanMove, Convertors convertors, Boolean whiteToMove) {
 
-		IConvertor convertor = convertors.workPrerequis(sanMove, true);
+		IConvertor convertor = convertors.workPrerequis(sanMove, whiteToMove);
 		if (convertor == null) {
 			log.error("There is a missing convertor: " + sanMove);
 		} else {
-			convertor.load(sanMove, true);
+			convertor.load(sanMove, whiteToMove);
 		}
 		return convertor;
 	}
 
-	public static String findPositionFrom(String sanMove, Convertors convertors) {
-		IConvertor convertor = findConvertor(sanMove, convertors);
-		Boolean whiteToMove = true;
+	public static String findPositionFrom(String sanMove, Convertors convertors, Boolean whiteToMove) {
+		IConvertor convertor = findConvertor(sanMove, convertors,whiteToMove);
 		String result = new String();
 		result = convertor.getBeforeValue();
 
 		return result;
 	}
 
-	public static String findPosition(String sanMove, Convertors convertors) {
-		IConvertor convertor = findConvertor(sanMove, convertors);
-		Boolean whiteToMove = true;
-		String result = new String();
-		switch (convertor.getConvertorType()) {
-		case Figures: {
-			result = convertor.getNextValue();
-			break;
-		}
-		case Standard: {
-			result = convertor.getNextValue();
-			break;
-		}
-		case StandardPrerequis: {
-			result = convertor.getNextValue();
-			break;
-		}
-		case Prise: {
+	public static String findPositionTo(String sanMove, Convertors convertors, Boolean whiteToMove) {
+		IConvertor convertor = findConvertor(sanMove, convertors, whiteToMove);
 
-			result = convertor.getNextValue();
-
-			break;
-		}
-		case PriseRecherchePrerequis: {
-			result = convertor.getNextValue();
-
-			break;
-		}
-		case EchecRoi: {
-			result = convertor.getNextValue();
-
-			break;
-		}
-		case EchecEtMat: {
-			result = convertor.getNextValue();
-			break;
-		}
-		case GrandRoc: {
-			result = convertor.getNextValue();
-			break;
-		}
-		case PetitRoc: {
-			result = convertor.getNextValue();
-			break;
-		}
-		case Capture: {
-			result = convertor.getNextValue();
-			break;
-		}
-		case PromotionPion: {
-			result = convertor.getNextValue();
-			break;
-		}
-		}
+		String result = convertor.getNextValue();
 
 		return result;
 	}

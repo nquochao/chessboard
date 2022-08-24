@@ -1,5 +1,6 @@
 package oliviaproject.chessboard.pgn;
 
+import oliviaproject.chessboard.pgn.convertor.ConvertorType;
 import oliviaproject.event.ChessMoveEvent;
 import oliviaproject.ui.dashboard.util.Piece;
 
@@ -8,6 +9,10 @@ public class Move {
 	Piece piece;
 	String from, to;
 	Boolean whiteToPlay;
+	ConvertorType convertorType;
+	public ConvertorType getConvertorType() {
+		return convertorType;
+	}
 
 	public Boolean getWhiteToPlay() {
 		return whiteToPlay;
@@ -41,10 +46,11 @@ public class Move {
 		this.to = to;
 	}
 
-	public Move(Piece piece, String from, String to) {
+	public Move(Piece piece, String from, String to, ConvertorType convertorType) {
 		this.piece = piece;
 		this.from = from;
 		this.to = to;
+		this.convertorType=convertorType;
 	}
 
 	private static void determineTo(String sanMove, Piece piece) {
@@ -58,7 +64,7 @@ public class Move {
 		return getPiece().name() + SEPARATOR + getFrom() + SEPARATOR + getTo();
 	}
 
-	ChessMoveEvent defineEvent() {
+	public ChessMoveEvent defineEvent() {
 		ChessMoveEvent event = new ChessMoveEvent();
 		event.setMove(this);
 		return event;

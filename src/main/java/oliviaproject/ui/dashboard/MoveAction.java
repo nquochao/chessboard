@@ -3,6 +3,9 @@ package oliviaproject.ui.dashboard;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import oliviaproject.chessboard.pgn.Move;
 import oliviaproject.ui.dashboard.util.Piece;
 import oliviaproject.ui.dashboard.util.PlayMode;
@@ -14,6 +17,8 @@ import oliviaproject.ui.possiblemove.PositionUtil;
 import oliviaproject.ui.possiblemove.Revert;
 
 public class MoveAction {
+	static final Logger log = LoggerFactory.getLogger(MoveAction.class);
+
 public Boolean move(String coordinate, Set<String> possiblepositions,Positions ps ,Position pOrigin, Position lastPosition) {
 	Position pTarget = ps.get(coordinate);
 //	if(pTarget.coordinate().equals(p.coordinate())){
@@ -76,9 +81,9 @@ public Boolean move(String coordinate, Set<String> possiblepositions,Positions p
 	}
 	return true;
 }
- void updateNextPlayer(PlayMode playMode, String key, Positions ps) {
+ PlayMode updateNextPlayer(PlayMode playMode, String key, Positions ps) {
 		Position selectedPosition = ps.get(key);
-		if (playMode != PlayMode.game) return;
+		if (playMode != PlayMode.game) return playMode;
 
 		if (selectedPosition != null && selectedPosition.getPiece() != Piece.None) {
 			int nextvalue = (playMode.getSideToPlay().ordinal() + 1) % Side.values().length;
@@ -88,6 +93,7 @@ public Boolean move(String coordinate, Set<String> possiblepositions,Positions p
 			s = Side.values()[nextvalue];
 			playMode.setSideToPlay(s);
 		}
+		return playMode;
 	}
 /**
  * The move should provide enough info to calculate the initial Origin Position.
@@ -102,22 +108,29 @@ public Position calculatePossibleOriginPositions(Move move, Positions ps) {
 	 */
 	Piece piece= move.getPiece();
 	Side s=PositionUtil.convert(move.getWhiteToPlay());
+	log.info(move.toString());
 	result=PositionUtil.findPositions(piece, ps);
 	result=PositionUtil.findPositions(s, result);
 	/**
 	 *  2nd check which moves are possible to go to moveTo
 	 */
 	Set<Position> result2=new HashSet<>();
+	String moveTo= move.getTo();
+	if(moveTo.equals("PetitRoc")) {
+		moveTo=move.getWhiteToPlay()?"6,7":"6,0";
+	}
 	for(String key: result.keySet()) {
 		Position p=result.get(key);
-		Position lastPosition=null; 
+
+//		if(p.coordinate().equals("4,6")) {
+//			log.info("found");
+//		}
 		/**
 		 * lastPositioin is only used for enPassant. I added the case whe lastPosition is null to return nothing when doing enpassant
 		 * this is to simplify the pgn reader (assumption taken).
 		 * 
 		 */
-		String moveTo= move.getTo();
-		Set<String> possiblepositions = p.findPossibleMove(ps, lastPosition);
+		Set<String> possiblepositions = p.findPossibleMove(ps, p.getLastPosition());
 		for(String coordinate : possiblepositions) {
 			if(coordinate.equals(moveTo)) {
 				result2.add(p);
@@ -125,6 +138,9 @@ public Position calculatePossibleOriginPositions(Move move, Positions ps) {
 		}
 	}
 	String moveFrom= move.getFrom();
+	if(moveFrom.isBlank()) {
+		return result2.iterator().next();
+	}
 	Set<Position> result3=new HashSet<>();
 	for(Position p: result2) {
 		Positions positions=Position.getPossibleValues(moveFrom, ps);
@@ -139,7 +155,7 @@ public Position calculatePossibleOriginPositions(Move move, Positions ps) {
 	 */
 
 // there should be one only...
-	return result.get(0);
+	return result3.iterator().next();
 }
 
 }

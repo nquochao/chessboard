@@ -82,9 +82,9 @@ public class PGNReaderTest {
 	@Test
 	public void testdxe4() {
 		String sanMove="dxe4";
-		IConvertor c =PGNReader.findConvertor(sanMove, new Convertors());
+		IConvertor c =PGNReader.findConvertor(sanMove, new Convertors(), true);
 		assertNotNull(c);
-		String r=PGNReader.findPosition(sanMove, new Convertors());
+		String r=PGNReader.findPositionTo(sanMove, new Convertors(), true);
 		assertEquals("3-4", r);
 		r= c.getBeforeValue();
 		assertEquals("3", r);
@@ -93,9 +93,9 @@ public class PGNReaderTest {
 	@Test
 	public void testd3xe4() {
 		String sanMove="d3xe4";
-		IConvertor c =PGNReader.findConvertor(sanMove, new Convertors());
+		IConvertor c =PGNReader.findConvertor(sanMove, new Convertors(), true);
 		assertNotNull(c);
-		String r=PGNReader.findPosition(sanMove, new Convertors());
+		String r=PGNReader.findPositionTo(sanMove, new Convertors(), true);
 		assertEquals("3-4", r);
 		r= c.getBeforeValue();
 		assertEquals("2-3", r);
@@ -104,9 +104,9 @@ public class PGNReaderTest {
 	@Test
 	public void test3xe4() {
 		String sanMove="3xe4";
-		IConvertor c =PGNReader.findConvertor(sanMove, new Convertors());
+		IConvertor c =PGNReader.findConvertor(sanMove, new Convertors(), true);
 		assertNotNull(c);
-		String r=PGNReader.findPosition(sanMove, new Convertors());
+		String r=PGNReader.findPositionTo(sanMove, new Convertors(), true);
 		assertEquals("3-4", r);
 		r= c.getBeforeValue();
 		assertEquals("2", r);
@@ -115,9 +115,9 @@ public class PGNReaderTest {
 	@Test
 	public void testde4() {
 		String sanMove="de4";
-		IConvertor c =PGNReader.findConvertor(sanMove, new Convertors());
+		IConvertor c =PGNReader.findConvertor(sanMove, new Convertors(), true);
 		assertNotNull(c);
-		String r=PGNReader.findPosition(sanMove, new Convertors());
+		String r=PGNReader.findPositionTo(sanMove, new Convertors(), true);
 		assertEquals("3-4", r);
 		r= c.getBeforeValue();
 		assertEquals("3", r);
@@ -126,9 +126,9 @@ public class PGNReaderTest {
 	@Test
 	public void teste4() {
 		String sanMove="e4";
-		IConvertor c =PGNReader.findConvertor(sanMove, new Convertors());
+		IConvertor c =PGNReader.findConvertor(sanMove, new Convertors(), true);
 		assertNotNull(c);
-		String r=PGNReader.findPosition(sanMove, new Convertors());
+		String r=PGNReader.findPositionTo(sanMove, new Convertors(), true);
 		assertEquals("3-4", r);
 		r= c.getBeforeValue();
 		assertEquals("3-4", r);
@@ -140,10 +140,10 @@ public class PGNReaderTest {
 	@Test
 	public void testa1Q() {
 		String sanMove="a1=Q";
-		IConvertor c =PGNReader.findConvertor(sanMove, new Convertors());
+		IConvertor c =PGNReader.findConvertor(sanMove, new Convertors(), true);
 		assertNotNull(c);
-		PGNReader.findPosition(sanMove, new Convertors());
-		String r=PGNReader.findPosition(sanMove, new Convertors());
+		PGNReader.findPositionTo(sanMove, new Convertors(), true);
+		String r=PGNReader.findPositionTo(sanMove, new Convertors(),true);
 		assertEquals("0-0", r);
 		r= c.getBeforeValue();
 		assertEquals("", r);

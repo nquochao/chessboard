@@ -25,6 +25,17 @@ public RocBig() {
 		}
 		}
 	}
+	@Override
+	String valueAfter() {
+	String result= new String();
+	switch (trigger) {
+		case yes:{
+			result=getWhiteToMove()?"2,7":"2,0";
+			break;
+		}
+		}
+	return result;
+	}
 
 
 

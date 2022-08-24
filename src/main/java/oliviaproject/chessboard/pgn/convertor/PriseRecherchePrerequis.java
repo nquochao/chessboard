@@ -61,7 +61,7 @@ public PriseRecherchePrerequis() {
 		switch (trigger) {
 		case yes: {
 			result = value.substring(value.indexOf(PRISE)+1);;
-			result=PGNReader.findPosition(result, new Convertors());
+			result=PGNReader.findPositionTo(result, new Convertors(), whiteToMove);
 			break;
 		}
 		default: {
@@ -79,7 +79,7 @@ public PriseRecherchePrerequis() {
 			break;
 		}
 		default: {
-			result = value;
+			result = "";
 		}
 		}
 		return result;

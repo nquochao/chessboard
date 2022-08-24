@@ -35,11 +35,11 @@ public class Standard extends AbstractConvertor implements IConvertor {
 		String result;
 		switch (trigger) {
 		case yes: {
-			result=fromCoordinate.findCoordinate(value);
+			result="";
 			break;
 		}
 		default: {
-			result = value;
+			result = "";
 		}
 		}
 		return result;

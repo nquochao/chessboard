@@ -64,7 +64,7 @@ public Prise() {
 			break;
 		}
 		default: {
-			result = value;
+			result = "";
 		}
 		}
 		return result;

@@ -8,8 +8,13 @@ public RocSmall() {
 	convertorType=ConvertorType.PetitRoc;
 
 }
-	Piece piece;
+@Override
+	public void load(String value, Boolean whiteToMove) {
+		// TODO Auto-generated method stub
+		super.load(value, whiteToMove);
 
+		
+}
 
 	protected Trigger find(String value) {
 		value=removeComments(value);
@@ -25,8 +30,16 @@ public RocSmall() {
 		}
 		}
 	}
-
-
-
+	@Override
+		String valueAfter() {
+		String result= new String();
+		switch (trigger) {
+			case yes:{
+				result=getWhiteToMove()?"6,7":"6,0";
+				break;
+			}
+			}
+		return result;
+		}
 
 }
