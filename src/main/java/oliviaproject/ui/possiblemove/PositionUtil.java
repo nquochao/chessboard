@@ -159,8 +159,13 @@ public class PositionUtil {
 			Position towerPosition = ps.get(towerCoordinate);
 			Map<String, Position> possibleRocks = towerPosition.getPiece().getPossibleMove().getPossibleRock();
 			Position targetTowerPosition = possibleRocks.get(p.coordinate());
-			targetTowerPosition = ps.get(targetTowerPosition.coordinate());
-			targetTowerPosition.setPiece(towerPosition.getPiece());
+			//targetTowerPosition = ps.get(targetTowerPosition.coordinate());
+			towerPosition.getPiece().getPossibleMove().init(towerPosition);
+			 targetTowerPosition=towerPosition.getPiece().getPossibleMove().getPossibleRock().get(p.coordinate());
+			 targetTowerPosition=possibleRocks.get(p.coordinate());;
+				Position targetTower=ps.get(targetTowerPosition.coordinate());
+			 
+				targetTower.setPiece(towerPosition.getPiece());
 			PositionUtil.updatePiece(targetTowerPosition, ps, doRevert);
 
 			towerPosition.setPiece(Piece.None);

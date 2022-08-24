@@ -14,14 +14,20 @@ import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import oliviaproject.chessboard.pgn.GameStateMutable;
 import oliviaproject.chessboard.pgn.Move;
 import oliviaproject.chessboard.pgn.PGNReader;
 import oliviaproject.event.ChessMoveEvent;
 import oliviaproject.event.DefaultConnection;
+import oliviaproject.ui.dashboard.OliviaPanel;
+import oliviaproject.ui.position.Position;
 import oliviaproject.util.file.FileUtils;
 
 public class KeyboardDemo2 extends KeyboardDemo {
+	static final Logger log = LoggerFactory.getLogger(KeyboardDemo2.class);
 
 	public KeyboardDemo2(JPanel panel, String filePath, Color[] colors) {
 		super(panel, filePath, colors);
@@ -107,4 +113,22 @@ public class KeyboardDemo2 extends KeyboardDemo {
 			moveNumber++;
 		}
 	}
+	void checkRoc(){
+		OliviaPanel p=((OliviaPanel)panel);
+		String[]tourCoords=new String[] {
+				"7,7","0,0","0,7","7,0"
+		};
+		for(String coord:tourCoords) {
+		Position x = p.getPs().get(coord);
+		x.getPiece().getPossibleMove().init(x);
+		String roiCoord="4,0";
+		if(coord.endsWith("7"))roiCoord="4,7";
+		Position tourRockTarget=x.getPiece().getPossibleMove().getPossibleRock().get(roiCoord);
+		if(tourRockTarget==null)continue;
+		String coordinate=tourRockTarget.coordinate();
+		log.info("rock possible for tour "+coord
+				+ "is:"+ coordinate);
+		}			
+	}
+	
 }

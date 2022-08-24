@@ -98,6 +98,9 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 				e1.printStackTrace();
 			}
 		}
+		
+
+
 		if (Default.getUserName() != null && Default.getUserName().getPreference() != null) {
 			colorBlackTile = Default.findColor(Default.getUserName().getPreference().getColorTileBlack(),
 					COLOR_TILE_BLACK);
@@ -191,6 +194,14 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 		};
 		addMouseMotionListener(ma);
 		addMouseListener(ma);
+	}
+
+	public Positions getPs() {
+		return ps;
+	}
+
+	public void setPs(Positions ps) {
+		this.ps = ps;
 	}
 
 	private void fillrowTitle(int rownumber, Graphics2D g2d) {
@@ -300,8 +311,7 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 		for (int i = 0; i < numbercols; i++) {
 			Position p = new Position(i, rownumber);
 			ps.put(p.coordinate(), p);
-			if (side != Side.None)
-				ps.initialize(side);
+			ps.initialize(side);
 
 		}
 		int y = yinit + rownumber * ylength;

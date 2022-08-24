@@ -1,8 +1,14 @@
 package oliviaproject.ui.possiblemove;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import oliviaproject.chessboard.pgn.convertor.AbstractConvertor;
 import oliviaproject.ui.position.Position;
 
 public class PositionTour extends PositionRockPossible {
+	protected static final Logger log = LoggerFactory.getLogger(PositionTour.class);
+
 	public PositionTour() {
 		super();
 
@@ -35,10 +41,10 @@ public class PositionTour extends PositionRockPossible {
 	 * the coordinate y will be the King y position done in
 	 * {@link getPossibleRock(Positions ps, Position position)}
 	 */
-	Position kingPosition=new Position(4, p.getY());
+	Position kingPosition=new Position(4, getY());
 	// 3 is grand rock
 	//5 is little rock
-	Position targetPosition= new Position(p.getX()==0?3:5, this.getY());
+	Position targetPosition= new Position(getX()==0?3:5, this.getY());
 	possibleRock.put(kingPosition.coordinate(), targetPosition);
 }
 	
