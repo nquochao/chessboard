@@ -68,6 +68,7 @@ o-o-o	Grand roque
 	public AbstractConvertor() {
 		toCoordinate = new ToCoordinate();
 		fromCoordinate = new FromCoordinate();
+		whiteToMove=true;
 	}
 
 	public String getBeforeValue() {

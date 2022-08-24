@@ -61,7 +61,7 @@ public class Move {
 
 	@Override
 	public String toString() {
-		return getPiece().name() + SEPARATOR + getFrom() + SEPARATOR + getTo();
+		return getPiece().name() + SEPARATOR + getFrom() + SEPARATOR + getTo()+ SEPARATOR + convertorType.name();
 	}
 
 	public ChessMoveEvent defineEvent() {

@@ -169,9 +169,9 @@ public class PGNReader {
 		log.info(sanMove);
 		String to = findPositionTo(sanMove, convertors, whiteToMove);
 		String from = findPositionFrom(sanMove, convertors, whiteToMove);
-		//IConvertor convertor = findConvertor(sanMove, convertors);
+		IConvertor convertor = findConvertor(sanMove, convertors, whiteToMove);
 
-		return new Move(piece, from, to, null);
+		return new Move(piece, from, to, convertor.getConvertorType());
 	}
 
 	static Convertors convertors = new Convertors();
