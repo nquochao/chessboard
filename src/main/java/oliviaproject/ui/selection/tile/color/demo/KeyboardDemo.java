@@ -17,14 +17,32 @@ import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
+import oliviaproject.chessboard.pgn.GameStateMutable;
 import oliviaproject.util.file.FileUtils;
 
 public class KeyboardDemo {
 	JPanel panel;
 	Scanner scanner;
 	Color[] colors;
-	Map<String, MoveObject> movedObjects = new HashMap<>();
+	GameStateMutable game;
+	public GameStateMutable getGame() {
+		return game;
+	}
+	public void setGame(GameStateMutable game) {
+		this.game = game;
+	}
 
+	int moveNumber;
+
+	public void initialize() {
+		game=null;
+		moveNumber=0;
+		
+
+	}
+
+	Map<String, MoveObject> movedObjects = new HashMap<>();
+	
 	public Map<String, MoveObject> getMovedObjects() {
 		return movedObjects;
 	}

@@ -20,7 +20,7 @@ public class OliviaProjectChessBoard {
 	
 		System.out.println(TEST);
 		System.out.println(commandLine.getQuestion());
-		//commandLine.setReponse(commandLine.getReponse()+System.console().readLine());
+		commandLine.setReponse(commandLine.getReponse()+System.console().readLine());
 		System.out.println(commandLine.getReponse());
 		
 	     SwingUtilities.invokeLater(new Runnable() {

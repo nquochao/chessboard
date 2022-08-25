@@ -7,7 +7,15 @@ import oliviaproject.ui.dashboard.util.Piece;
 public class Move {
 	static final String SEPARATOR = ":";
 	Piece piece;
-	String from, to;
+	String from, to, initialMove;
+	public String getInitialMove() {
+		return initialMove;
+	}
+
+	public void setInitialMove(String initialMove) {
+		this.initialMove = initialMove;
+	}
+
 	Boolean whiteToPlay;
 	ConvertorType convertorType;
 	public ConvertorType getConvertorType() {
@@ -46,7 +54,8 @@ public class Move {
 		this.to = to;
 	}
 
-	public Move(Piece piece, String from, String to, ConvertorType convertorType) {
+	public Move(Piece piece, String initialMove, String from, String to, ConvertorType convertorType) {
+		this.initialMove=initialMove;
 		this.piece = piece;
 		this.from = from;
 		this.to = to;

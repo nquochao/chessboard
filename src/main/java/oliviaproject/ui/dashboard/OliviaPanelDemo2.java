@@ -24,10 +24,9 @@ public class OliviaPanelDemo2 extends OliviaPanel implements IChessboardPanel, E
 	 * 
 	 */
 	Color[] colors = new Color[] { Color.orange};
-	KeyboardDemo kb=new KeyboardDemo2(this,  "/animation/animation.txt", colors);
 
 	public void initialize() throws IOException {
-
+		kb=new KeyboardDemo2(this,  "/animation/animation.txt", colors);
 		kb.createMovedObjects(kb.readnextLine(false), colors);
 		kb.initializeKeyboard();
 		kb.initializeSequencer();

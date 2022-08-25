@@ -25,9 +25,9 @@ public class OliviaPanelDemo extends OliviaPanel implements IChessboardPanel, Ev
 	Color[] colors = new Color[] { Color.orange, Color.white, Color.red, DemoColorUtil.createPastelRandomColor(),
 			DemoColorUtil.createPastelRandomColor(), DemoColorUtil.createPastelRandomColor(),
 			DemoColorUtil.createPastelRandomColor(), DemoColorUtil.createPastelRandomColor() };
-	KeyboardDemo kb=new KeyboardDemo(this,  "/animation/animation.txt", colors);
-
+	KeyboardDemo kb;
 	public void initialize() throws IOException {
+		kb=new KeyboardDemo(this,  "/animation/animation.txt", colors);
 
 		kb.createMovedObjects(kb.readnextLine(false), colors);
 		kb.initializeKeyboard();

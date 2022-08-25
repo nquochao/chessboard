@@ -1,18 +1,14 @@
 package oliviaproject.ui.dashboard;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.ScrollPaneConstants;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +17,14 @@ import oliviaproject.event.ChessColorDashBoardEvent;
 import oliviaproject.event.ChessColorPieceEvent;
 import oliviaproject.event.ChessColorSelectEvent;
 import oliviaproject.event.ChessEchelleEvent;
-import oliviaproject.event.ChessMoveEvent;
+import oliviaproject.event.ChessLoadPGNEvent;
 import oliviaproject.event.ChessMoveEvent;
 import oliviaproject.event.ChessPromotionEvent;
+import oliviaproject.event.ChessSelectGame;
 import oliviaproject.event.DefaultConnection;
 import oliviaproject.hibernate.manager.SaveUserNameManager;
 import oliviaproject.ui.dashboard.color.ActionPieceColorListener;
+import oliviaproject.ui.dashboard.color.HistoryPane;
 import oliviaproject.ui.dashboard.scale.ActionScaleListener;
 import oliviaproject.ui.dashboard.util.PlayMode;
 import oliviaproject.ui.piece.color.ActionDashBoardColorListener;
@@ -38,63 +36,51 @@ public class OliviaFrame extends JFrame {
 	SaveUserNameManager saveManager;
 	private int currentCard = 0;
 	OliviaPanel pane = new OliviaPanel();
-	Long duration=300L;
+	HistoryPane historyPane ;
+	Long duration = 300L;
 
 	public void init() throws InterruptedException, IOException {
 
 		this.setSize(320, 320);
-		CardLayout cl = new CardLayout();
-		JPanel cardPanel = new JPanel();
-		cardPanel.setLayout(cl);
-		JScrollPane scroll = new JScrollPane(pane);
-		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		this.add(scroll);
+	
 		DefaultConnection.getEventBus().subscribe(pane, new ChessPromotionEvent());
 		DefaultConnection.getEventBus().subscribe(pane, new ChessEchelleEvent());
 		DefaultConnection.getEventBus().subscribe(pane, new ChessColorDashBoardEvent());
 		DefaultConnection.getEventBus().subscribe(pane, new ChessColorPieceEvent());
 		DefaultConnection.getEventBus().subscribe(pane, new ChessColorSelectEvent());
 		DefaultConnection.getEventBus().subscribe(pane, new ChessMoveEvent());
+		DefaultConnection.getEventBus().subscribe(pane, new ChessSelectGame());
 
 		DefaultConnection.getEventBus().subscribe(saveManager, new ChessPromotionEvent());
 		DefaultConnection.getEventBus().subscribe(saveManager, new ChessEchelleEvent());
 		DefaultConnection.getEventBus().subscribe(saveManager, new ChessColorDashBoardEvent());
 		DefaultConnection.getEventBus().subscribe(saveManager, new ChessColorPieceEvent());
 		DefaultConnection.getEventBus().subscribe(saveManager, new ChessColorSelectEvent());
-
-		cardPanel.add(scroll, "0");
 		pane.setAddCoordinates(true);
 		pane.setPlayMode(PlayMode.game);
 		pane.initialize();
+		JScrollPane scrollPane = new JScrollPane(pane);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		historyPane=new HistoryPane();
+		DefaultConnection.getEventBus().subscribe(historyPane, new ChessLoadPGNEvent());
+		DefaultConnection.getEventBus().subscribe(historyPane, new ChessSelectGame());
+
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pane, historyPane.getPanel());
+		// Hide left or top
+		
+		splitPane.setOneTouchExpandable(true);
+		splitPane.setDividerLocation(80*9);
 
 		setMenuBar(createMenuBar());
 		// used to get content pane
-		getContentPane().add(cardPanel, BorderLayout.NORTH);
+		getContentPane().add(splitPane, BorderLayout.CENTER);
 		// Creating Object of "JPanel" class
-		JPanel buttonPanel = new JPanel();
 
-		// Initialization of object
-		// "firstbtn" of JButton class.
-		JButton firstBtn = new JButton("Save");
-		buttonPanel.add(firstBtn);
-		firstBtn.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent arg0) {
-
-				// increment the value of currentcard by 1
-				currentCard += 1;
-				currentCard = currentCard % 2;
-
-				// show the value of currentcard
-				cl.show(cardPanel, "" + (currentCard));
-
-			}
-		});
-		// used to get content pane
-		// that was for fun only getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 		pack();
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		pane.setFocusable(true);
+		pane.requestFocusInWindow();
 	}
 
 	protected MenuBar createMenuBar() {

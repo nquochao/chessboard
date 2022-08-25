@@ -18,15 +18,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
-import oliviaproject.chessboard.pgn.Move;
-import oliviaproject.event.ChessColorDashBoardEvent;
 import oliviaproject.event.ChessColorPieceEvent;
-import oliviaproject.event.ChessColorSelectEvent;
 import oliviaproject.event.ChessEchelleEvent;
-import oliviaproject.event.ChessMoveEvent;
-import oliviaproject.event.ChessPromotionEvent;
 import oliviaproject.event.Default;
 import oliviaproject.event.DefaultConnection;
 import oliviaproject.event.Event;
@@ -34,23 +28,19 @@ import oliviaproject.eventbus.EventListener;
 import oliviaproject.ui.dashboard.util.IChessboardPanel;
 import oliviaproject.ui.dashboard.util.IPiece;
 import oliviaproject.ui.dashboard.util.NumberToLetter;
-import oliviaproject.ui.dashboard.util.Piece;
 import oliviaproject.ui.dashboard.util.PlayMode;
 import oliviaproject.ui.dashboard.util.SelectorRectangle;
 import oliviaproject.ui.dashboard.util.Side;
 import oliviaproject.ui.position.Position;
 import oliviaproject.ui.position.Positions;
-import oliviaproject.ui.possiblemove.PositionCavalier;
-import oliviaproject.ui.possiblemove.PositionFou;
-import oliviaproject.ui.possiblemove.PositionReine;
-import oliviaproject.ui.possiblemove.PositionTour;
-import oliviaproject.ui.promotion.ChessPiecePromotion;
 import oliviaproject.ui.selection.tile.color.demo.DemoColorUtil;
+import oliviaproject.ui.selection.tile.color.demo.KeyboardDemo;
 
 public class OliviaPanel extends JPanel implements IChessboardPanel, EventListener {
 	/**
 	 * 
 	 */
+	
 	private static final long serialVersionUID = 1L;
 	int xlength = TILE_X;
 	int ylength = TILE_Y;
@@ -70,6 +60,9 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 	Boolean addCoordinates = true;
 	private PlayMode playMode;
 	IEventManager eventManager;
+	OliviaPanel p=this;
+	KeyboardDemo kb;
+
 	public Boolean getAddCoordinates() {
 		return addCoordinates;
 	}
@@ -88,7 +81,7 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 
 		ps.clear();
 		eventManager=new OliviaPanelEventManager(this);
-
+		kb.initialize();
 		for (int j = 0; j < numberrows; j++) {
 			try {
 				fillrow(j, Side.White);
@@ -129,6 +122,7 @@ public class OliviaPanel extends JPanel implements IChessboardPanel, EventListen
 			@Override
 			public void mousePressed(MouseEvent e) {
 				super.mousePressed(e);
+				p.grabFocus();
 				clickedSelectedOrigin = null;
 				for (String key : quads.keySet()) {
 					Rectangle cell = quads.get(key);

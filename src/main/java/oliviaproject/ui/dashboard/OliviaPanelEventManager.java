@@ -2,6 +2,7 @@ package oliviaproject.ui.dashboard;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.io.IOException;
 import java.util.Set;
 
 import javax.swing.SwingUtilities;
@@ -14,8 +15,10 @@ import oliviaproject.event.ChessColorDashBoardEvent;
 import oliviaproject.event.ChessColorPieceEvent;
 import oliviaproject.event.ChessColorSelectEvent;
 import oliviaproject.event.ChessEchelleEvent;
+import oliviaproject.event.ChessLoadPGNEvent;
 import oliviaproject.event.ChessMoveEvent;
 import oliviaproject.event.ChessPromotionEvent;
+import oliviaproject.event.ChessSelectGame;
 import oliviaproject.ui.dashboard.util.Piece;
 import oliviaproject.ui.dashboard.util.Side;
 import oliviaproject.ui.position.Position;
@@ -186,6 +189,25 @@ public class OliviaPanelEventManager implements IEventManager {
 
 			break;
 		}
+		}
+	}
+
+	@Override
+	public void visit(ChessLoadPGNEvent chessLoadPGNEvent) {
+
+		
+	}
+
+	@Override
+	public void visit(ChessSelectGame chessSelectGame) {
+		try {
+			panel.initialize();
+			
+			panel.kb.setGame(chessSelectGame.getGameStateMutable());
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

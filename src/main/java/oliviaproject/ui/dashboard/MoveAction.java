@@ -116,9 +116,7 @@ public Position calculatePossibleOriginPositions(Move move, Positions ps) {
 	 */
 	Set<Position> result2=new HashSet<>();
 	String moveTo= move.getTo();
-	if(moveTo.equals("PetitRoc")) {
-		moveTo=move.getWhiteToPlay()?"6,7":"6,0";
-	}
+
 	for(String key: result.keySet()) {
 		Position p=result.get(key);
 
